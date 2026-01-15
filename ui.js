@@ -1,5 +1,7 @@
 import { locations } from "./locations.js";
+import { checkForEnemy } from "./combat.js";
 import { Character } from "./character.js";
+import { addLog } from "./util.js";
 
 //Ответственность: Взаимодействие с пользователем
 //Обновление статистики на экране
@@ -12,19 +14,21 @@ const startGamecontainer = document.querySelector(".start-screen");
 const introContainer = document.querySelector(".introduction");
 const gameContainer = document.querySelector(".container");
 const logGame = document.getElementById("log-content");
-const locationButtonsContainer = document.getElementById("location-buttons");
+export const locationButtonsContainer =
+  document.getElementById("location-buttons");
 
 // Игрок
-const player = new Character("Путник");
+export const player = new Character("Путник");
 
 // Перемещения игрока
-let currentLocation = "paradiseGlade";
+export let currentLocation = "paradiseGlade";
 const currentLocationInContainer = document.getElementById("current-location");
 const locationDescription = document.querySelector(".location-description");
 
 // Кнопки
 const buttonStartGame = document.getElementById("start-button");
 const introButton = document.getElementById("intro-button");
+export const combatButton = document.querySelectorAll(".action-buttons");
 const attackButton = document.querySelector(".attack");
 const protectionButton = document.querySelector(".protection");
 const useItemButton = document.querySelector(".useItem");
@@ -50,12 +54,16 @@ introButton.addEventListener("click", () => {
   gameContainer.style.display = "block";
   renderStarts(player);
   renderLocation();
-  addLog('Хранитель Поляны: Добро пожаловать, путник. Ты на Райской Поляне (далее текст будет продолжен позднее)', 'npc-log'); 
+  addLog(
+    "Хранитель Поляны: Добро пожаловать, путник. Ты на Райской Поляне (далее текст будет продолжен позднее)",
+    "npc-log"
+  );
 });
 
 // Показываем текущую локацию и доступные переходы
 function renderLocation() {
-  currentLocationInContainer.textContent = locations[currentLocation].locationName;
+  currentLocationInContainer.textContent =
+    locations[currentLocation].locationName;
   locationDescription.textContent = locations[currentLocation].description;
   locationButtonsContainer.innerHTML = "";
 
@@ -68,18 +76,10 @@ function renderLocation() {
     locationButton.addEventListener("click", () => {
       currentLocation = locationConnections;
       renderLocation();
+      checkForEnemy(currentLocation);
     });
     locationButtonsContainer.append(locationButton);
   }
-}
-
-// ДОБАВЛЯЕМ В ЛОГ
-function addLog(text, className = "") {
-  let entry = document.createElement("div");
-  entry.textContent = text;
-  if (className) entry.classList(className);
-  logGame.appendChild(entry);
-  logGame.scrollTop = logGame.scrollHeight;
 }
 
 // Обновляем характеристики в интерфейсе
@@ -92,3 +92,11 @@ function renderStarts(player) {
   charExperience.textContent = player.experience;
   charInventory.textContent = player.inventory.join(", ");
 }
+
+// КОНЕЦ ИГРЫ
+
+export function gameOver() {}
+
+// Победа
+
+export function victory() {}

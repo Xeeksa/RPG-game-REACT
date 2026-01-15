@@ -1,9 +1,15 @@
-import { items } from "./items.js";
-
 const BASE_DAMAGE_PER_LEVEL = 2;
 
 export class Character {
-  constructor(name = "Странник", health = 20, mana = 20, defense = 0, level = 1, experience = 0, inventory = []) {
+  constructor(
+    name = "Странник",
+    health = 20,
+    mana = 20,
+    defense = 0,
+    level = 1,
+    experience = 0,
+    inventory = []
+  ) {
     this.isAlive = true;
     this.name = name;
     this.health = health;
@@ -20,9 +26,9 @@ export class Character {
   useItem(itemIndex) {
     if (itemIndex >= this.inventory.length || itemIndex < 0) {
       addLog("Такого предмета нет в твоем инвентаре", "system-log");
+      return;
     }
     let itemKey = this.inventory[itemIndex];
-    let itemType = items[itemKey].type;
     let itemName = items[itemKey].name;
     if (itemKey === "healthPotion") {
       this.health = this.maxHealth;
@@ -49,6 +55,10 @@ export class Character {
       target.takeDamage(totalDamage);
       return totalDamage;
     }
+  }
+
+  defende() {
+    this.defense += 2;
   }
 
   takeDamage(damage) {

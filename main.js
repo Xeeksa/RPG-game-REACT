@@ -6,7 +6,7 @@
 //Сброс игры
 
 import { Character } from "./character.js";
-import { locations, randomEvt } from "./locations.js";
+import { locations } from "./locations.js";
 import { enemyTemplates } from "./enemies.js";
 import { items } from "./items.js";
 import { startCombat } from "./combat.js";
