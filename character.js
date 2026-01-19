@@ -1,21 +1,21 @@
-const BASE_DAMAGE_PER_LEVEL = 2;
+export const BASE_DAMAGE_PER_LEVEL = 2;
 
 export class Character {
   constructor(
     name = "Странник",
     health = 20,
-    mana = 20,
+    // mana = 20,
     defense = 0,
     level = 1,
     experience = 0,
-    inventory = []
+    inventory = [],
   ) {
     this.isAlive = true;
     this.name = name;
     this.health = health;
     this.maxHealth = health;
-    this.mana = mana;
-    this.maxMana = mana;
+    // this.mana = mana;
+    // this.maxMana = mana;
     this.defense = defense;
     this.level = level;
     this.experience = experience;
@@ -33,9 +33,9 @@ export class Character {
     if (itemKey === "healthPotion") {
       this.health = this.maxHealth;
     }
-    if (itemKey === "manaPotion") {
-      this.mana = this.maxMana;
-    }
+    // if (itemKey === "manaPotion") {
+    //   this.mana = this.maxMana;
+    // }
     this.inventory.splice(itemIndex, 1);
     let message = `Вы использовали ${itemName}`;
     addLog(message, "system-log");
@@ -45,19 +45,19 @@ export class Character {
     let damage = this.level * BASE_DAMAGE_PER_LEVEL;
     let totalDamage = damage - target.defense;
 
-    if (this.mana < 5) {
-      return 0;
-    } else {
-      this.mana -= 5;
-      if (totalDamage < 1) {
-        totalDamage = 1;
-      }
-      target.takeDamage(totalDamage);
-      return totalDamage;
+    // if (this.mana < 5) {
+    //   return 0;
+    // } else {
+    //   this.mana -= 5;
+    if (totalDamage < 1) {
+      totalDamage = 1;
     }
+    target.takeDamage(totalDamage);
+    return totalDamage;
   }
+  // }
 
-  defende() {
+  defend() {
     this.defense += 2;
   }
 
@@ -79,8 +79,8 @@ export class Character {
     this.level += 1;
     this.maxHealth += 2;
     this.health = this.maxHealth;
-    this.maxMana += 2;
-    this.mana = this.maxMana;
+    // this.maxMana += 2;
+    // this.mana = this.maxMana;
     this.defense += 1;
   }
 }
