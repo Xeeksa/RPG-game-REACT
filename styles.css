@@ -11,6 +11,10 @@ body {
   background-color: #f5f5f5;
 }
 
+button {
+  border-radius: 5px;
+}
+
 /* Стартовый экран */
 .start-screen {
   text-align: center;
@@ -54,12 +58,12 @@ body {
 }
 
 .intro-text {
-  margin: 10%; /* 10% отступ со всех сторон */
+  margin: 10%;
   margin-bottom: 80px;
   margin-top: 40px;
   font-size: 16px;
   line-height: 1.5;
-  text-align: justify; /* Можно убрать, если нужен стандартный выравнивание */
+  text-align: justify;
 }
 
 #intro-button {
@@ -69,8 +73,8 @@ body {
   background-color: #333;
   color: white;
   border: none;
-  margin: 0 auto; /* Центрирование кнопки */
-  display: block; /* Чтобы сработал margin: auto */
+  margin: 0 auto;
+  display: block;
 }
 
 #intro-button:hover {
@@ -98,7 +102,7 @@ h1 {
 
 .game-area-title {
   position: absolute;
-  top: 40px; /* Отрегулируйте отступ */
+  top: 40px;
   left: 50%;
   transform: translateX(-50%);
   margin: 0;
@@ -160,8 +164,10 @@ button:disabled {
 }
 
 #log-content {
+  overflow-y: auto;
   margin-top: 10px;
   min-height: 100px;
+  max-height: 200px;
   border: 1px solid #ccc;
   padding: 10px;
   font-family: monospace;
@@ -194,6 +200,30 @@ li {
 }
 .system-log {
   color: gray;
+}
+
+/* Конец игры */
+
+.game-over-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  padding-top: 50%;
+  text-align: center;
+  background-color: black;
+}
+
+.game-over-screen button {
+  padding: 15px;
+  border-radius: 5px;
+  background-color: #cf9b8f;
+}
+
+.game-over-title {
+  color: #a9a9a9;
+  margin-bottom: 80px;
 }
 
 /* Адаптив */

@@ -1,8 +1,7 @@
 import { locations } from "./locations.js";
 import { checkForEnemy } from "./combat.js";
-import { Character } from "./character.js";
-import { addLog } from "./util.js";
-import { combatAction, combatButtons } from "./combat.js";
+import { addLog, clearSystemLog } from "./util.js";
+import { gameState } from "./gameState.js";
 
 //Ответственность: Взаимодействие с пользователем
 //Обновление статистики на экране
@@ -16,12 +15,9 @@ const introContainer = document.querySelector(".introduction");
 const gameContainer = document.querySelector(".container");
 export const locationButtonsContainer =
   document.getElementById("location-buttons");
-
-// Игрок
-export const player = new Character("Путник");
+const gameOverContainer = document.querySelector(".game-over-screen");
 
 // Перемещения игрока
-export let currentLocation = "paradiseGlade";
 const currentLocationInContainer = document.getElementById("current-location");
 const locationDescription = document.querySelector(".location-description");
 
@@ -31,6 +27,7 @@ const introButton = document.getElementById("intro-button");
 const attackButton = document.querySelector(".attack");
 const protectionButton = document.querySelector(".protection");
 const useItemButton = document.querySelector(".useItem");
+const restartButton = document.querySelector(".restart-button");
 
 // Статы
 const charName = document.getElementById("char-name");
@@ -42,6 +39,7 @@ const charExperience = document.getElementById("char-exp");
 const charInventory = document.getElementById("char-inventory");
 
 // Переход от старта к интро
+
 buttonStartGame.addEventListener("click", () => {
   introContainer.style.display = "block";
   startGamecontainer.style.display = "none";
@@ -51,7 +49,7 @@ buttonStartGame.addEventListener("click", () => {
 introButton.addEventListener("click", () => {
   introContainer.style.display = "none";
   gameContainer.style.display = "block";
-  renderStarts(player);
+  renderStats(gameState.player);
   renderLocation();
   addLog(
     "Хранитель Поляны: Добро пожаловать, путник. Ты на Райской Поляне (далее текст будет продолжен позднее)",
@@ -62,27 +60,29 @@ introButton.addEventListener("click", () => {
 // Показываем текущую локацию и доступные переходы
 function renderLocation() {
   currentLocationInContainer.textContent =
-    locations[currentLocation].locationName;
-  locationDescription.textContent = locations[currentLocation].description;
+    locations[gameState.currentLocation].locationName;
+  locationDescription.textContent =
+    locations[gameState.currentLocation].description;
   locationButtonsContainer.innerHTML = "";
 
-  let arrConnections = locations[currentLocation].connections;
+  let arrConnections = locations[gameState.currentLocation].connections;
 
   for (let locationConnections of arrConnections) {
     let nameLocationButton = locations[locationConnections].locationName;
     const locationButton = document.createElement("button");
     locationButton.textContent = nameLocationButton;
     locationButton.addEventListener("click", () => {
-      currentLocation = locationConnections;
+      gameState.currentLocation = locationConnections;
       renderLocation();
-      checkForEnemy(currentLocation, player);
+      checkForEnemy(gameState.currentLocation, gameState.player);
     });
+    clearSystemLog();
     locationButtonsContainer.append(locationButton);
   }
 }
 
 // Обновляем характеристики в интерфейсе
-export function renderStarts(player) {
+export function renderStats(player) {
   charName.textContent = player.name;
   charHealth.textContent = player.health;
   // charMana.textContent = player.mana;
@@ -93,16 +93,22 @@ export function renderStarts(player) {
 }
 
 // Блокировка, разблокировка кнопок перехода по локациям во время боя
-
 export function setLocationButtonState(disabled) {
   let locationButtons = document.querySelectorAll(".location-buttons button");
   locationButtons.forEach((button) => (button.disabled = disabled));
 }
 
-// Поражение
+// Конец игры
+export function gameOver(isVictory) {
+  gameContainer.style.display = "none";
+  gameOverContainer.style.display = "block";
+  const title = document.querySelector(".game-over-title");
+  title.textContent = isVictory
+    ? "Поздравляю! Ты одолел тьму!"
+    : "Игра окончена. Ты погиб.";
+}
 
-export function gameOver() {}
-
-// Победа
-
-export function victory() {}
+// Перезапуск игры после окончания
+restartButton.addEventListener("click", () => {
+  location.reload();
+});

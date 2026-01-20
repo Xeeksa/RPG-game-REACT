@@ -5,10 +5,8 @@
 //Обработка глобальных событий
 //Сброс игры
 
-import { Character } from "./character.js";
-import { locations } from "./locations.js";
-import { enemyTemplates } from "./enemies.js";
-import { items } from "./items.js";
-import { startCombat } from "./combat.js";
-import { checkBossRequirements } from "./boss.js";
+import { initGame } from "./gameState.js";
 import "./ui.js";
+
+initGame();
+console.log("Игра запущена");

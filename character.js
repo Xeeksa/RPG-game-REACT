@@ -1,4 +1,5 @@
-export const BASE_DAMAGE_PER_LEVEL = 2;
+import { items } from "./items.js";
+const BASE_DAMAGE_PER_LEVEL = 60;
 
 export class Character {
   constructor(
@@ -17,6 +18,7 @@ export class Character {
     // this.mana = mana;
     // this.maxMana = mana;
     this.defense = defense;
+    this.tempDefense = 0;
     this.level = level;
     this.experience = experience;
     this.inventory = inventory;
@@ -58,16 +60,18 @@ export class Character {
   // }
 
   defend() {
-    this.defense += 2;
+    this.tempDefense = 2;
   }
 
   takeDamage(damage) {
-    this.health -= damage;
+    let actualDamage = damage - this.tempDefense;
+    this.tempDefense = 0;
+    if (actualDamage < 0) actualDamage = 0;
+    this.health -= actualDamage;
     if (this.health <= 0) {
       this.isAlive = false;
-      return damage;
     }
-    return damage;
+    return actualDamage;
   }
 
   addExp(points) {

@@ -1,9 +1,4 @@
-import { locations } from "./locations.js";
-import { currentLocation } from "./ui.js";
-import { items } from "./items.js";
-import { BASE_DAMAGE_PER_LEVEL } from "./character.js";
-import { addLog } from "./util.js";
-import { renderStarts } from "./ui.js";
+const ENEMY_DAMAGE_PER_LEVEL = 2;
 
 //Ответственность: Противники
 //Типы врагов (гоблин, орк, дракон и т.д.)
@@ -24,8 +19,8 @@ export class Enemy {
   }
 
   attack(target) {
-    let damage = this.level * BASE_DAMAGE_PER_LEVEL;
-    let totalDamage = damage - target.defense;
+    let damage = this.level * ENEMY_DAMAGE_PER_LEVEL;
+    let totalDamage = damage - (target.defense + target.tempDefense);
 
     // if (this.mana < 5) {
     //   return 0;
@@ -35,18 +30,18 @@ export class Enemy {
       totalDamage = 1;
     }
     target.takeDamage(totalDamage);
-    addLog();
     return totalDamage;
     // }
   }
 
   takeDamage(damage) {
-    this.health -= damage;
+    let actualDamage = Math.min(damage, this.health);
+    this.health -= actualDamage;
     if (this.health <= 0) {
       this.isAlive = false;
-      return damage;
+      return actualDamage;
     }
-    return damage;
+    return actualDamage;
   }
 }
 
@@ -175,7 +170,7 @@ export const enemyTemplates = {
   },
 };
 
-export function createEnemy(enemyKey) {
+export function createEnemy(enemyKey, currentLocation) {
   let template = enemyTemplates[enemyKey];
   return new Enemy(
     template.name,

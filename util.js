@@ -23,4 +23,11 @@ export function addLog(text, className = "") {
   logGame.scrollTop = logGame.scrollHeight;
 }
 
+// Очистка лога
+
+export function clearSystemLog() {
+  let entries = logGame.querySelectorAll(".system-log, .mob-log");
+  entries.forEach((entry) => entry.remove());
+}
+
 // Распределить Лог по локациям: отображается только в той локации, где высветился.
