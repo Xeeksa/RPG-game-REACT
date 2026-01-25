@@ -1,4 +1,5 @@
 import { items } from "./items.js";
+import { addLog } from "./util.js";
 const BASE_DAMAGE_PER_LEVEL = 60;
 
 export class Character {
@@ -9,7 +10,7 @@ export class Character {
     defense = 0,
     level = 1,
     experience = 0,
-    inventory = [],
+    inventory = ["healthPotion"],
   ) {
     this.isAlive = true;
     this.name = name;

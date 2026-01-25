@@ -2,6 +2,7 @@ import { locations } from "./locations.js";
 import { checkForEnemy } from "./combat.js";
 import { addLog, clearSystemLog } from "./util.js";
 import { gameState } from "./gameState.js";
+import { items } from "./items.js";
 
 //Ответственность: Взаимодействие с пользователем
 //Обновление статистики на экране
@@ -24,8 +25,8 @@ const locationDescription = document.querySelector(".location-description");
 // Кнопки
 const buttonStartGame = document.getElementById("start-button");
 const introButton = document.getElementById("intro-button");
-const attackButton = document.querySelector(".attack");
-const protectionButton = document.querySelector(".protection");
+// const attackButton = document.querySelector(".attack");
+// const protectionButton = document.querySelector(".protection");
 const useItemButton = document.querySelector(".useItem");
 const restartButton = document.querySelector(".restart-button");
 
@@ -81,6 +82,23 @@ function renderLocation() {
   }
 }
 
+// Клик на копку использования предмета
+// Реализовано пока что под один предмет - зелье здоровья
+
+useItemButton.addEventListener("click", () => {
+  let player = gameState.player;
+  let index = player.inventory.indexOf("healthPotion");
+
+  if (index === -1) {
+    addLog("Твой инвентаь пуст!", "system-log");
+  } else {
+    player.useItem(index);
+    renderStats(player);
+  }
+});
+
+//Всплывающие пояснялки к предметам
+
 // Обновляем характеристики в интерфейсе
 export function renderStats(player) {
   charName.textContent = player.name;
@@ -89,8 +107,17 @@ export function renderStats(player) {
   charDefense.textContent = player.defense;
   charLevel.textContent = player.level;
   charExperience.textContent = player.experience;
-  charInventory.textContent = player.inventory.join(", ");
+  charInventory.textContent = player.inventory
+    .map((key) => items[key].name)
+    .join(", ");
 }
+
+// export const items = {
+//   healthPotion: {
+//     name: "Отвар целебных трав",
+//     type: "consumable",
+//     effect: { health: "fullRestore" },
+//   },
 
 // Блокировка, разблокировка кнопок перехода по локациям во время боя
 export function setLocationButtonState(disabled) {
@@ -112,3 +139,5 @@ export function gameOver(isVictory) {
 restartButton.addEventListener("click", () => {
   location.reload();
 });
+
+// Вкрутить предупреждающее сообщение при входе на локацию босса, т.к. вход без предметов = смерть

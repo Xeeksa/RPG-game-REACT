@@ -4,7 +4,7 @@ import { locations } from "./locations.js";
 import { setLocationButtonState, renderStats, gameOver } from "./ui.js";
 import { gameState } from "./gameState.js";
 
-let currentPlayer, currentEnemy;
+export let currentPlayer, currentEnemy;
 let listenersAttached = false;
 export let combatButtons;
 
@@ -48,13 +48,11 @@ export function startCombat(player, enemy) {
 
 // Проверка здоровья и статуса игры во время боя
 function processEnemyTurn() {
-  let damage = currentEnemy.attack(currentPlayer);
-
   if (currentEnemy.health <= 0) {
     addLog("Темный дух " + currentEnemy.name + " побежден", "system-log");
     currentPlayer.addExp(currentEnemy.expReward);
     renderStats(currentPlayer);
-    addLog(`Ты получил ${currentEnemy.expReward} опыта!`);
+    addLog(`Ты получил ${currentEnemy.expReward} опыта!`, "system-log");
 
     if (combatButtons) {
       combatButtons.forEach((button) => {
@@ -65,19 +63,23 @@ function processEnemyTurn() {
 
     if (currentEnemy.itemDrop) {
       currentPlayer.inventory.push(currentEnemy.itemDrop);
+      addLog(`Получен ${items[currentEnemy.itemDrop].name}`);
     }
     return;
-  } else {
-    addLog(
-      `${currentEnemy.name} наносит вам ${damage} Урона! У вас осталось ${currentPlayer.health} здоровья!`,
-      "mob-log",
-    );
   }
+
+  let damage = currentEnemy.attack(currentPlayer);
 
   if (currentPlayer.health <= 0) {
     gameOver();
     return;
   }
+
+  addLog(
+    `${currentEnemy.name} наносит вам ${damage} Урона! У вас осталось ${currentPlayer.health} здоровья!`,
+    "mob-log",
+  );
+
   renderStats(currentPlayer);
 }
 
