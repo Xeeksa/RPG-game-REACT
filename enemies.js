@@ -20,7 +20,10 @@ export class Enemy {
 
   attack(target) {
     let damage = this.level * ENEMY_DAMAGE_PER_LEVEL;
-    let totalDamage = damage - (target.defense + target.tempDefense);
+
+    if (target.isDefending) return 0;
+
+    let totalDamage = damage - target.defense;
 
     // if (this.mana < 5) {
     //   return 0;

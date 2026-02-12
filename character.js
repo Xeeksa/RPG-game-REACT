@@ -19,7 +19,7 @@ export class Character {
     // this.mana = mana;
     // this.maxMana = mana;
     this.defense = defense;
-    this.tempDefense = 0;
+    this.isDefending = false;
     this.level = level;
     this.experience = experience;
     this.inventory = inventory;
@@ -61,12 +61,16 @@ export class Character {
   // }
 
   defend() {
-    this.tempDefense = 2;
+    this.isDefending = true;
   }
 
   takeDamage(damage) {
-    let actualDamage = damage - this.tempDefense;
-    this.tempDefense = 0;
+    if (this.isDefending) {
+      this.isDefending = false;
+      return 0;
+    }
+
+    let actualDamage = damage - this.defense;
     if (actualDamage < 0) actualDamage = 0;
     this.health -= actualDamage;
     if (this.health <= 0) {
