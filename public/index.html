@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Текстовая RPG</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1 style="visibility: hidden">Текстовая RPG Игра</h1>
+    </header>
+
+    <section class="start-screen">
+      <h2>Текстовая RPG Игра</h2>
+      <p>Добро пожаловать в игру!</p>
+      <button id="start-button">Начать приключение!</button>
+    </section>
+
+    <section class="introduction" style="display: none">
+      <h2 class="intro-title">Пробуждение</h2>
+      <p class="intro-text">
+        Вы открываете глаза и видите голубое небо, от которого исходит ощущение неестественности, искаженности. Вы не
+        помните ни свое имя, ни свое прошлое. Воздух, касающийся вашей кожи, как будто утрированно сух. Вы поднимаетесь
+        на локтях и ощущаете руками землю. Оглядываясь, вы видите костер, странно горящий средь бела дня и явно не
+        служащий ни для освещения, ни для согревания путников. Продолжая переводить свой взгляд, вы видите человека...
+        существо? Сильно зажмурившись и открыв глаза, вы снова смотрите в том же направлении и понимаете, что видите
+        перед собой живое существо, похожее на человека, чей облик как будто беспрестанно смазывается и меняется: от
+        человеческого старца до юноши, от юноши до странного вида лесного эльфа. Вы встаете, чтобы начать диалог.
+      </p>
+      <button id="intro-button">Встать на ноги</button>
+    </section>
+
+    <section class="container" style="display: none">
+      <button
+        class="restart-button"
+        style="
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          z-index: 1000;
+          padding: 10px 15px;
+          background: #ff4444;
+          color: white;
+          border: none;
+        ">
+        Начать заново
+      </button>
+      <section class="game-area">
+        <h2 class="game-area-title">Хроники Запустения</h2>
+        <div class="stats">
+          <h2>Характеристики</h2>
+          <ul id="stats-list">
+            <!-- Будет заполнено через JS -->
+            <li>Имя: <span id="char-name">-</span></li>
+            <li>Здоровье: <span id="char-health">-</span></li>
+            <!-- <li>Мана: <span id="char-mana">-</span></li> -->
+            <li>Защита: <span id="char-defense">-</span></li>
+            <li>Уровень: <span id="char-level">-</span></li>
+            <li>Опыт: <span id="char-exp">-</span></li>
+            <li>Инвентарь: <span id="char-inventory">-</span></li>
+          </ul>
+        </div>
+
+        <div class="actions">
+          <h2>Действия</h2>
+          <div class="action-buttons">
+            <!-- Будет заполнено через JS -->
+            <button disabled class="attack" data-action="attack">Атаковать</button>
+            <button disabled class="protection" data-action="protection">Защищаться</button>
+            <button disabled class="useItem" data-action="useItem">Использовать предмет</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="location">
+        <h2>Текущая локация: <span id="current-location">Деревня</span></h2>
+        <p class="location-description"></p>
+        <div class="location-buttons" id="location-buttons">
+          <!-- Будет заполнено через JS -->
+          <button disabled>Идти в лес</button>
+          <button disabled>Идти в подземелье</button>
+          <button disabled>Вернуться в деревню</button>
+        </div>
+      </section>
+
+      <section class="log">
+        <h2>Лог событий</h2>
+        <div id="log-content">
+          <!-- Содержимое будет добавляться через JS -->
+        </div>
+      </section>
+    </section>
+
+    <section class="game-over-screen" style="display: none">
+      <h2 class="game-over-title">Игра окончена. Ты погиб.</h2>
+      <button class="restart-button">Начать новое путешествие...</button>
+    </section>
+
+    <!-- <script type="module" src="/src/main.jsx"></script> -->
+  </body>
+</html>
