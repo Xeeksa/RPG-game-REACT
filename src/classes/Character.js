@@ -1,5 +1,3 @@
-import { items } from "../data/items.js";
-import { addLog } from "../utils/util.js";
 const BASE_DAMAGE_PER_LEVEL = 60;
 
 export class Character {

@@ -1,50 +1,33 @@
-import { getRandomPositiveInteger, addLog } from "../utils/util.js";
-import { createEnemy } from "../classes/Enemy.js";
+import { useGame } from "../contexts/GameContext.jsx";
 import { locations } from "../data/locations.js";
-import { setLocationButtonState, renderStats, gameOver } from "../../ui.js";
-import { gameState } from "../contexts/gameState.js";
-
-export let currentPlayer, currentEnemy;
-let listenersAttached = false;
-export let combatButtons;
+import { createEnemy } from "../data/enemies.js";
+import { getRandomPositiveInteger } from "../utils/helpers.jsx";
 
 // Проверка наличия врага на локации
-export function checkForEnemy(currentLocation, player) {
-  let enemiesArr = locations[currentLocation].enemies;
-  let randomNum = Math.random();
-  let randomMob = getRandomPositiveInteger(0, enemiesArr.length - 1);
+export const useCombat = () => {
+  const { state, dispatch } = useGame;
 
-  if (!enemiesArr || enemiesArr.length == 0) return;
+  const checkForEnemy = (currentLocation) => {
+    const enemiesArr = locations[currentLocation].enemies;
 
-  if (randomNum > 0.5) {
-    let enemyKey = enemiesArr[randomMob];
-    let enemy = createEnemy(enemyKey, currentLocation);
+    if (!enemiesArr || enemiesArr.length == 0) return;
 
-    startCombat(player, enemy);
-  }
-}
+    let randomNum = Math.random();
+    let randomMob = getRandomPositiveInteger(0, enemiesArr.length - 1);
 
-// Бой
-export function startCombat(player, enemy) {
-  currentPlayer = player;
-  currentEnemy = enemy;
-  setLocationButtonState(true);
-  combatButtons = document.querySelectorAll(".action-buttons button");
-  if (!listenersAttached) {
-    combatButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        let action = button.dataset.action;
-        combatAction(action);
+    if (randomNum > 0.5) {
+      let enemyKey = enemiesArr[randomMob];
+      let enemy = createEnemy(enemyKey, currentLocation);
+
+      dispatch({
+        type: "START_COMBAT",
+        payload: { enemy, location: currentLocation },
       });
-    });
-    listenersAttached = true;
-  }
-  combatButtons.forEach((button) => (button.disabled = false));
-  addLog(
-    `Тебя атакует ${enemy.name.toLowerCase()} (здоровье: ${currentEnemy.health})`,
-    "mob-log",
-  );
-}
+    }
+  };
+
+  return checkForEnemy;
+};
 
 // Проверка здоровья и статуса игры во время боя
 function processEnemyTurn() {
@@ -54,16 +37,12 @@ function processEnemyTurn() {
     renderStats(currentPlayer);
     addLog(`Ты получил ${currentEnemy.expReward} опыта!`, "system-log");
 
-    if (combatButtons) {
-      combatButtons.forEach((button) => {
-        button.disabled = true;
-      });
-      setLocationButtonState(false);
-    }
-
     if (currentEnemy.itemDrop) {
-      currentPlayer.inventory.push(currentEnemy.itemDrop);
-      addLog(`Получен ${items[currentEnemy.itemDrop].name}`);
+      // берем текущий инвентарь
+      // добавляем новый предмет
+      // обновляем стейт
+      // currentPlayer.inventory.push(currentEnemy.itemDrop);
+      // addLog(`Получен ${items[currentEnemy.itemDrop].name}`);
     }
     return;
   }
@@ -79,8 +58,6 @@ function processEnemyTurn() {
     `${currentEnemy.name} наносит вам ${damage} Урона! У вас осталось ${currentPlayer.health} здоровья!`,
     "mob-log",
   );
-
-  renderStats(currentPlayer);
 }
 
 // Обработка кликов по кнопкам боя

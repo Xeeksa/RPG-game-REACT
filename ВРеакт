@@ -1,0 +1,39 @@
+src/
+├── main.jsx                 # вместо main.js (точка входа React)
+├── App.jsx                  # главный компонент
+│
+├── components/              # Визуальные компоненты
+│   ├── Player/
+│   │   ├── PlayerStats.jsx
+│   │   └── Inventory.jsx
+│   ├── Location/
+│   │   ├── LocationInfo.jsx
+│   │   └── LocationActions.jsx
+│   ├── Combat/
+│   │   ├── CombatScreen.jsx
+│   │   ├── EnemyInfo.jsx
+│   │   └── CombatActions.jsx
+│   └── UI/
+│       ├── GameLog.jsx
+│       └── GameOver.jsx
+│
+├── contexts/                # Вместо gameState.js
+│   └── GameContext.jsx
+│
+├── hooks/                   # Вместо combat.js и ui.js (логика)
+│   ├── useCombat.js
+│   └── useGameState.js
+│
+├── classes/                 # Чистая логика (без изменений)
+│   ├── !!!Character.js         # из character.js
+│   └── !!!Enemy.js            # из enemies.js (класс)
+│
+├── data/                    # Конфиги и шаблоны
+│   ├── enemies.js          # enemyTemplates (из enemies.js)
+│   ├── locations.js        # из locations.js
+│   └── items.js            # из items.js
+│
+├── utils/                   # Хелперы
+│   └── helpers.js          # из util.js
+│
+└── index.html               # перенести в public/
