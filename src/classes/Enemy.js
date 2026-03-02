@@ -1,4 +1,4 @@
-const ENEMY_DAMAGE_PER_LEVEL = 2;
+export const ENEMY_DAMAGE_PER_LEVEL = 2;
 
 export class Enemy {
   constructor(name, status, health, defense, stamina, level, expReward) {

@@ -1,87 +1,99 @@
 import { useGame } from "../contexts/GameContext.jsx";
 import { locations } from "../data/locations.js";
 import { createEnemy } from "../data/enemies.js";
-import { getRandomPositiveInteger } from "../utils/helpers.jsx";
+import { getRandomPositiveInteger } from "../utils/helpers.js";
+import { ENEMY_DAMAGE_PER_LEVEL } from "../classes/Enemy.js";
 
 // Проверка наличия врага на локации
 export const useCombat = () => {
-  const { state, dispatch } = useGame;
+  const {
+    player,
+    setPlayer,
+    currentEnemy,
+    setCurrentEnemy,
+    inCombat,
+    setScreen,
+    setInCombat,
+    addLog,
+  } = useGame();
 
   const checkForEnemy = (currentLocation) => {
     const enemiesArr = locations[currentLocation].enemies;
-
     if (!enemiesArr || enemiesArr.length == 0) return;
-
     let randomNum = Math.random();
     let randomMob = getRandomPositiveInteger(0, enemiesArr.length - 1);
-
     if (randomNum > 0.5) {
       let enemyKey = enemiesArr[randomMob];
       let enemy = createEnemy(enemyKey, currentLocation);
-
-      dispatch({
-        type: "START_COMBAT",
-        payload: { enemy, location: currentLocation },
-      });
+      setCurrentEnemy(enemy);
+      setInCombat(true);
+      addLog(
+        `Тебя атакует ${enemy.name.toLowerCase()} (здоровье: ${enemy.health})`,
+        "mob-log",
+      );
     }
   };
 
-  return checkForEnemy;
-};
+  // Атака игрока
+  function playerAttack() {
+    let damage = player.attack(currentEnemy);
+    let newEnemyHealth = currentEnemy.health - damage;
+    setCurrentEnemy({ ...currentEnemy, health: newEnemyHealth });
+    if (newEnemyHealth > 0) {
+      addLog(
+        `Ты наносишь ${damage} урона! У врага осталось ${newEnemyHealth} здоровья`,
+        "system-log",
+      );
+      enemyTurn();
+    } else {
+      player.addExp(currentEnemy.expReward);
+      addLog(
+        `Ты наносишь ${damage} урона! Темный дух ${currentEnemy.name} повержен. Твоя награда: ${currentEnemy.expReward} опыта.`,
+        "system-log",
+      );
+      setPlayer(player);
 
-// Проверка здоровья и статуса игры во время боя
-function processEnemyTurn() {
-  if (currentEnemy.health <= 0) {
-    addLog("Темный дух " + currentEnemy.name + " побежден", "system-log");
-    currentPlayer.addExp(currentEnemy.expReward);
-    renderStats(currentPlayer);
-    addLog(`Ты получил ${currentEnemy.expReward} опыта!`, "system-log");
+      if (currentEnemy.itemDrop) {
+        player.inventory.push(currentEnemy.itemDrop);
+        setPlayer(player);
+        addLog(`Ты подбираешь ${currentEnemy.itemDrop}.`, "system-log");
+      } else {
+        setPlayer(player);
+      }
 
-    if (currentEnemy.itemDrop) {
-      // берем текущий инвентарь
-      // добавляем новый предмет
-      // обновляем стейт
-      // currentPlayer.inventory.push(currentEnemy.itemDrop);
-      // addLog(`Получен ${items[currentEnemy.itemDrop].name}`);
+      setCurrentEnemy(null);
+      setInCombat(false);
     }
-    return;
   }
 
-  let damage = currentEnemy.attack(currentPlayer);
-
-  if (currentPlayer.health <= 0) {
-    gameOver();
-    return;
-  }
-
-  addLog(
-    `${currentEnemy.name} наносит вам ${damage} Урона! У вас осталось ${currentPlayer.health} здоровья!`,
-    "mob-log",
-  );
-}
-
-// Обработка кликов по кнопкам боя
-
-export function combatAction(action) {
-  if (action == "attack") {
-    let damageDealt = currentPlayer.attack(currentEnemy);
+  // Ход врага
+  function enemyTurn() {
+    let damage = currentEnemy.level * ENEMY_DAMAGE_PER_LEVEL;
+    let newPlayerHealth = Math.max(0, player.health - damage);
+    player.health = newPlayerHealth;
+    setPlayer(player);
     addLog(
-      `Вы нанесли ${damageDealt} урона! Оставшееся здоровье врага: ${currentEnemy.health}`,
+      `Ты получил ${newPlayerHealth} урона! У тебя осталось ${newPlayerHealth} здоровья.`,
       "system-log",
     );
+
+    if (newPlayerHealth == 0) {
+      setScreen("gameOver");
+      setInCombat(false);
+    }
   }
-  if (action == "protection") {
-    currentPlayer.defend();
-    addLog(
-      `Вы защитились от атаки, не получив урона. У вас осталось ${currentPlayer.health} здоровья!`,
-      "system-log",
-    );
-  }
-  if (action == "useItem") {
-    // обработчик клика на выбраный предмет => useItem(index)
-    // ЕСЛИ инвентарь не пуст, ТО добавляем специальный класс с подсветкой
-    // ЕСЛИ инвентарь пуст - окно с ошибкой.
-    // Щит и посох НЕ считаются используемыми предметами
-  }
-  processEnemyTurn();
-}
+
+  // Защита игрок
+  function handlePlayerDefend() {}
+
+  // Использование предмета игроком
+  function handleUseItem() {}
+
+  return {
+    checkForEnemy,
+    playerAttack,
+    enemyTurn,
+    handlePlayerDefend,
+    handleUseItem,
+  };
+};

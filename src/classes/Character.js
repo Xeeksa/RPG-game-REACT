@@ -1,4 +1,4 @@
-const BASE_DAMAGE_PER_LEVEL = 60;
+const BASE_DAMAGE_PER_LEVEL = 30;
 
 export class Character {
   constructor(
@@ -44,16 +44,13 @@ export class Character {
 
   attack(target) {
     let damage = this.level * BASE_DAMAGE_PER_LEVEL;
-    let totalDamage = damage - target.defense;
+    let totalDamage = Math.max(1, damage - target.defense);
 
     // if (this.mana < 5) {
     //   return 0;
     // } else {
     //   this.mana -= 5;
-    if (totalDamage < 1) {
-      totalDamage = 1;
-    }
-    target.takeDamage(totalDamage);
+
     return totalDamage;
   }
   // }

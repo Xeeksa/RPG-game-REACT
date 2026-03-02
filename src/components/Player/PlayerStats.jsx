@@ -1,7 +1,7 @@
 import React from "react";
 import { Character } from "../../classes/Character";
 
-const PlayerStats = ({ player }) => {
+export const PlayerStats = ({ player }) => {
   return (
     <div className="player-stats">
       <h2>{player.name}</h2>
@@ -15,8 +15,6 @@ const PlayerStats = ({ player }) => {
     </div>
   );
 };
-
-export default PlayerStats;
 
 // Обновляем характеристики в интерфейсе
 export function renderStats(player) {

@@ -1,97 +1,77 @@
-// Состояния
-const [player, setPlayer] = useState(null);
-const [currentLocation, setCurrentLocation] = useState("paradiseGlade");
-const [isCombat, setInCombat] = useState(false);
-const [currentEnemy, setCurrentEnemy] = useState(null);
-const [screen, steScreen] = useState("start");
-
-// Функции
-const moveToLocation = (locationKey) => {};
-const startCombat = (enemy) => {};
-const endCombat = (victory) => {};
-const gameOver = (isVictory) => {};
-const restart = () => {};
+import React, { useState, createContext, useContext } from "react";
+import { Character } from "../classes/Character";
 
 const GameContext = createContext();
 
 // Реализуем выводы в консоль?
 export const GameProvider = ({ children }) => {
+  // Состояния
+  const [player, setPlayer] = useState(new Character("Кто я?"));
+  const [gameStarted, setGameStarted] = useState(false);
+  const [currentLocation, setCurrentLocation] = useState("paradiseGlade");
+  const [inCombat, setInCombat] = useState(false);
+  const [inDialog, setInDialog] = useState(false);
+  const [dialogIndex, setDialogIndex] = useState(0);
+  const [currentEnemy, setCurrentEnemy] = useState(null);
+  const [screen, setScreen] = useState("start");
   const [logs, setLogs] = useState([]);
+  const [victory, setVictory] = useState(false);
 
   const addLog = (text, type) => {
-    setLogs((prev) => [...prev, { text, type, id: Date.now() }]);
+    setLogs((prev) => [...prev, { text, type, id: crypto.randomUUID() }]);
+  };
+
+  const clearSystemLog = () => {
+    setLogs((prev) =>
+      prev.filter((log) => log.type === "npc-log" || log.type === "boss-logs"),
+    );
+  };
+
+  const restartGame = () => {
+    setPlayer(new Character("Кто я?"));
+    setCurrentLocation("paradiseGlade");
+    setInCombat(false);
+    setCurrentEnemy(null);
+    setLogs([]);
+    setInDialog(false);
+    setDialogIndex(0);
+    setVictory(false);
+    setScreen("start");
   };
 
   return (
     <GameContext.Provider
-      value={{ logs, addLog, player, currentLocation, inCombat, currentEnemy }}
+      value={{
+        player,
+        setPlayer,
+        currentLocation,
+        setCurrentLocation,
+        inCombat,
+        setInCombat,
+        currentEnemy,
+        setCurrentEnemy,
+        screen,
+        setScreen,
+        logs,
+        addLog,
+        clearSystemLog,
+        victory,
+        setInDialog,
+        setDialogIndex,
+        inDialog,
+        restartGame,
+      }}
     >
       {children}
     </GameContext.Provider>
   );
 };
 
-// Бой
-export function startCombat(player, enemy) {
-  currentPlayer = player;
-  currentEnemy = enemy;
-  setLocationButtonState(true);
-  combatButtons = document.querySelectorAll(".action-buttons button");
-  if (!listenersAttached) {
-    combatButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        let action = button.dataset.action;
-        combatAction(action);
-      });
-    });
-    listenersAttached = true;
+export const useGame = () => {
+  const context = useContext(GameContext);
+  if (!context) {
+    throw new Error("useGame должен использоваться в GameProvider");
   }
-  combatButtons.forEach((button) => (button.disabled = false));
-  addLog(
-    `Тебя атакует ${enemy.name.toLowerCase()} (здоровье: ${currentEnemy.health})`,
-    "mob-log",
-  );
-}
 
-// Конец игры
-export function gameOver(isVictory) {
-  gameContainer.style.display = "none";
-  gameOverContainer.style.display = "block";
-  const title = document.querySelector(".game-over-title");
-  title.textContent = isVictory
-    ? "Поздравляю! Ты одолел тьму!"
-    : "Игра окончена. Ты погиб.";
-}
-
-// Переключение состояний
-const reducer = (state, action) => {
-  switch (action.type) {
-    case "ENEMY_DEFEATED":
-      const updatedPlayer = { ...state.player };
-      updatedPlayer.addExp(action.payload.exp);
-      if (action.payload.itemDrop) {
-        updatedPlayer.inventory = [
-          ...updatedPlayer.inventory,
-          action.payload.itemDrop,
-        ];
-      }
-
-      return {
-        ...state,
-        player: updatedPlayer,
-        inCombat: false,
-        currentEnemy: null,
-      };
-
-    default:
-      break;
-  }
+  return context;
 };
-
-// MOVE_TO_LOCATION — переход
-// START_COMBAT — начало боя
-// ENEMY_DEFEATED — враг умер (опыт + лут)
-// PLAYER_DAMAGE — игрок получил урон
-// USE_ITEM — использование предмета
-// PLAYER_DIED — смерть игрока
-// GAME_RESTART — рестарт

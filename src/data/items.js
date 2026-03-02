@@ -3,25 +3,26 @@ export const items = {
   healthPotion: {
     name: "Отвар целебных трав",
     type: "consumable",
-    effect: { health: "fullRestore" },
+    use: (player) => {
+      player.health = player.maxHealth;
+    },
   },
 
   // manaPotion: {
   //   name: "Отвар магических трав",
   //   type: "consumable",
-  //   effect: { mana: "fullRestore" },
+
   // },
 
-  // Два предмета, без которых не пройти босса.
+  // Два предмета, без которых не пройти босса. Как прописать в реакте
+  // что без них не пройти босса? мож свойством по типу use?
   blackMagickStaff: {
     name: "Посох черной магии",
     type: "weapon",
-    effect: {},
   },
 
   blackMagickShield: {
     name: "Щит черной магии",
     type: "shield",
-    effect: {},
   },
 };

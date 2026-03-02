@@ -1,7 +1,3 @@
-import { enemyTemplates } from "../classes/Enemy.js";
-import { getRandomPositiveInteger } from "../utils/util.js";
-import { locationButtonsContainer } from "./ui.js";
-
 //Ответственность: География игры
 //Карта локаций (деревня, лес, пещера и т.д.)
 //Связи между локациями (куда можно перейти)

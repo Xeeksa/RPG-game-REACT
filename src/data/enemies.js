@@ -40,6 +40,7 @@ export const enemyTemplates = {
     stamina: 50,
     level: 3,
     expReward: 25,
+    isQuestMob: true,
     itemDrop: "blackMagickStaff",
   },
   littleDragon: {
@@ -51,6 +52,7 @@ export const enemyTemplates = {
     stamina: 55,
     level: 4,
     expReward: 30,
+    isQuestMob: true,
     itemDrop: "blackMagickShield",
   },
   lostWoodcutteer: {

@@ -1,39 +1,19 @@
-src/
-├── main.jsx                 # вместо main.js (точка входа React)
-├── App.jsx                  # главный компонент
-│
-├── components/              # Визуальные компоненты
-│   ├── Player/
-│   │   ├── PlayerStats.jsx
-│   │   └── Inventory.jsx
-│   ├── Location/
-│   │   ├── LocationInfo.jsx
-│   │   └── LocationActions.jsx
-│   ├── Combat/
-│   │   ├── CombatScreen.jsx
-│   │   ├── EnemyInfo.jsx
-│   │   └── CombatActions.jsx
-│   └── UI/
-│       ├── GameLog.jsx
-│       └── GameOver.jsx
-│
-├── contexts/                # Вместо gameState.js
-│   └── GameContext.jsx
-│
-├── hooks/                   # Вместо combat.js и ui.js (логика)
-│   ├── useCombat.js
-│   └── useGameState.js
-│
-├── classes/                 # Чистая логика (без изменений)
-│   ├── !!!Character.js         # из character.js
-│   └── !!!Enemy.js            # из enemies.js (класс)
-│
-├── data/                    # Конфиги и шаблоны
-│   ├── enemies.js          # enemyTemplates (из enemies.js)
-│   ├── locations.js        # из locations.js
-│   └── items.js            # из items.js
-│
-├── utils/                   # Хелперы
-│   └── helpers.js          # из util.js
-│
-└── index.html               # перенести в public/
+Проверки
+1) Добавить массив фраз (составляющий историю) для Хранителя Поляны
+2) Добавить доп скрин (заменить переход по локациям на время взаимодействия) для общения с Хранителем, вывести кнопки "пообщаться", "попросить зелье (и какое?)", "продолжить путь"
+4) Ограничить максимальный опыт
+5) невозрождаемые мобы 
+6) tooltip в итемах в инвентаре
+7) Выбрать имя игрока 
+8) Добавить дроп мобам
+
+Апгерйт:
+1) Сделать Enemy наследником Character
+2) Добавить абстрактный класс Item для предметов
+3) Использовать приватные поля для #health, #inventory
+4) Заюзать JSX
+5) делегирование событий
+
+БАГИ
+1) Скролл лога
+2) рестарт игры при проигрыше (сброс статов и состояния игры)

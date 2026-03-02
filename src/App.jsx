@@ -1,10 +1,7 @@
-const App = () => {
-  return (
-    <div>
-      <h1>RPG Game - React Migration</h1>
-      <p>Сюда будем добавлять компоненты</p>
-    </div>
-  )
-}
+import { GameContainer } from "./components/Layout/GameContainer";
 
-export default App
+const App = () => {
+  return <GameContainer />;
+};
+
+export default App;

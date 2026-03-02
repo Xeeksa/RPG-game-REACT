@@ -1,23 +1,48 @@
-// Показываем текущую локацию и доступные переходы
-function renderLocation() {
-  currentLocationInContainer.textContent =
-    locations[gameState.currentLocation].locationName;
-  locationDescription.textContent =
-    locations[gameState.currentLocation].description;
-  locationButtonsContainer.innerHTML = "";
+import { useGame } from "../../contexts/GameContext";
+import { locations } from "../../data/locations";
+import { useCombat } from "../../hooks/useCombat";
+import { addLog } from "../../utils/helpers";
+import { npcDialog } from "../../data/dialogs";
 
-  let arrConnections = locations[gameState.currentLocation].connections;
+export const LocationInfo = () => {
+  const {
+    currentLocation,
+    setCurrentLocation,
+    inCombat,
+    clearSystemLog,
+    setInDialog,
+    dialogIndex,
+    inDialog,
+    setDialogIndex,
+    addLog,
+  } = useGame();
+  const { checkForEnemy } = useCombat();
+  const location = locations[currentLocation];
 
-  for (let locationConnections of arrConnections) {
-    let nameLocationButton = locations[locationConnections].locationName;
-    const locationButton = document.createElement("button");
-    locationButton.textContent = nameLocationButton;
-    locationButton.addEventListener("click", () => {
-      gameState.currentLocation = locationConnections;
-      renderLocation();
-      checkForEnemy(gameState.currentLocation, gameState.player);
-    });
+  const handleMove = (newLocation) => {
+    setCurrentLocation(newLocation);
     clearSystemLog();
-    locationButtonsContainer.append(locationButton);
-  }
-}
+    setInDialog(false);
+    if (!inCombat) {
+      checkForEnemy(newLocation);
+    }
+  };
+
+  return (
+    <section className="location">
+      <h2>Текущая локация: {location.locationName}</h2>
+      <p className="location-description">{location.description}</p>
+      <div className="location-buttons">
+        {locations[currentLocation].connections.map((dest) => (
+          <button
+            key={dest}
+            onClick={() => handleMove(dest)}
+            disabled={inCombat}
+          >
+            {locations[dest].locationName}
+          </button>
+        ))}
+      </div>
+    </section>
+  );
+};
