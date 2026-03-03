@@ -2,8 +2,10 @@ import { useGame } from "../../contexts/GameContext";
 import { useCombat } from "../../hooks/useCombat";
 import { locations } from "../../data/locations";
 import { npcDialog } from "../../data/dialogs";
+import { useState } from "react";
 
 export const GameActions = () => {
+  const [selectedItem, setSelectedItem] = useState();
   const {
     inCombat,
     inDialog,
@@ -79,7 +81,7 @@ export const GameActions = () => {
             <button disabled={!inCombat} onClick={handlePlayerDefend}>
               Защищаться
             </button>
-            <button onClick={() => handleUseItem("selectedItem")}>
+            <button onClick={() => handleUseItem(selectedItem)}>
               Использовать предмет
             </button>
           </>

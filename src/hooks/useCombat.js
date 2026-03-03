@@ -83,11 +83,22 @@ export const useCombat = () => {
     }
   }
 
-  // Защита игрок
-  function handlePlayerDefend() {}
+  // Защита игрока (пока) 100%
+  function handlePlayerDefend() {
+    player.defend();
+    enemyTurn();
+    addLog("Ты сдержал атаку!", "system-log");
+  }
 
   // Использование предмета игроком
-  function handleUseItem() {}
+  function handleUseItem(itemKey) {
+    if (!player.inventory.includes(itemKey)) {
+      (addLog("Такого предмета нет в твоем инвентаре!"), "system-log");
+    }
+    player.useItem(itemKey);
+    setPlayer(player);
+    addLog(`Вы использовали ${item[itemsKey].name}`, "system-log");
+  }
 
   return {
     checkForEnemy,

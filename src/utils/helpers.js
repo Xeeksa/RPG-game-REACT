@@ -6,13 +6,3 @@ export function getRandomPositiveInteger(a, b) {
 
   return Math.floor(result);
 }
-
-// Лог
-const logGame = document.getElementById("log-content");
-export function addLog(text, className = "") {
-  let entry = document.createElement("div");
-  entry.textContent = text;
-  if (className) entry.classList.add(className);
-  logGame.appendChild(entry);
-  logGame.scrollTop = logGame.scrollHeight;
-}

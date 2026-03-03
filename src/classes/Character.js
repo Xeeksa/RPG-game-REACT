@@ -24,12 +24,8 @@ export class Character {
     this.expTable = [49, 79, 139, 239, 349, 499, 539, 689, 849, 999];
   }
 
-  useItem(itemIndex) {
-    if (itemIndex >= this.inventory.length || itemIndex < 0) {
-      addLog("Такого предмета нет в твоем инвентаре", "system-log");
-      return;
-    }
-    let itemKey = this.inventory[itemIndex];
+  useItem(itemKey) {
+    const index = this.inventory.indexOf(itemKey);
     let itemName = items[itemKey].name;
     if (itemKey === "healthPotion") {
       this.health = this.maxHealth;
@@ -37,9 +33,7 @@ export class Character {
     // if (itemKey === "manaPotion") {
     //   this.mana = this.maxMana;
     // }
-    this.inventory.splice(itemIndex, 1);
-    let message = `Вы использовали ${itemName}`;
-    addLog(message, "system-log");
+    this.inventory.splice(index, 1);
   }
 
   attack(target) {
