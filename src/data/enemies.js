@@ -129,7 +129,7 @@ export const enemyTemplates = {
 
 export function createEnemy(enemyKey, currentLocation) {
   let template = enemyTemplates[enemyKey];
-  return new Enemy(
+  let enemy = new Enemy(
     template.name,
     template.status,
     template.health,
@@ -137,6 +137,10 @@ export function createEnemy(enemyKey, currentLocation) {
     // template.mana,
     template.stamina,
     template.level,
-    template.expReward,
+    template.expReward
   );
+
+  enemy.key = enemyKey;
+
+  return enemy;
 }

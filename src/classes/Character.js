@@ -8,7 +8,7 @@ export class Character {
     defense = 0,
     level = 1,
     experience = 0,
-    inventory = ["healthPotion"],
+    inventory = ["healthPotion"]
   ) {
     this.isAlive = true;
     this.name = name;
@@ -27,12 +27,6 @@ export class Character {
   useItem(itemKey) {
     const index = this.inventory.indexOf(itemKey);
     let itemName = items[itemKey].name;
-    if (itemKey === "healthPotion") {
-      this.health = this.maxHealth;
-    }
-    // if (itemKey === "manaPotion") {
-    //   this.mana = this.maxMana;
-    // }
     this.inventory.splice(index, 1);
   }
 

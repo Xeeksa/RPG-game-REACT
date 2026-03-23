@@ -2,29 +2,29 @@ import React from "react";
 import { Character } from "../../classes/Character";
 
 export const PlayerStats = ({ player }) => {
+  const { handleUseItem } = useCombat();
+  function handleItemClick(itemKey) {
+    handleUseItem(itemKey);
+  }
   return (
-    <div className="player-stats">
+    <section className="player-stats">
       <h2>{player.name}</h2>
       <div>Здоровье: {player.health}</div>
       <div>Защита: {player.defense}</div>
       <div>Уровень: {player.level}</div>
       <div>Опыт: {player.experience}</div>
       <div>
-        Инвентарь: {player.inventory.join(", ") || "твои карманы пусты"}
+        <h2>Инвентарь</h2>
+        <ul>
+          {player.inventory.map((itemKey) => (
+            <li key={itemKey}>
+              <button onClick={() => handleItemClick(itemKey)}>
+                {items[itemKey].name}
+              </button>
+            </li>
+          ))}
+        </ul>
       </div>
-    </div>
+    </section>
   );
 };
-
-// Обновляем характеристики в интерфейсе
-export function renderStats(player) {
-  charName.textContent = player.name;
-  charHealth.textContent = player.health;
-  // charMana.textContent = player.mana;
-  charDefense.textContent = player.defense;
-  charLevel.textContent = player.level;
-  charExperience.textContent = player.experience;
-  charInventory.textContent = player.inventory
-    .map((key) => items[key].name)
-    .join(", ");
-}

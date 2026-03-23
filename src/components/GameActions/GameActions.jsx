@@ -2,11 +2,13 @@ import { useGame } from "../../contexts/GameContext";
 import { useCombat } from "../../hooks/useCombat";
 import { locations } from "../../data/locations";
 import { npcDialog } from "../../data/dialogs";
-import { useState } from "react";
+import { items } from "../../data/items";
+import { useEffect, useState } from "react";
 
 export const GameActions = () => {
   const [selectedItem, setSelectedItem] = useState();
   const {
+    player,
     inCombat,
     inDialog,
     setInDialog,
@@ -32,13 +34,18 @@ export const GameActions = () => {
   // //     hasTakenPotion (взято ли зелье)
   const handleNextStory = () => {
     setDialogIndex((prev) => prev + 1);
-
-    if (dialogIndex < npcDialog.length) {
-      addLog(npcDialog[dialogIndex], "npc-log");
-    } else {
-      addLog("Ступай прочь. Я устал. Мне больше нечего сказать...", "npc-log");
-    }
   };
+
+  useEffect(() => {
+    if (dialogIndex < npcDialog.length) {
+      addLog(`${location.npc.name}: ${npcDialog[dialogIndex]}`, "npc-log");
+    } else {
+      addLog(
+        `${location.npc.name}: Ступай прочь. Я устал. Мне больше нечего сказать...`,
+        "npc-log"
+      );
+    }
+  }, [dialogIndex]);
 
   const handleTakePotion = () => {
     // 2. Кнопка "Взять зелье"
@@ -81,7 +88,17 @@ export const GameActions = () => {
             <button disabled={!inCombat} onClick={handlePlayerDefend}>
               Защищаться
             </button>
-            <button onClick={() => handleUseItem(selectedItem)}>
+
+            <select onChange={(e) => setSelectedItem(e.target.value)}>
+              {player.inventory.map((itemKey) => (
+                <option value={itemKey}>{items[itemKey].name}</option>
+              ))}
+            </select>
+
+            <button
+              disabled={!inCombat}
+              onClick={() => handleUseItem(selectedItem)}
+            >
               Использовать предмет
             </button>
           </>

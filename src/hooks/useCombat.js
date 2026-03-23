@@ -3,6 +3,7 @@ import { locations } from "../data/locations.js";
 import { createEnemy } from "../data/enemies.js";
 import { getRandomPositiveInteger } from "../utils/helpers.js";
 import { ENEMY_DAMAGE_PER_LEVEL } from "../classes/Enemy.js";
+import { mobCries } from "../data/dialogs.js";
 
 // Проверка наличия врага на локации
 export const useCombat = () => {
@@ -19,18 +20,22 @@ export const useCombat = () => {
 
   const checkForEnemy = (currentLocation) => {
     const enemiesArr = locations[currentLocation].enemies;
+
     if (!enemiesArr || enemiesArr.length == 0) return;
     let randomNum = Math.random();
     let randomMob = getRandomPositiveInteger(0, enemiesArr.length - 1);
+    let enemyKey = enemiesArr[randomMob];
+    let enemy = createEnemy(enemyKey, currentLocation);
     if (randomNum > 0.5) {
-      let enemyKey = enemiesArr[randomMob];
-      let enemy = createEnemy(enemyKey, currentLocation);
+      const cries = mobCries[enemy.key];
+      const cry = cries[Math.floor(Math.random() * cries.length)];
       setCurrentEnemy(enemy);
       setInCombat(true);
       addLog(
         `Тебя атакует ${enemy.name.toLowerCase()} (здоровье: ${enemy.health})`,
-        "mob-log",
+        "mob-log"
       );
+      addLog(`${enemy.name}: ${cry}`, "mob-log");
     }
   };
 
@@ -42,14 +47,14 @@ export const useCombat = () => {
     if (newEnemyHealth > 0) {
       addLog(
         `Ты наносишь ${damage} урона! У врага осталось ${newEnemyHealth} здоровья`,
-        "system-log",
+        "system-log"
       );
       enemyTurn();
     } else {
       player.addExp(currentEnemy.expReward);
       addLog(
         `Ты наносишь ${damage} урона! Темный дух ${currentEnemy.name} повержен. Твоя награда: ${currentEnemy.expReward} опыта.`,
-        "system-log",
+        "system-log"
       );
       setPlayer(player);
 
@@ -74,7 +79,7 @@ export const useCombat = () => {
     setPlayer(player);
     addLog(
       `Ты получил ${newPlayerHealth} урона! У тебя осталось ${newPlayerHealth} здоровья.`,
-      "system-log",
+      "system-log"
     );
 
     if (newPlayerHealth == 0) {
@@ -93,7 +98,7 @@ export const useCombat = () => {
   // Использование предмета игроком
   function handleUseItem(itemKey) {
     if (!player.inventory.includes(itemKey)) {
-      (addLog("Такого предмета нет в твоем инвентаре!"), "system-log");
+      addLog("Такого предмета нет в твоем инвентаре!"), "system-log";
     }
     player.useItem(itemKey);
     setPlayer(player);
