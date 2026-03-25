@@ -24,6 +24,7 @@ export const GameActions = () => {
   const { playerAttack, handlePlayerDefend, handleUseItem } = useCombat();
 
   const location = locations[currentLocation];
+  const npc = location.npc?.name;
 
   const handleExplore = () => {
     checkForEnemy(currentLocation);
@@ -38,16 +39,27 @@ export const GameActions = () => {
 
   useEffect(() => {
     if (dialogIndex < npcDialog.length) {
-      addLog(`${location.npc.name}: ${npcDialog[dialogIndex]}`, "npc-log");
+      addLog(`${npc}: ${npcDialog[dialogIndex]}`, "npc-log");
     } else {
       addLog(
-        `${location.npc.name}: Ступай прочь. Я устал. Мне больше нечего сказать...`,
+        `${npc}: Ступай прочь. Я устал. Мне больше нечего сказать...`,
         "npc-log"
       );
     }
   }, [dialogIndex]);
 
+  // v Масштабировать под разные зелья! Пока только лечилка
   const handleTakePotion = () => {
+    if (!player.inventory.includes("healthPotion")) {
+      player.inventory.push("healthPotion");
+      setPlayer(player);
+      addLog(`Зелье получено!`, "system-log");
+    } else {
+      addLog(
+        `${npc}: Твоя жадность поражает, Путник. Сначала используй свои зелья, а потом оббирай старика!`,
+        "npc-log"
+      );
+    }
     // 2. Кнопка "Взять зелье"
     //     Проверяет, есть ли зелье у NPC (можно давать только один раз)
     //     Добавляет предмет в инвентарь игрока
@@ -55,9 +67,7 @@ export const GameActions = () => {
     //     Блокирует кнопку после использования
   };
   const handleLeave = () => {
-    // 3. Кнопка "Вернуться"
-    //     Просто закрывает диалог: setInDialog(false)
-    //     Ничего больше не делает
+    setInDialog(false);
   };
 
   return (

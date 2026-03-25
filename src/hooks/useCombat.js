@@ -98,7 +98,7 @@ export const useCombat = () => {
   // Использование предмета игроком
   function handleUseItem(itemKey) {
     if (!player.inventory.includes(itemKey)) {
-      addLog("Такого предмета нет в твоем инвентаре!"), "system-log";
+      addLog("Такого предмета нет в твоем инвентаре!", "system-log");
     }
     player.useItem(itemKey);
     setPlayer(player);

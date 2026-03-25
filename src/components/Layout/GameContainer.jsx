@@ -68,6 +68,11 @@ export const GameContainer = () => {
   }
 
   if (screen === "game") {
+
+    if (inDialog === true) {
+      return <></>;
+    }
+
     return (
       <section className="container">
         <section className="game-area">
@@ -77,7 +82,11 @@ export const GameContainer = () => {
           </div>
           <GameActions />
         </section>
-        <LocationInfo />
+
+{inDialog ? <div>
+
+</div> : <LocationInfo />}
+
         <GameLog />
       </section>
     );

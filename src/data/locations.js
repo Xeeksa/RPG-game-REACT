@@ -12,6 +12,7 @@ export const locations = {
     npc: {
       name: "Хранитель поляны",
       dialog: [],
+      items: ["healthPotion"],
     },
     enemies: false,
     connections: ["forestEdge"],
