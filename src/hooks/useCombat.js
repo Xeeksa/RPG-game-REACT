@@ -4,6 +4,7 @@ import { createEnemy } from "../data/enemies.js";
 import { getRandomPositiveInteger } from "../utils/helpers.js";
 import { ENEMY_DAMAGE_PER_LEVEL } from "../classes/Enemy.js";
 import { mobCries } from "../data/dialogs.js";
+import { items } from "../data/items";
 
 // Проверка наличия врага на локации
 export const useCombat = () => {
@@ -102,7 +103,8 @@ export const useCombat = () => {
     }
     player.useItem(itemKey);
     setPlayer(player);
-    addLog(`Вы использовали ${item[itemsKey].name}`, "system-log");
+    // ПРОПИСАТЬ ЭФФЕКТ ИСПОЛЬЗОВАНИЯ ИТЕМА
+    addLog(`Вы использовали ${items[itemKey].name}`, "system-log");
   }
 
   return {

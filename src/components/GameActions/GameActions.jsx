@@ -38,6 +38,9 @@ export const GameActions = () => {
   };
 
   useEffect(() => {
+    if (!inDialog) return;
+// Ступай прочь выводится каждый раз. ОГРАНИЧИТЬ!
+console.log('dialogIndex сейчас', dialogIndex);
     if (dialogIndex < npcDialog.length) {
       addLog(`${npc}: ${npcDialog[dialogIndex]}`, "npc-log");
     } else {
@@ -46,7 +49,7 @@ export const GameActions = () => {
         "npc-log"
       );
     }
-  }, [dialogIndex]);
+  }, [dialogIndex, inDialog]);
 
   // v Масштабировать под разные зелья! Пока только лечилка
   const handleTakePotion = () => {
@@ -56,7 +59,7 @@ export const GameActions = () => {
       addLog(`Зелье получено!`, "system-log");
     } else {
       addLog(
-        `${npc}: Твоя жадность поражает, Путник. Сначала используй свои зелья, а потом оббирай старика!`,
+        `${npc}: Твоя жадность обескураживает, Путник. Сначала используй свои зелья, а потом оббирай старика!`,
         "npc-log"
       );
     }
@@ -79,7 +82,7 @@ export const GameActions = () => {
             onClick={() => {
               setInDialog(true);
               setDialogIndex(0);
-              addLog(npcDialog[0], "npc-log");
+//              addLog(npcDialog[0], "npc-log");
             }}
           >
             Поговорить
@@ -101,7 +104,7 @@ export const GameActions = () => {
 
             <select onChange={(e) => setSelectedItem(e.target.value)}>
               {player.inventory.map((itemKey) => (
-                <option value={itemKey}>{items[itemKey].name}</option>
+                <option value={itemKey} key={itemKey}>{items[itemKey].name}</option>
               ))}
             </select>
 

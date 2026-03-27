@@ -3,7 +3,7 @@ export const items = {
   healthPotion: {
     name: "Отвар целебных трав",
     type: "consumable",
-    use: (player) => {
+    effect: (player) => {
       player.health = player.maxHealth;
     },
   },

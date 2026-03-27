@@ -57,6 +57,7 @@ export const GameProvider = ({ children }) => {
         clearSystemLog,
         victory,
         setInDialog,
+        dialogIndex,
         setDialogIndex,
         inDialog,
         restartGame,

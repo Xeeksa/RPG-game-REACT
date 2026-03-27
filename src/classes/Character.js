@@ -1,4 +1,6 @@
-const BASE_DAMAGE_PER_LEVEL = 30;
+import { items } from '../data/items';
+
+const BASE_DAMAGE_PER_LEVEL = 80;
 
 export class Character {
   constructor(
@@ -26,7 +28,8 @@ export class Character {
 
   useItem(itemKey) {
     const index = this.inventory.indexOf(itemKey);
-    let itemName = items[itemKey].name;
+    let item = items[itemKey];
+    item.effect(this);
     this.inventory.splice(index, 1);
   }
 
