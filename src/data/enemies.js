@@ -137,7 +137,9 @@ export function createEnemy(enemyKey, currentLocation) {
     // template.mana,
     template.stamina,
     template.level,
-    template.expReward
+    template.expReward,
+    template.itemDrop,
+    template.isQuestMob,
   );
 
   enemy.key = enemyKey;

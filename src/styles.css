@@ -16,6 +16,19 @@ button {
   cursor: pointer;
 }
 
+/* Иконки в инвентаре*/
+.button-item-icon {
+  /* margin-bottom: 0;
+  padding-bottom: 0; */
+  border: none;
+  background-color: transparent;
+}
+
+.item-icon {
+  height: 3rem;
+  object-fit: contain;
+}
+
 /* Стартовый экран */
 .start-screen {
   text-align: center;
@@ -200,6 +213,9 @@ h2 {
 }
 
 ul {
+  display: flex;
+flex-direction: row;
+gap: 10px;
   list-style-type: none;
   padding-left: 10px;
 }
@@ -208,6 +224,7 @@ li {
   margin-bottom: 8px;
   font-size: 16px;
 }
+
 
 /*Сообщение в логе*/
 .npc-log {
@@ -250,6 +267,11 @@ li {
 /* Адаптив */
 
 @media (max-width: 768px) {
+    .game-area-title {
+  position: absolute;
+  top: 1rem;
+  }
+
   .introduction {
     padding: 30px 30px; /* Уменьшаем отступы */
     margin: 15px auto; /* Меньше внешних отступов */
@@ -277,6 +299,11 @@ li {
 
 /* Очень маленькие экраны (до 480px) */
 @media (max-width: 480px) {
+  .game-area-title {
+  position: absolute;
+  top: 1rem;
+  }
+  
   .introduction {
     padding: 20px 15px;
   }
@@ -294,4 +321,5 @@ li {
     padding: 8px 20px;
     font-size: 15px;
   }
+
 }

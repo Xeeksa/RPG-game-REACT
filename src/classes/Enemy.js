@@ -1,7 +1,17 @@
 export const ENEMY_DAMAGE_PER_LEVEL = 2;
 
 export class Enemy {
-  constructor(name, status, health, defense, stamina, level, expReward) {
+  constructor(
+    name,
+    status,
+    health,
+    defense,
+    stamina,
+    level,
+    expReward,
+    itemDrop = null,
+    isQuestMob = false,
+  ) {
     this.name = name;
     this.status = status;
     this.health = health;
@@ -10,6 +20,8 @@ export class Enemy {
     this.stamina = stamina;
     this.expReward = expReward;
     this.level = level;
+    this.itemDrop = itemDrop;
+    this.isQuestMob = isQuestMob;
   }
 
   attack(target) {

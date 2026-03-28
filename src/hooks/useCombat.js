@@ -17,6 +17,8 @@ export const useCombat = () => {
     setScreen,
     setInCombat,
     addLog,
+    defeatedQuestMobs,
+    setDefeatedQuestMobs,
   } = useGame();
 
   const checkForEnemy = (currentLocation) => {
@@ -26,40 +28,50 @@ export const useCombat = () => {
     let randomNum = Math.random();
     let randomMob = getRandomPositiveInteger(0, enemiesArr.length - 1);
     let enemyKey = enemiesArr[randomMob];
-    let enemy = createEnemy(enemyKey, currentLocation);
     if (randomNum > 0.5) {
-      const cries = mobCries[enemy.key];
-      const cry = cries[Math.floor(Math.random() * cries.length)];
-      setCurrentEnemy(enemy);
-      setInCombat(true);
-      addLog(
-        `Тебя атакует ${enemy.name.toLowerCase()} (здоровье: ${enemy.health})`,
-        "mob-log"
-      );
-      addLog(`${enemy.name}: ${cry}`, "mob-log");
+      let enemy = createEnemy(enemyKey, currentLocation);
+
+      if (!defeatedQuestMobs.includes(enemyKey)) {
+        const cries = mobCries[enemy.key];
+        const cry = cries[Math.floor(Math.random() * cries.length)];
+        setCurrentEnemy(enemy);
+        setInCombat(true);
+        addLog(
+          `Тебя атакует ${enemy.name.toLowerCase()} (здоровье: ${enemy.health})`,
+          "mob-log",
+        );
+        addLog(`${enemy.name}: ${cry}`, "mob-log");
+      }
+    } else {
+      return;
     }
   };
 
   // Атака игрока
   function playerAttack() {
+    console.log("currentEnemy:", currentEnemy);
     let damage = player.attack(currentEnemy);
     let newEnemyHealth = currentEnemy.health - damage;
     setCurrentEnemy({ ...currentEnemy, health: newEnemyHealth });
     if (newEnemyHealth > 0) {
       addLog(
         `Ты наносишь ${damage} урона! У врага осталось ${newEnemyHealth} здоровья`,
-        "system-log"
+        "system-log",
       );
       enemyTurn();
     } else {
       player.addExp(currentEnemy.expReward);
       addLog(
         `Ты наносишь ${damage} урона! Темный дух ${currentEnemy.name} повержен. Твоя награда: ${currentEnemy.expReward} опыта.`,
-        "system-log"
+        "system-log",
       );
       setPlayer(player);
 
       if (currentEnemy.itemDrop) {
+        if (currentEnemy.isQuestMob) {
+          setDefeatedQuestMobs((prev) => [...prev, currentEnemy.key]);
+        }
+        console.log("itemDrop:", currentEnemy.itemDrop);
         player.inventory.push(currentEnemy.itemDrop);
         setPlayer(player);
         addLog(`Ты подбираешь ${currentEnemy.itemDrop}.`, "system-log");
@@ -80,7 +92,7 @@ export const useCombat = () => {
     setPlayer(player);
     addLog(
       `Ты получил ${newPlayerHealth} урона! У тебя осталось ${newPlayerHealth} здоровья.`,
-      "system-log"
+      "system-log",
     );
 
     if (newPlayerHealth == 0) {
@@ -98,13 +110,18 @@ export const useCombat = () => {
 
   // Использование предмета игроком
   function handleUseItem(itemKey) {
+    let item = items[itemKey];
     if (!player.inventory.includes(itemKey)) {
       addLog("Такого предмета нет в твоем инвентаре!", "system-log");
     }
-    player.useItem(itemKey);
-    setPlayer(player);
-    // ПРОПИСАТЬ ЭФФЕКТ ИСПОЛЬЗОВАНИЯ ИТЕМА
-    addLog(`Вы использовали ${items[itemKey].name}`, "system-log");
+    if (item.canUse && item.canUse(player)) {
+      player.useItem(itemKey);
+      setPlayer(player);
+      // ПРОПИСАТЬ ЭФФЕКТ ИСПОЛЬЗОВАНИЯ ИТЕМА
+      addLog(`Вы использовали ${items[itemKey].name}`, "system-log");
+    } else {
+      addLog(`Ты не можешь использовать ${items[itemKey].name}`, "system-log");
+    }
   }
 
   return {

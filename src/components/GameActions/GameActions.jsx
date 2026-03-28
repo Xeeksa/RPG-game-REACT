@@ -9,6 +9,7 @@ export const GameActions = () => {
   const [selectedItem, setSelectedItem] = useState();
   const {
     player,
+    setPlayer,
     inCombat,
     inDialog,
     setInDialog,
@@ -16,12 +17,18 @@ export const GameActions = () => {
     setDialogIndex,
     dialogIndex,
     addLog,
+    hasSaidGoodbye,
+    setHasSaidGoodbye,
+    setDialogCompleted,
     setScreen,
   } = useGame();
 
-  const { checkForEnemy } = useCombat();
+  const { playerAttack, handlePlayerDefend, handleUseItem, checkForEnemy } =
+    useCombat();
 
-  const { playerAttack, handlePlayerDefend, handleUseItem } = useCombat();
+  const consumableItems = player.inventory.filter(
+    (itemKey) => items[itemKey].type === "consumable",
+  );
 
   const location = locations[currentLocation];
   const npc = location.npc?.name;
@@ -29,25 +36,25 @@ export const GameActions = () => {
   const handleExplore = () => {
     checkForEnemy(currentLocation);
   };
-  // // 4. Состояния
-  // // Нужно отслеживать:
-  // //     dialogIndex (текущая фраза)
-  // //     hasTakenPotion (взято ли зелье)
+
   const handleNextStory = () => {
     setDialogIndex((prev) => prev + 1);
   };
 
   useEffect(() => {
     if (!inDialog) return;
-// Ступай прочь выводится каждый раз. ОГРАНИЧИТЬ!
-console.log('dialogIndex сейчас', dialogIndex);
     if (dialogIndex < npcDialog.length) {
+      // Начинается сначала, если выйти из диалога на середине, а надо, чтобы продолжал!
       addLog(`${npc}: ${npcDialog[dialogIndex]}`, "npc-log");
     } else {
-      addLog(
-        `${npc}: Ступай прочь. Я устал. Мне больше нечего сказать...`,
-        "npc-log"
-      );
+      if (!hasSaidGoodbye) {
+        addLog(
+          `${npc}: Ступай прочь. Я устал. Мне больше нечего сказать...`,
+          "npc-log",
+        );
+        setHasSaidGoodbye(true);
+        setDialogCompleted(true);
+      }
     }
   }, [dialogIndex, inDialog]);
 
@@ -60,15 +67,11 @@ console.log('dialogIndex сейчас', dialogIndex);
     } else {
       addLog(
         `${npc}: Твоя жадность обескураживает, Путник. Сначала используй свои зелья, а потом оббирай старика!`,
-        "npc-log"
+        "npc-log",
       );
     }
-    // 2. Кнопка "Взять зелье"
-    //     Проверяет, есть ли зелье у NPC (можно давать только один раз)
-    //     Добавляет предмет в инвентарь игрока
-    //     Выводит сообщение в лог
-    //     Блокирует кнопку после использования
   };
+
   const handleLeave = () => {
     setInDialog(false);
   };
@@ -81,9 +84,8 @@ console.log('dialogIndex сейчас', dialogIndex);
           <button
             onClick={() => {
               setInDialog(true);
-              setDialogIndex(0);
-//              addLog(npcDialog[0], "npc-log");
             }}
+            title="Поговорить с Хранителем поляны"
           >
             Поговорить
           </button>
@@ -103,8 +105,10 @@ console.log('dialogIndex сейчас', dialogIndex);
             </button>
 
             <select onChange={(e) => setSelectedItem(e.target.value)}>
-              {player.inventory.map((itemKey) => (
-                <option value={itemKey} key={itemKey}>{items[itemKey].name}</option>
+              {consumableItems.map((itemKey) => (
+                <option value={itemKey} key={itemKey}>
+                  {items[itemKey].name}
+                </option>
               ))}
             </select>
 
@@ -121,7 +125,7 @@ console.log('dialogIndex сейчас', dialogIndex);
           <>
             <button onClick={handleNextStory}>Выслушать</button>
             <button onClick={handleTakePotion}>Взять зелье</button>
-            <button onClick={handleLeave}>Вернуться</button>
+            <button onClick={handleLeave}>Продолжить путь</button>
           </>
         )}
       </div>

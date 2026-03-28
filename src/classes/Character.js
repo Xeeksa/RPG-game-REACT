@@ -1,4 +1,4 @@
-import { items } from '../data/items';
+import { items } from "../data/items";
 
 const BASE_DAMAGE_PER_LEVEL = 80;
 
@@ -10,7 +10,7 @@ export class Character {
     defense = 0,
     level = 1,
     experience = 0,
-    inventory = ["healthPotion"]
+    inventory = ["healthPotion"],
   ) {
     this.isAlive = true;
     this.name = name;

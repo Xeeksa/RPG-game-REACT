@@ -6,6 +6,7 @@ export const items = {
     effect: (player) => {
       player.health = player.maxHealth;
     },
+    canUse: (player) => player.health < player.maxHealth,
   },
 
   // manaPotion: {

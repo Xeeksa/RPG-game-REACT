@@ -16,12 +16,20 @@ export const PlayerStats = ({ player }) => {
       <div>Уровень: {player.level}</div>
       <div>Опыт: {player.experience}</div>
       <div>
-        <h2>Инвентарь</h2>
+        <p>Инвентарь:</p>
         <ul>
           {player.inventory.map((itemKey) => (
             <li key={itemKey}>
-              <button onClick={() => handleItemClick(itemKey)}>
-                {items[itemKey].name}
+              <button
+                onClick={() => handleItemClick(itemKey)}
+                className="button-item-icon"
+              >
+                <img
+                  src={`/RPG-game-REACT/images/${itemKey}.png`}
+                  alt={items[itemKey].name}
+                  title={items[itemKey].name}
+                  className="item-icon"
+                />
               </button>
             </li>
           ))}

@@ -13,9 +13,12 @@ export const GameProvider = ({ children }) => {
   const [inDialog, setInDialog] = useState(false);
   const [dialogIndex, setDialogIndex] = useState(0);
   const [currentEnemy, setCurrentEnemy] = useState(null);
-  const [screen, setScreen] = useState("start");
+  const [screen, setScreen] = useState("game"); // ИСПРАВЛЕНО ДЛЯ ТЕСТОВ!
   const [logs, setLogs] = useState([]);
   const [victory, setVictory] = useState(false);
+  const [dialogCompleted, setDialogCompleted] = useState(false);
+  const [hasSaidGoodbye, setHasSaidGoodbye] = useState(false);
+  const [defeatedQuestMobs, setDefeatedQuestMobs] = useState([]);
 
   const addLog = (text, type) => {
     setLogs((prev) => [...prev, { text, type, id: crypto.randomUUID() }]);
@@ -61,6 +64,12 @@ export const GameProvider = ({ children }) => {
         setDialogIndex,
         inDialog,
         restartGame,
+        dialogCompleted,
+        setDialogCompleted,
+        hasSaidGoodbye,
+        setHasSaidGoodbye,
+        defeatedQuestMobs,
+        setDefeatedQuestMobs,
       }}
     >
       {children}
