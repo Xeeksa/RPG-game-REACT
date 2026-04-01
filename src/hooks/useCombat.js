@@ -72,7 +72,10 @@ export const useCombat = () => {
         }
         player.inventory.push(currentEnemy.itemDrop);
         setPlayer(player);
-        addLog(`Ты подбираешь ${currentEnemy.itemDrop}.`, "system-log");
+        addLog(
+          `Ты подбираешь ${items[currentEnemy.itemDrop].name}.`,
+          "system-log",
+        );
       } else {
         setPlayer(player);
       }
