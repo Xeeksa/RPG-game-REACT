@@ -22,3 +22,13 @@ yarn-error.log*
 .env.development.local
 .env.test.local
 .env.production.local
+
+# IDE и редакторы (опционально, но полезно)
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ВРеакт — папка to-do проекта
+ВРеакт/

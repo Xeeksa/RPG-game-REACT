@@ -8,6 +8,7 @@ export const PlayerStats = ({ player }) => {
   function handleItemClick(itemKey) {
     handleUseItem(itemKey);
   }
+
   return (
     <section className="player-stats">
       <h2>{player.name}</h2>

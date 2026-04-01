@@ -49,7 +49,6 @@ export const useCombat = () => {
 
   // Атака игрока
   function playerAttack() {
-    console.log("currentEnemy:", currentEnemy);
     let damage = player.attack(currentEnemy);
     let newEnemyHealth = currentEnemy.health - damage;
     setCurrentEnemy({ ...currentEnemy, health: newEnemyHealth });
@@ -62,7 +61,7 @@ export const useCombat = () => {
     } else {
       player.addExp(currentEnemy.expReward);
       addLog(
-        `Ты наносишь ${damage} урона! Темный дух ${currentEnemy.name} повержен. Твоя награда: ${currentEnemy.expReward} опыта.`,
+        `Ты наносишь ${currentEnemy.health} урона! Темный дух ${currentEnemy.name} повержен. Твоя награда: ${currentEnemy.expReward} опыта.`,
         "system-log",
       );
       setPlayer(player);
@@ -71,7 +70,6 @@ export const useCombat = () => {
         if (currentEnemy.isQuestMob) {
           setDefeatedQuestMobs((prev) => [...prev, currentEnemy.key]);
         }
-        console.log("itemDrop:", currentEnemy.itemDrop);
         player.inventory.push(currentEnemy.itemDrop);
         setPlayer(player);
         addLog(`Ты подбираешь ${currentEnemy.itemDrop}.`, "system-log");
@@ -91,7 +89,7 @@ export const useCombat = () => {
     player.health = newPlayerHealth;
     setPlayer(player);
     addLog(
-      `Ты получил ${newPlayerHealth} урона! У тебя осталось ${newPlayerHealth} здоровья.`,
+      `Ты получил ${damage} урона! У тебя осталось ${newPlayerHealth} здоровья.`,
       "system-log",
     );
 
