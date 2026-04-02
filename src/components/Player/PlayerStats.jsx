@@ -16,9 +16,9 @@ export const PlayerStats = ({ player }) => {
       <div>Защита: {player.defense}</div>
       <div>Уровень: {player.level}</div>
       <div>Опыт: {player.experience}</div>
-      <div>
+      <div className="inventory-section">
         <p>Инвентарь:</p>
-        <ul>
+        <ul className="inventory-list">
           {player.inventory.map((itemKey) => (
             <li key={crypto.randomUUID()}>
               <button
