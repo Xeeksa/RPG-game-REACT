@@ -112,12 +112,12 @@ export const GameActions = () => {
               ))}
             </select> */}
 
-            <button
+            {/* <button
               disabled={!inCombat}
               onClick={() => handleUseItem(selectedItem)}
             >
               Использовать предмет
-            </button>
+            </button> */}
           </>
         )}
 
