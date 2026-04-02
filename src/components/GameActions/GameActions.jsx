@@ -104,13 +104,13 @@ export const GameActions = () => {
               Защищаться
             </button>
 
-            <select onChange={(e) => setSelectedItem(e.target.value)}>
+            {/* <select onChange={(e) => setSelectedItem(e.target.value)}>
               {consumableItems.map((itemKey) => (
                 <option value={itemKey} key={itemKey}>
                   {items[itemKey].name}
                 </option>
               ))}
-            </select>
+            </select> */}
 
             <button
               disabled={!inCombat}

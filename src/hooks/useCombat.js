@@ -52,6 +52,7 @@ export const useCombat = () => {
     let damage = player.attack(currentEnemy);
     let newEnemyHealth = currentEnemy.health - damage;
     setCurrentEnemy({ ...currentEnemy, health: newEnemyHealth });
+
     if (newEnemyHealth > 0) {
       addLog(
         `Ты наносишь ${damage} урона! У врага осталось ${newEnemyHealth} здоровья`,
@@ -67,15 +68,30 @@ export const useCombat = () => {
       setPlayer(player);
 
       if (currentEnemy.itemDrop) {
+        let itemKey = currentEnemy.itemDrop;
+        console.log("itemKey:", itemKey, "items[itemKey]:", items[itemKey]);
+        let maxCount = items[itemKey].maxInInventory;
+        let currentCountItemsInInventory = player.inventory.filter(
+          (i) => i === itemKey,
+        ).length;
+
         if (currentEnemy.isQuestMob) {
           setDefeatedQuestMobs((prev) => [...prev, currentEnemy.key]);
         }
-        player.inventory.push(currentEnemy.itemDrop);
-        setPlayer(player);
-        addLog(
-          `Ты подбираешь ${items[currentEnemy.itemDrop].name}.`,
-          "system-log",
-        );
+
+        if (maxCount === undefined || currentCountItemsInInventory < maxCount) {
+          player.inventory.push(currentEnemy.itemDrop);
+          setPlayer(player);
+          addLog(
+            `Ты подбираешь ${items[currentEnemy.itemDrop].name}.`,
+            "system-log",
+          );
+        } else {
+          addLog(
+            `${items[currentEnemy.itemDrop].name} остается лежать на земле. Ты не можешь унести так много.`,
+            "system-log",
+          );
+        }
       } else {
         setPlayer(player);
       }

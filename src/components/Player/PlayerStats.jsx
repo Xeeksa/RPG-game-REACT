@@ -20,7 +20,7 @@ export const PlayerStats = ({ player }) => {
         <p>Инвентарь:</p>
         <ul>
           {player.inventory.map((itemKey) => (
-            <li key={itemKey}>
+            <li key={crypto.randomUUID()}>
               <button
                 onClick={() => handleItemClick(itemKey)}
                 className="button-item-icon"
