@@ -48,7 +48,6 @@ export const useCombat = () => {
   };
 
   // Атака игрока
-  // Хоспаде боже, разбить функцию на несколько: атака игрока, лутание дропа, проверка на босса
   function playerAttack() {
     let damage = player.attack(currentEnemy);
     let newEnemyHealth = currentEnemy.health - damage;
@@ -62,49 +61,48 @@ export const useCombat = () => {
       enemyTurn();
     } else {
       player.addExp(currentEnemy.expReward);
+      setPlayer(player);
       addLog(
         `Ты наносишь ${currentEnemy.health} урона! Темный дух ${currentEnemy.name} повержен. Твоя награда: ${currentEnemy.expReward} опыта.`,
         "system-log",
       );
-      setPlayer(player);
-
-      if (currentEnemy.itemDrop) {
-        let itemKey = currentEnemy.itemDrop;
-        let maxCount = items[itemKey].maxInInventory;
-        let currentCountItemsInInventory = player.inventory.filter(
-          (i) => i === itemKey,
-        ).length;
-
-        if (currentEnemy.isQuestMob) {
-          setDefeatedQuestMobs((prev) => [...prev, currentEnemy.key]);
-        }
-
-        if (maxCount === undefined || currentCountItemsInInventory < maxCount) {
-          player.inventory.push(currentEnemy.itemDrop);
-          setPlayer(player);
-          addLog(
-            `Ты подбираешь ${items[currentEnemy.itemDrop].name}.`,
-            "system-log",
-          );
-        } else {
-          addLog(
-            `${items[currentEnemy.itemDrop].name} остается лежать на земле. Ты не можешь унести так много.`,
-            "system-log",
-          );
-        }
-      } else {
-        setPlayer(player);
-      }
-
+      processLoot();
       if (currentEnemy.status === "boss") {
-        setVictory(true);
-        setScreen("gameOver");
-        setInCombat(false);
-        return;
+        handleBossDefeat();
       }
-
       setCurrentEnemy(null);
       setInCombat(false);
+    }
+  }
+
+  // Процесс получения лута
+  function processLoot() {
+    if (currentEnemy.itemDrop) {
+      let itemKey = currentEnemy.itemDrop;
+      let maxCount = items[itemKey].maxInInventory;
+      let currentCountItemsInInventory = player.inventory.filter(
+        (i) => i === itemKey,
+      ).length;
+
+      if (currentEnemy.isQuestMob) {
+        setDefeatedQuestMobs((prev) => [...prev, currentEnemy.key]);
+      }
+
+      if (maxCount === undefined || currentCountItemsInInventory < maxCount) {
+        player.inventory.push(currentEnemy.itemDrop);
+        setPlayer(player);
+        addLog(
+          `Ты подбираешь ${items[currentEnemy.itemDrop].name}.`,
+          "system-log",
+        );
+      } else {
+        addLog(
+          `${items[currentEnemy.itemDrop].name} остается лежать на земле. Ты не можешь унести так много.`,
+          "system-log",
+        );
+      }
+    } else {
+      setPlayer(player);
     }
   }
 

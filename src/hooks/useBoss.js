@@ -1,31 +1,49 @@
 import { useGame } from "../contexts/GameContext";
 import { createEnemy } from "../data/enemies";
 
-// Битва с боссом доступна только при наличии черных щита и посоха. Нет в инвентаре одного И второго, то при входе к боссу - смерть.
-function checkBossAccess() {
-  if (
-    player.inventory.includes("blackMagickStaff") &&
-    player.inventory.includes("blackMagickShield")
-  ) {
-    return true;
+export const useBoss = () => {
+  const { player, setCurrentEnemy, setInCombat, setVictory, setScreen } =
+    useGame();
+
+  // Битва с боссом доступна только при наличии черных щита и посоха. Нет в инвентаре одного И второго, то при входе к боссу - смерть.
+  function checkBossAccess() {
+    if (
+      player.inventory.includes("blackMagickStaff") &&
+      player.inventory.includes("blackMagickShield")
+    ) {
+      return true;
+    }
+
+    return false;
   }
-}
 
-// Запускбоя с боссом
-function startBossFight() {
-  if (checkBossAccess()) {
-    let boss = createEnemy("ancientDragon");
-    setCurrentEnemy(boss);
-    setInCombat(true);
+  // Запускбоя с боссом
+  function startBossFight() {
+    if (checkBossAccess()) {
+      let boss = createEnemy("ancientDragon");
+      setCurrentEnemy(boss);
+      setInCombat(true);
+    }
   }
-}
 
-// Логика смерти и геймОвер если предметов нет
+  // Логика смерти и геймОвер если предметов нет
 
-// Победа над боссом - геймОвер Вин
-function handleBossVictory() {}
+  // Взаимодействия с боссом + финал игры
 
-// Взаимодействия с боссом + финал игры
+  // Победа над боссом - геймОвер Вин
+  function handleBossDefeat() {
+    setVictory(true);
+    setScreen("gameOver");
+    setInCombat(false);
+    return;
+  }
+
+  return {
+    checkBossAccess,
+    startBossFight,
+    handleBossDefeat,
+  };
+};
 
 /* 
 В ЮИ.
