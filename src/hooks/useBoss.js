@@ -38,7 +38,6 @@ export const useBoss = () => {
   // Логика смерти и геймОвер если предметов нет
   function handleNoItems() {
     showPhrase(0);
-    setTimeout(() => setScreen("gameOver"), 5000);
   }
 
   // Взаимодействия с боссом + финал игры
@@ -59,9 +58,10 @@ export const useBoss = () => {
       setTimeout(() => showPhrase(index + 1), 2000);
     } else {
       addLog(
-        "Чудовище, пощелкивая чешуей, медленно поползло  твою сторону. Ничем хорошим это не обернется...",
+        "Чудовище, скрипя чешуей, медленно поползло твою сторону. Ничем хорошим это не обернется...",
         "system-log",
       );
+      setTimeout(() => setScreen("gameOver"), 5000);
     }
   }
 
