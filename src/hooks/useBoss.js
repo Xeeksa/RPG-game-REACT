@@ -31,16 +31,9 @@ export const useBoss = () => {
       setCurrentEnemy(boss);
       setInCombat(true);
     } else {
-      handleNoItems();
+      showPhrase(0);
     }
   }
-
-  // Логика смерти и геймОвер если предметов нет
-  function handleNoItems() {
-    showPhrase(0);
-  }
-
-  // Взаимодействия с боссом + финал игры
 
   // Победа над боссом - геймОвер Вин
   function handleBossDefeat() {
