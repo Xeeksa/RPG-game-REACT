@@ -5,6 +5,7 @@ import { getRandomPositiveInteger } from "../utils/helpers.js";
 import { ENEMY_DAMAGE_PER_LEVEL } from "../classes/Enemy.js";
 import { mobCries } from "../data/dialogs.js";
 import { items } from "../data/items";
+import { useBoss } from "./useBoss.js";
 
 // Проверка наличия врага на локации
 export const useCombat = () => {

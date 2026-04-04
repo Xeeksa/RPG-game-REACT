@@ -1,6 +1,7 @@
 import { useGame } from "../../contexts/GameContext";
 import { locations } from "../../data/locations";
 import { useCombat } from "../../hooks/useCombat";
+import { useBoss } from "../../hooks/useBoss";
 import { npcDialog } from "../../data/dialogs";
 
 export const LocationInfo = () => {

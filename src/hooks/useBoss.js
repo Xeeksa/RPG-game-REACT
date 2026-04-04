@@ -2,8 +2,14 @@ import { useGame } from "../contexts/GameContext";
 import { createEnemy } from "../data/enemies";
 
 export const useBoss = () => {
-  const { player, setCurrentEnemy, setInCombat, setVictory, setScreen } =
-    useGame();
+  const {
+    player,
+    setCurrentEnemy,
+    setInCombat,
+    setVictory,
+    setScreen,
+    addLog,
+  } = useGame();
 
   // Битва с боссом доступна только при наличии черных щита и посоха. Нет в инвентаре одного И второго, то при входе к боссу - смерть.
   function checkBossAccess() {
@@ -23,10 +29,16 @@ export const useBoss = () => {
       let boss = createEnemy("ancientDragon");
       setCurrentEnemy(boss);
       setInCombat(true);
+    } else {
+      handleNoItems();
     }
   }
 
   // Логика смерти и геймОвер если предметов нет
+  function handleNoItems() {
+    showPrase(0);
+    setTimeout(() => setScreen("gameOver"), 5000);
+  }
 
   // Взаимодействия с боссом + финал игры
 
@@ -36,6 +48,20 @@ export const useBoss = () => {
     setScreen("gameOver");
     setInCombat(false);
     return;
+  }
+
+  // Монолог босса перед поражением
+  function showPrase(index) {
+    if (index < lostBossDialog.length) {
+      addLog(lostBossDialog[index], "boss-log");
+      index += 1;
+      setTimeout(() => showPrase(index), 2000);
+    } else {
+      addLog(
+        "Чудовище, пощелкивая чешуей, медленно поползло  твою сторону. Ничем хорошим это не обернется...",
+        "system-log",
+      );
+    }
   }
 
   return {
