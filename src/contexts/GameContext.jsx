@@ -70,6 +70,7 @@ export const GameProvider = ({ children }) => {
         setHasSaidGoodbye,
         defeatedQuestMobs,
         setDefeatedQuestMobs,
+        setVictory,
       }}
     >
       {children}

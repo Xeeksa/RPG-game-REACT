@@ -9,6 +9,7 @@ import { useBoss } from "./useBoss.js";
 
 // Проверка наличия врага на локации
 export const useCombat = () => {
+  const { handleBossDefeat } = useBoss();
   const {
     player,
     setPlayer,

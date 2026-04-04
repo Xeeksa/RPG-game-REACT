@@ -1,5 +1,6 @@
 import { useGame } from "../contexts/GameContext";
 import { createEnemy } from "../data/enemies";
+import { lostBossDialog } from "../data/dialogs";
 
 export const useBoss = () => {
   const {
@@ -36,7 +37,7 @@ export const useBoss = () => {
 
   // Логика смерти и геймОвер если предметов нет
   function handleNoItems() {
-    showPrase(0);
+    showPhrase(0);
     setTimeout(() => setScreen("gameOver"), 5000);
   }
 
@@ -51,11 +52,11 @@ export const useBoss = () => {
   }
 
   // Монолог босса перед поражением
-  function showPrase(index) {
+  function showPhrase(index) {
+    console.log("вызов showPhrase с индексом", index);
     if (index < lostBossDialog.length) {
       addLog(lostBossDialog[index], "boss-log");
-      index += 1;
-      setTimeout(() => showPrase(index), 2000);
+      setTimeout(() => showPhrase(index + 1), 2000);
     } else {
       addLog(
         "Чудовище, пощелкивая чешуей, медленно поползло  твою сторону. Ничем хорошим это не обернется...",

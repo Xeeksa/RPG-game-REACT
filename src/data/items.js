@@ -3,7 +3,7 @@ export const items = {
   healthPotion: {
     name: "Отвар целебных трав",
     type: "consumable",
-    maxInInventory: 20,
+    maxInInventory: 2,
     effect: (player) => {
       player.health = player.maxHealth;
     },

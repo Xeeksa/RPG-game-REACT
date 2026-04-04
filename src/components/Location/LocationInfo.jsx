@@ -17,14 +17,17 @@ export const LocationInfo = () => {
     addLog,
   } = useGame();
   const { checkForEnemy } = useCombat();
+  const { startBossFight } = useBoss();
   const location = locations[currentLocation];
 
   const handleMove = (newLocation) => {
     setCurrentLocation(newLocation);
     clearSystemLog();
     setInDialog(false);
-    if (!inCombat) {
-      checkForEnemy(newLocation);
+    if (newLocation === "echoingCave") {
+      startBossFight();
+    } else {
+      if (!inCombat) checkForEnemy(newLocation);
     }
   };
 
