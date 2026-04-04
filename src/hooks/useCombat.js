@@ -48,6 +48,7 @@ export const useCombat = () => {
   };
 
   // Атака игрока
+  // Хоспаде боже, разбить функцию на несколько: атака игрока, лутание дропа, проверка на босса
   function playerAttack() {
     let damage = player.attack(currentEnemy);
     let newEnemyHealth = currentEnemy.health - damage;
@@ -69,7 +70,6 @@ export const useCombat = () => {
 
       if (currentEnemy.itemDrop) {
         let itemKey = currentEnemy.itemDrop;
-        console.log("itemKey:", itemKey, "items[itemKey]:", items[itemKey]);
         let maxCount = items[itemKey].maxInInventory;
         let currentCountItemsInInventory = player.inventory.filter(
           (i) => i === itemKey,
@@ -94,6 +94,13 @@ export const useCombat = () => {
         }
       } else {
         setPlayer(player);
+      }
+
+      if (currentEnemy.status === "boss") {
+        setVictory(true);
+        setScreen("gameOver");
+        setInCombat(false);
+        return;
       }
 
       setCurrentEnemy(null);

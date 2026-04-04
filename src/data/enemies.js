@@ -85,7 +85,6 @@ export const enemyTemplates = {
     level: 3,
     expReward: 25,
     itemDrop: "healthPotion",
-    dropChance: 0.3,
   },
   leshy: {
     name: "Леший",
