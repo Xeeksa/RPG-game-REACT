@@ -14,7 +14,9 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "allowJs": true // УБРАТЬ посе полноймиграции
   },
-  "include": ["src"]
+  "include": ["src"],
+  
 }

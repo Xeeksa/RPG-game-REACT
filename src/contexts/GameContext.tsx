@@ -1,19 +1,69 @@
-import React, { useState, createContext, useContext } from "react";
+import { useState, createContext, useContext, ReactNode } from "react";
 import { Character } from "../classes/Character";
+import { Enemy } from '../classes/Enemy';
 
-const GameContext = createContext();
 
-// Реализуем выводы в консоль?
-export const GameProvider = ({ children }) => {
+const GameContext = createContext<GameContextValue | null>(null);
+
+interface GameState {
+  player: Character | null;
+  currentLocation: string;
+  inCombat: boolean;
+  inDialog: boolean;
+  dialogIndex: number;
+  currentEnemy: Enemy | null;
+  screen: 'start' | 'intro' | 'game' | 'gameOver';
+  logs: LogEntry[]; 
+  victory: boolean;
+  dialogCompleted: boolean;
+  hasSaidGoodbye: boolean;
+  defeatedQuestMobs: string[];
+}
+
+interface LogEntry {
+text: string;
+type: string;
+id: string;
+}
+
+interface GameContextValue { // ЗАМЕНИТЬ ANY! 
+          player: Character;
+        setPlayer: any;
+        currentLocation: any;
+        setCurrentLocation: any;
+        inCombat: any;
+        setInCombat: any;
+        currentEnemy: any;
+        setCurrentEnemy: any;
+        screen: any;
+        setScreen: any;
+        logs: any;
+        addLog: any;
+        clearSystemLog: any;
+        victory: any;
+        setInDialog: any;
+        dialogIndex: any;
+        setDialogIndex: any;
+        inDialog: any;
+        restartGame: any;
+        dialogCompleted: any;
+        setDialogCompleted: any;
+        hasSaidGoodbye: any;
+        setHasSaidGoodbye: any;
+        defeatedQuestMobs: any;
+        setDefeatedQuestMobs: any;
+        setVictory: any;
+}
+
+export const GameProvider = ({ children }: {children: ReactNode}) => {
   // Состояния
   const [player, setPlayer] = useState(new Character("Кто я?"));
-  const [gameStarted, setGameStarted] = useState(false);
   const [currentLocation, setCurrentLocation] = useState("paradiseGlade");
   const [inCombat, setInCombat] = useState(false);
   const [inDialog, setInDialog] = useState(false);
   const [dialogIndex, setDialogIndex] = useState(0);
   const [currentEnemy, setCurrentEnemy] = useState(null);
-  const [screen, setScreen] = useState("game"); // ИСПРАВЛЕНО ДЛЯ ТЕСТОВ!
+  const [screen, setScreen] = useState("start");
   const [logs, setLogs] = useState([]);
   const [victory, setVictory] = useState(false);
   const [dialogCompleted, setDialogCompleted] = useState(false);
