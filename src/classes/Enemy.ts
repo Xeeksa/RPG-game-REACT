@@ -1,49 +1,46 @@
+import { Character } from "./Character";
+
 export const ENEMY_DAMAGE_PER_LEVEL = 2;
 
-export class Enemy {
+export class Enemy extends Character {
+  status: string;
+  expReward: number;
+  itemDrop: string | null;
+  isQuestMob: boolean;
+
   constructor(
-    name,
-    status,
-    health,
-    defense,
-    stamina,
-    level,
-    expReward,
-    itemDrop = null,
-    isQuestMob = false,
+    name: string,
+    status: string,
+    health: number,
+    defense: number,
+    level: number,
+    expReward: number,
+    itemDrop: string | null = null,
+    isQuestMob: boolean = false,
   ) {
-    this.name = name;
+    super(name, health, defense, level, 0, []);
     this.status = status;
-    this.health = health;
-    this.defense = defense;
-    // this.mana = mana;
-    this.stamina = stamina;
     this.expReward = expReward;
-    this.level = level;
     this.itemDrop = itemDrop;
     this.isQuestMob = isQuestMob;
   }
 
-  attack(target) {
+  attack(target: Character): number {
     let damage = this.level * ENEMY_DAMAGE_PER_LEVEL;
 
     if (target.isDefending) return 0;
 
     let totalDamage = damage - target.defense;
 
-    // if (this.mana < 5) {
-    //   return 0;
-    // } else {
-    //   this.mana -= 5;
     if (totalDamage < 1) {
       totalDamage = 1;
     }
     target.takeDamage(totalDamage);
     return totalDamage;
-    // }
+
   }
 
-  takeDamage(damage) {
+  takeDamage(damage: number): number {
     let actualDamage = Math.min(damage, this.health);
     this.health -= actualDamage;
     if (this.health <= 0) {
