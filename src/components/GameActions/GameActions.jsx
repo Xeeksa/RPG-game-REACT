@@ -2,11 +2,9 @@ import { useGame } from "../../contexts/GameContext";
 import { useCombat } from "../../hooks/useCombat";
 import { locations } from "../../data/locations";
 import { npcDialog } from "../../data/dialogs";
-import { items } from "../../data/items";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export const GameActions = () => {
-  const [selectedItem, setSelectedItem] = useState();
   const {
     player,
     setPlayer,
@@ -20,16 +18,9 @@ export const GameActions = () => {
     hasSaidGoodbye,
     setHasSaidGoodbye,
     setDialogCompleted,
-    setScreen,
   } = useGame();
 
-  const { playerAttack, handlePlayerDefend, handleUseItem, checkForEnemy } =
-    useCombat();
-
-  const consumableItems = player.inventory.filter(
-    (itemKey) => items[itemKey].type === "consumable",
-  );
-
+  const { playerAttack, handlePlayerDefend, checkForEnemy } = useCombat();
   const location = locations[currentLocation];
   const npc = location.npc?.name;
 
@@ -44,7 +35,6 @@ export const GameActions = () => {
   useEffect(() => {
     if (!inDialog) return;
     if (dialogIndex < npcDialog.length) {
-      // Начинается сначала, если выйти из диалога на середине, а надо, чтобы продолжал!
       addLog(`${npc}: ${npcDialog[dialogIndex]}`, "npc-log");
     } else {
       if (!hasSaidGoodbye) {
@@ -58,7 +48,6 @@ export const GameActions = () => {
     }
   }, [dialogIndex, inDialog]);
 
-  // v Масштабировать под разные зелья! Пока только лечилка
   const handleTakePotion = () => {
     if (!player.inventory.includes("healthPotion")) {
       player.inventory.push("healthPotion");
@@ -103,21 +92,6 @@ export const GameActions = () => {
             <button disabled={!inCombat} onClick={handlePlayerDefend}>
               Защищаться
             </button>
-
-            {/* <select onChange={(e) => setSelectedItem(e.target.value)}>
-              {consumableItems.map((itemKey) => (
-                <option value={itemKey} key={itemKey}>
-                  {items[itemKey].name}
-                </option>
-              ))}
-            </select> */}
-
-            {/* <button
-              disabled={!inCombat}
-              onClick={() => handleUseItem(selectedItem)}
-            >
-              Использовать предмет
-            </button> */}
           </>
         )}
 
