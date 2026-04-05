@@ -1,23 +1,41 @@
+// @ts-ignore
 import { items } from "../data/items";
+
+interface Item {
+  name: string;
+  type: string;
+  maxInInventory?: number;
+  effect?: (player: Character) => void;
+  canUse?: (player: Character) => boolean;
+}
 
 const BASE_DAMAGE_PER_LEVEL = 80;
 
 export class Character {
+  
+  isAlive: boolean;
+  name: string;
+  health: number;
+  maxHealth: number;
+  defense: number;
+  isDefending: boolean;
+  level: number;
+  experience: number;
+  inventory: string[];
+  expTable: number[];
+
   constructor(
-    name = "Странник",
-    health = 20,
-    // mana = 20,
-    defense = 0,
-    level = 1,
-    experience = 0,
-    inventory = ["healthPotion"],
+    name: string = "Странник",
+    health: number = 20,
+    defense: number = 0,
+    level: number = 1,
+    experience: number = 0,
+    inventory: string[] = ["healthPotion"],
   ) {
     this.isAlive = true;
     this.name = name;
     this.health = health;
     this.maxHealth = health;
-    // this.mana = mana;
-    // this.maxMana = mana;
     this.defense = defense;
     this.isDefending = false;
     this.level = level;
@@ -26,31 +44,26 @@ export class Character {
     this.expTable = [49, 79, 139, 239, 349, 499, 539, 689, 849, 999];
   }
 
-  useItem(itemKey) {
+  useItem(itemKey: string) {
     const index = this.inventory.indexOf(itemKey);
-    let item = items[itemKey];
-    item.effect(this);
+    let item = items[itemKey] as Item;
+    if(item.effect) {    
+      item.effect(this);
+}
     this.inventory.splice(index, 1);
   }
 
-  attack(target) {
+  attack(target: any) { // ИСПРАВИТЬ ТИП ПОСЛЕ КОРРЕКТИРОВКИ КОНСТРУКТОРА ЕНЕМИ
     let damage = this.level * BASE_DAMAGE_PER_LEVEL;
     let totalDamage = Math.max(1, damage - target.defense);
-
-    // if (this.mana < 5) {
-    //   return 0;
-    // } else {
-    //   this.mana -= 5;
-
     return totalDamage;
   }
-  // }
 
   defend() {
     this.isDefending = true;
   }
 
-  takeDamage(damage) {
+  takeDamage(damage: number) {
     if (this.isDefending) {
       this.isDefending = false;
       return 0;
@@ -65,7 +78,7 @@ export class Character {
     return actualDamage;
   }
 
-  addExp(points) {
+  addExp(points: number) {
     this.experience += points;
     while (this.experience >= this.expTable[this.level - 1]) this.levelUp();
   }
@@ -74,8 +87,6 @@ export class Character {
     this.level += 1;
     this.maxHealth += 2;
     this.health = this.maxHealth;
-    // this.maxMana += 2;
-    // this.mana = this.maxMana;
     this.defense += 1;
   }
 }
