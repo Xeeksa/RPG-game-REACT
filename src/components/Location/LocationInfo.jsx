@@ -21,12 +21,25 @@ export const LocationInfo = () => {
   const location = locations[currentLocation];
 
   const handleMove = (newLocation) => {
-    setCurrentLocation(newLocation);
     clearSystemLog();
     setInDialog(false);
+
     if (newLocation === "echoingCave") {
-      startBossFight();
+      if (
+        window.confirm(
+          "Животный страх окутывает тебя при виде будто бы из ниоткуда взявщегося входа впещеру. Ты уверен, что хочешь войти?",
+        )
+      ) {
+        setCurrentLocation(newLocation);
+        startBossFight();
+      } else {
+        addLog(
+          "Ты отшатываешься от зияющего черного провала входа в пещеру. Возможно, это решение спасет тебе жизнь...",
+          "system-log",
+        );
+      }
     } else {
+      setCurrentLocation(newLocation);
       if (!inCombat) checkForEnemy(newLocation);
     }
   };
