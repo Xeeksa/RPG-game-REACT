@@ -1,6 +1,7 @@
 import { useGame } from "../contexts/GameContext";
 import { createEnemy } from "../data/enemies";
 import { lostBossDialog } from "../data/dialogs";
+import { Enemy } from "../classes/Enemy";
 
 export const useBoss = () => {
   const {
@@ -13,7 +14,7 @@ export const useBoss = () => {
   } = useGame();
 
   // Битва с боссом доступна только при наличии черных щита и посоха. Нет в инвентаре одного И второго, то при входе к боссу - смерть.
-  function checkBossAccess() {
+  function checkBossAccess(): boolean {
     if (
       player.inventory.includes("blackMagickStaff") &&
       player.inventory.includes("blackMagickShield")
@@ -25,9 +26,9 @@ export const useBoss = () => {
   }
 
   // Запускбоя с боссом
-  function startBossFight() {
+  function startBossFight(): void {
     if (checkBossAccess()) {
-      let boss = createEnemy("ancientDragon");
+      let boss: Enemy = createEnemy("ancientDragon");
       setCurrentEnemy(boss);
       setInCombat(true);
     } else {
@@ -36,7 +37,7 @@ export const useBoss = () => {
   }
 
   // Победа над боссом - геймОвер Вин
-  function handleBossDefeat() {
+  function handleBossDefeat(): void {
     setVictory(true);
     setScreen("gameOver");
     setInCombat(false);
@@ -44,7 +45,7 @@ export const useBoss = () => {
   }
 
   // Монолог босса перед поражением
-  function showPhrase(index) {
+  function showPhrase(index: number): void {
     console.log("вызов showPhrase с индексом", index);
     if (index < lostBossDialog.length) {
       addLog(lostBossDialog[index], "boss-log");
@@ -64,9 +65,3 @@ export const useBoss = () => {
     handleBossDefeat,
   };
 };
-
-/* 
-В ЮИ.
-- клик на локацию с боссом - предупреждение по типу "ты подходишь к местности, где свет практически исчезает. Воздух кажется спертым и мертвым, голова кружится от нехватки кислорода. Впереди тебя ждет что-то зловещее. Возможно, тебе не суждено вернуться и стоит тщательнее обдумать свое решение и подготовиться.
-Точно хочешь идти дальше?"
-*/
