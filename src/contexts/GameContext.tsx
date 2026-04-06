@@ -1,24 +1,7 @@
-import { useState, createContext, useContext, ReactNode } from "react";
+import { useState, createContext, useContext, ReactNode } from 'react';
 import { Character } from "../classes/Character";
-import { Enemy } from '../classes/Enemy';
-
 
 const GameContext = createContext<GameContextValue | null>(null);
-
-interface GameState {
-  player: Character | null;
-  currentLocation: string;
-  inCombat: boolean;
-  inDialog: boolean;
-  dialogIndex: number;
-  currentEnemy: Enemy | null;
-  screen: 'start' | 'intro' | 'game' | 'gameOver';
-  logs: LogEntry[]; 
-  victory: boolean;
-  dialogCompleted: boolean;
-  hasSaidGoodbye: boolean;
-  defeatedQuestMobs: string[];
-}
 
 interface LogEntry {
 text: string;
@@ -27,7 +10,7 @@ id: string;
 }
 
 interface GameContextValue { // ЗАМЕНИТЬ ANY! 
-          player: Character;
+        player: Character;
         setPlayer: any;
         currentLocation: any;
         setCurrentLocation: any;
@@ -64,18 +47,18 @@ export const GameProvider = ({ children }: {children: ReactNode}) => {
   const [dialogIndex, setDialogIndex] = useState(0);
   const [currentEnemy, setCurrentEnemy] = useState(null);
   const [screen, setScreen] = useState("start");
-  const [logs, setLogs] = useState([]);
+  const [logs, setLogs] = useState<LogEntry[]>([]);
   const [victory, setVictory] = useState(false);
   const [dialogCompleted, setDialogCompleted] = useState(false);
   const [hasSaidGoodbye, setHasSaidGoodbye] = useState(false);
   const [defeatedQuestMobs, setDefeatedQuestMobs] = useState([]);
 
-  const addLog = (text, type) => {
-    setLogs((prev) => [...prev, { text, type, id: crypto.randomUUID() }]);
+  const addLog = (text: string, type: string) => {
+    setLogs((prev: LogEntry[]) => [...prev, { text, type, id: crypto.randomUUID() }]);
   };
 
   const clearSystemLog = () => {
-    setLogs((prev) =>
+    setLogs((prev: LogEntry[]) =>
       prev.filter((log) => log.type === "npc-log" || log.type === "boss-logs"),
     );
   };
