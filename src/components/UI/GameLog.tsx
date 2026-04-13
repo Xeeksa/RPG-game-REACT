@@ -3,16 +3,16 @@ import { useGame } from "../../contexts/GameContext";
 
 export const GameLog = () => {
   const { logs } = useGame();
-  const logRef = useRef();
+  const logRef = useRef<HTMLDivElement | null>(null); 
   useEffect(() => {
-    logRef.current.scrollTop = logRef.current.scrollHeight;
+    if (logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight;
   }, [logs]);
 
   return (
     <section className="log">
       <h2>Лог событий</h2>
       <div id="log-content" ref={logRef}>
-        {logs.map((log) => (
+        {logs.map((log: {text, type, id}) => (
           <div key={log.id} className={log.type}>
             {log.text}
           </div>
@@ -21,5 +21,3 @@ export const GameLog = () => {
     </section>
   );
 };
-
-// Реализовать массив сообщений для рандомного вывода в коноль при любом действии

@@ -20,7 +20,7 @@ interface GameContextValue { // ЗАМЕНИТЬ ANY!
         setCurrentEnemy: any;
         screen: any;
         setScreen: any;
-        logs: any;
+        logs: LogEntry[];
         addLog: any;
         clearSystemLog: any;
         victory: any;
