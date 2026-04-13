@@ -1,10 +1,13 @@
-//Ответственность: География игры
-//Карта локаций (деревня, лес, пещера и т.д.)
-//Связи между локациями (куда можно перейти)
-//Случайные события в локациях
-//Описания и характеристики каждой локации
+export interface Location {
+  locationName: string;
+description: string;
+npc?: { name: string; dialog: string[]; items: string[]; };
+enemies?: string[];
+connections: string[];
+boss?: string
+}
 
-export const locations = {
+export const locations: Record<string, Location> = {
   paradiseGlade: {
     locationName: "Райская поляна",
     description:
@@ -14,7 +17,6 @@ export const locations = {
       dialog: [],
       items: ["healthPotion"],
     },
-    enemies: false,
     connections: ["forestEdge"],
   },
   forestEdge: {
