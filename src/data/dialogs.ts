@@ -15,7 +15,7 @@ const dumbCries = [
   "Зелень топтать!",
 ];
 
-export const mobCries = {
+export const mobCries: Record<string, string[]> = {
   orc: dumbCries,
   ogre: dumbCries,
   goblin: dumbCries,
@@ -45,5 +45,3 @@ export const lostBossDialog = [
 
 // Диалог при наличии квестовых предметов
 export const winBossDialog = ["Снова ты? О... Что это? Что ты принес?"];
-
-// Создать ветку условий, в котором в ПЕРВЫЙ раз игрок зайдет к боссу сразу с предметами

@@ -22,7 +22,7 @@ export const useCombat = () => {
     setDefeatedQuestMobs,
   } = useGame();
 
-  const checkForEnemy = (currentLocation) => {
+  const checkForEnemy = (currentLocation: string) => {
     const enemiesArr = locations[currentLocation].enemies;
 
     if (!enemiesArr || enemiesArr.length == 0) return;

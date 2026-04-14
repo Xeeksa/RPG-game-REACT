@@ -12,7 +12,7 @@ export const GameLog = () => {
     <section className="log">
       <h2>Лог событий</h2>
       <div id="log-content" ref={logRef}>
-        {logs.map((log: {text, type, id}) => (
+        {logs.map((log) => (
           <div key={log.id} className={log.type}>
             {log.text}
           </div>

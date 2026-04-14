@@ -1,5 +1,6 @@
 import { useState, createContext, useContext, ReactNode } from 'react';
 import { Character } from "../classes/Character";
+import { Enemy } from '../classes/Enemy';
 
 const GameContext = createContext<GameContextValue | null>(null);
 
@@ -15,13 +16,13 @@ interface GameContextValue {
         currentLocation: string;
         setCurrentLocation: any;
         inCombat: boolean;
-        setInCombat: any;
-        currentEnemy: any;
-        setCurrentEnemy: any;
-        screen: any;
-        setScreen: any;
+        setInCombat: (value: boolean) => void;
+        currentEnemy: Enemy | null;
+        setCurrentEnemy: (enemy: Enemy | null) => void;
+        screen: string;
+        setScreen: (screen: 'start' | 'intro' | 'game' | 'gameOver') => void;
         logs: LogEntry[];
-        addLog: any;
+        addLog: (text: string, type: string) => void;
         clearSystemLog: any;
         victory: any;
         dialogIndex: number;
@@ -33,8 +34,8 @@ interface GameContextValue {
         setDialogCompleted: (value: boolean) => void;
         hasSaidGoodbye: boolean;
         setHasSaidGoodbye: (value: boolean) => void;
-        defeatedQuestMobs: any;
-        setDefeatedQuestMobs: any;
+        defeatedQuestMobs: string[];
+        setDefeatedQuestMobs: (value: string[] | ((prev: string[]) => string[])) => void;
         setVictory: any;
 }
 
@@ -45,13 +46,13 @@ export const GameProvider = ({ children }: {children: ReactNode}) => {
   const [inCombat, setInCombat] = useState(false);
   const [inDialog, setInDialog] = useState(false);
   const [dialogIndex, setDialogIndex] = useState(0);
-  const [currentEnemy, setCurrentEnemy] = useState(null);
+  const [currentEnemy, setCurrentEnemy] = useState<Enemy | null>(null);
   const [screen, setScreen] = useState("start");
   const [logs, setLogs] = useState<LogEntry[]>([]);
   const [victory, setVictory] = useState(false);
   const [dialogCompleted, setDialogCompleted] = useState(false);
   const [hasSaidGoodbye, setHasSaidGoodbye] = useState(false);
-  const [defeatedQuestMobs, setDefeatedQuestMobs] = useState([]);
+  const [defeatedQuestMobs, setDefeatedQuestMobs] = useState<string[]>([]);
 
   const addLog = (text: string, type: string) => {
     setLogs((prev: LogEntry[]) => [...prev, { text, type, id: crypto.randomUUID() }]);
