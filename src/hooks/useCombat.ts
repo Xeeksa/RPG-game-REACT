@@ -15,7 +15,6 @@ export const useCombat = () => {
     setPlayer,
     currentEnemy,
     setCurrentEnemy,
-    inCombat,
     setScreen,
     setInCombat,
     addLog,

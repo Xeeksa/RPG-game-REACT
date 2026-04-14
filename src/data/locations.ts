@@ -1,4 +1,4 @@
-export interface Location {
+export interface LocationGame {
   locationName: string;
   description: string;
   npc?: { name: string; dialog: string[]; items: string[] };
@@ -6,7 +6,7 @@ export interface Location {
   connections: string[];
 }
 
-export const locations: Record<string, Location> = {
+export const locations: Record<string, LocationGame> = {
   paradiseGlade: {
     locationName: "Райская поляна",
     description:

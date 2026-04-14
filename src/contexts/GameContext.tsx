@@ -9,12 +9,12 @@ type: string;
 id: string;
 }
 
-interface GameContextValue { // ЗАМЕНИТЬ ANY! 
+interface GameContextValue { 
         player: Character;
-        setPlayer: any;
-        currentLocation: any;
+        setPlayer: (player: Character) => void;
+        currentLocation: string;
         setCurrentLocation: any;
-        inCombat: any;
+        inCombat: boolean;
         setInCombat: any;
         currentEnemy: any;
         setCurrentEnemy: any;
@@ -24,15 +24,15 @@ interface GameContextValue { // ЗАМЕНИТЬ ANY!
         addLog: any;
         clearSystemLog: any;
         victory: any;
-        setInDialog: any;
-        dialogIndex: any;
-        setDialogIndex: any;
-        inDialog: any;
+        dialogIndex: number;
+        setDialogIndex: (value: number | ((prev: number) => number)) => void;
+        inDialog: boolean;
+        setInDialog: (value: boolean) => void;
         restartGame: any;
         dialogCompleted: any;
-        setDialogCompleted: any;
-        hasSaidGoodbye: any;
-        setHasSaidGoodbye: any;
+        setDialogCompleted: (value: boolean) => void;
+        hasSaidGoodbye: boolean;
+        setHasSaidGoodbye: (value: boolean) => void;
         defeatedQuestMobs: any;
         setDefeatedQuestMobs: any;
         setVictory: any;
@@ -111,7 +111,7 @@ export const GameProvider = ({ children }: {children: ReactNode}) => {
   );
 };
 
-export const useGame = () => {
+export const useGame = (): GameContextValue => {
   const context = useContext(GameContext);
   if (!context) {
     throw new Error("useGame должен использоваться в GameProvider");

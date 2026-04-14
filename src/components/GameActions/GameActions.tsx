@@ -1,6 +1,6 @@
 import { useGame } from "../../contexts/GameContext";
 import { useCombat } from "../../hooks/useCombat";
-import { locations } from "../../data/locations";
+import { locations, LocationGame } from "../../data/locations";
 import { npcDialog } from "../../data/dialogs";
 import { useEffect } from "react";
 
@@ -21,14 +21,14 @@ export const GameActions = () => {
   } = useGame();
 
   const { playerAttack, handlePlayerDefend, checkForEnemy } = useCombat();
-  const location = locations[currentLocation];
+  const location: LocationGame = locations[currentLocation];
   const npc = location.npc?.name;
 
-  const handleExplore = () => {
+  const handleExplore = (): void => {
     checkForEnemy(currentLocation);
   };
 
-  const handleNextStory = () => {
+  const handleNextStory = (): void => {
     setDialogIndex((prev) => prev + 1);
   };
 
@@ -48,7 +48,7 @@ export const GameActions = () => {
     }
   }, [dialogIndex, inDialog]);
 
-  const handleTakePotion = () => {
+  const handleTakePotion = (): void => {
     if (!player.inventory.includes("healthPotion")) {
       player.inventory.push("healthPotion");
       setPlayer(player);
@@ -61,7 +61,7 @@ export const GameActions = () => {
     }
   };
 
-  const handleLeave = () => {
+  const handleLeave = (): void => {
     setInDialog(false);
   };
 
