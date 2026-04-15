@@ -50,6 +50,7 @@ export const useCombat = () => {
 
   // Атака игрока
   function playerAttack() {
+    if (!currentEnemy) return;
     let damage = player.attack(currentEnemy);
     let newEnemyHealth = currentEnemy.health - damage;
     setCurrentEnemy({ ...currentEnemy, health: newEnemyHealth });

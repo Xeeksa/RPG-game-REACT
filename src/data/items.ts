@@ -1,4 +1,3 @@
-// Различные предметы в игре, которые можно залутать
 export const items = {
   healthPotion: {
     name: "Отвар целебных трав",
@@ -10,14 +9,6 @@ export const items = {
     canUse: (player) => player.health < player.maxHealth,
   },
 
-  // manaPotion: {
-  //   name: "Отвар магических трав",
-  //   type: "consumable",
-
-  // },
-
-  // Два предмета, без которых не пройти босса. Как прописать в реакте
-  // что без них не пройти босса? мож свойством по типу use?
   blackMagickStaff: {
     name: "Посох черной магии",
     type: "weapon",

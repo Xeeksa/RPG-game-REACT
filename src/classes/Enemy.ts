@@ -7,6 +7,7 @@ export class Enemy extends Character {
   expReward: number;
   itemDrop: string | null;
   isQuestMob: boolean;
+  key: string;
 
   constructor(
     name: string,
@@ -15,6 +16,7 @@ export class Enemy extends Character {
     defense: number,
     level: number,
     expReward: number,
+    key: string,
     itemDrop: string | null = null,
     isQuestMob: boolean = false,
   ) {
@@ -22,6 +24,7 @@ export class Enemy extends Character {
     this.status = status;
     this.expReward = expReward;
     this.itemDrop = itemDrop;
+    this.key = key,
     this.isQuestMob = isQuestMob;
   }
 
