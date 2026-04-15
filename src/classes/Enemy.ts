@@ -24,7 +24,7 @@ export class Enemy extends Character {
     this.status = status;
     this.expReward = expReward;
     this.itemDrop = itemDrop;
-    this.key = key,
+    this.key = key;
     this.isQuestMob = isQuestMob;
   }
 
