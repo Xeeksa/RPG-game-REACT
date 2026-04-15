@@ -1,12 +1,14 @@
+import { Character } from "../classes/Character";
+
 export const items = {
   healthPotion: {
     name: "Отвар целебных трав",
     type: "consumable",
     maxInInventory: 2,
-    effect: (player) => {
+    effect: (player: Character) => {
       player.health = player.maxHealth;
     },
-    canUse: (player) => player.health < player.maxHealth,
+    canUse: (player: Character) => player.health < player.maxHealth,
   },
 
   blackMagickStaff: {

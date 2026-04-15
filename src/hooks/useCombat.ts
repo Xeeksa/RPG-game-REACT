@@ -79,6 +79,7 @@ export const useCombat = () => {
 
   // Процесс получения лута
   function processLoot() {
+    if (!currentEnemy) return;
     if (currentEnemy.itemDrop) {
       let itemKey = currentEnemy.itemDrop;
       let maxCount = items[itemKey].maxInInventory;
@@ -110,6 +111,7 @@ export const useCombat = () => {
 
   // Ход врага
   function enemyTurn() {
+    if (!currentEnemy) return;
     let damage = currentEnemy.level * ENEMY_DAMAGE_PER_LEVEL;
     let newPlayerHealth = Math.max(0, player.health - damage);
     player.health = newPlayerHealth;
