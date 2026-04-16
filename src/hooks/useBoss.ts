@@ -1,6 +1,6 @@
 import { useGame } from "../contexts/GameContext";
 import { createEnemy } from "../data/enemies";
-import { lostBossDialog, winBossDialog } from "../data/dialogs";
+import { lostBossDialog } from "../data/dialogs";
 import { Enemy } from "../classes/Enemy";
 
 export const useBoss = () => {
@@ -27,7 +27,7 @@ export const useBoss = () => {
 
   // Запуск боя с боссом
   function startBossFight(): void {
-    addLog(winBossDialog, "boss-log");
+    addLog('Ах ты отродье человеческое!', "boss-log");
     if (checkBossAccess()) {
       let boss: Enemy = createEnemy("ancientDragon");
       setCurrentEnemy(boss);
