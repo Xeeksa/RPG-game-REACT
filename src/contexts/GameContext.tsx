@@ -14,7 +14,7 @@ interface GameContextValue {
         player: Character;
         setPlayer: (player: Character) => void;
         currentLocation: string;
-        setCurrentLocation: any;
+        setCurrentLocation: (location: string) => void;
         inCombat: boolean;
         setInCombat: (value: boolean) => void;
         currentEnemy: Enemy | null;
@@ -23,20 +23,20 @@ interface GameContextValue {
         setScreen: (screen: 'start' | 'intro' | 'game' | 'gameOver') => void;
         logs: LogEntry[];
         addLog: (text: string, type: string) => void;
-        clearSystemLog: any;
-        victory: any;
+        clearSystemLog: () => void;
+        victory: boolean;
         dialogIndex: number;
         setDialogIndex: (value: number | ((prev: number) => number)) => void;
         inDialog: boolean;
         setInDialog: (value: boolean) => void;
-        restartGame: any;
-        dialogCompleted: any;
+        restartGame: () => void;
+        dialogCompleted: boolean;
         setDialogCompleted: (value: boolean) => void;
         hasSaidGoodbye: boolean;
         setHasSaidGoodbye: (value: boolean) => void;
         defeatedQuestMobs: string[];
         setDefeatedQuestMobs: (value: string[] | ((prev: string[]) => string[])) => void;
-        setVictory: any;
+        setVictory: (value: boolean) => void;
 }
 
 export const GameProvider = ({ children }: {children: ReactNode}) => {
@@ -54,17 +54,17 @@ export const GameProvider = ({ children }: {children: ReactNode}) => {
   const [hasSaidGoodbye, setHasSaidGoodbye] = useState(false);
   const [defeatedQuestMobs, setDefeatedQuestMobs] = useState<string[]>([]);
 
-  const addLog = (text: string, type: string) => {
+  const addLog = (text: string, type: string): void => {
     setLogs((prev: LogEntry[]) => [...prev, { text, type, id: crypto.randomUUID() }]);
   };
 
-  const clearSystemLog = () => {
+  const clearSystemLog = (): void => {
     setLogs((prev: LogEntry[]) =>
       prev.filter((log) => log.type === "npc-log" || log.type === "boss-logs"),
     );
   };
 
-  const restartGame = () => {
+  const restartGame = (): void => {
     setPlayer(new Character("Кто я?"));
     setCurrentLocation("paradiseGlade");
     setInCombat(false);
