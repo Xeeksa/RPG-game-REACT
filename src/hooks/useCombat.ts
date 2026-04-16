@@ -4,8 +4,8 @@ import { createEnemy } from "../data/enemies.js";
 import { getRandomPositiveInteger } from "../utils/helpers.js";
 import { ENEMY_DAMAGE_PER_LEVEL } from "../classes/Enemy.js";
 import { mobCries } from "../data/dialogs.js";
-import { items } from "../data/items";
 import { useBoss } from "./useBoss.js";
+import { Items, items } from "../data/items.js";
 
 // Проверка наличия врага на локации
 export const useCombat = () => {
@@ -53,7 +53,8 @@ export const useCombat = () => {
     if (!currentEnemy) return;
     let damage = player.attack(currentEnemy);
     let newEnemyHealth = currentEnemy.health - damage;
-    setCurrentEnemy({ ...currentEnemy, health: newEnemyHealth });
+    currentEnemy.health = newEnemyHealth;
+    setCurrentEnemy(currentEnemy);
 
     if (newEnemyHealth > 0) {
       addLog(
@@ -81,8 +82,8 @@ export const useCombat = () => {
   function processLoot() {
     if (!currentEnemy) return;
     if (currentEnemy.itemDrop) {
-      let itemKey = currentEnemy.itemDrop;
-      let maxCount = items[itemKey].maxInInventory;
+      let itemKey = currentEnemy.itemDrop as keyof Items;
+      let maxCount = 'maxInInventory' in items[itemKey] ? items[itemKey].maxInInventory : undefined;
       let currentCountItemsInInventory = player.inventory.filter(
         (i) => i === itemKey,
       ).length;
