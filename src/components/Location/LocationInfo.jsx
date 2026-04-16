@@ -15,6 +15,7 @@ export const LocationInfo = () => {
     inDialog,
     setDialogIndex,
     addLog,
+    setLastWarningMessage
   } = useGame();
   const { checkForEnemy } = useCombat();
   const { startBossFight } = useBoss();
@@ -23,6 +24,7 @@ export const LocationInfo = () => {
   const handleMove = (newLocation) => {
     clearSystemLog();
     setInDialog(false);
+    setLastWarningMessage(null);
 
     if (newLocation === "echoingCave") {
       if (

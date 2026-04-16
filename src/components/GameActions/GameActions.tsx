@@ -18,6 +18,8 @@ export const GameActions = () => {
     hasSaidGoodbye,
     setHasSaidGoodbye,
     setDialogCompleted,
+            lastWarningMessage, 
+        setLastWarningMessage
   } = useGame();
 
   const { playerAttack, handlePlayerDefend, checkForEnemy } = useCombat();
@@ -49,17 +51,24 @@ export const GameActions = () => {
   }, [dialogIndex, inDialog]);
 
   const handleTakePotion = (): void => {
+    const warningMessageNpc = `${npc}: Твоя жадность обескураживает, Путник. Сначала используй свои зелья, а потом оббирай старика!`;
+
     if (!player.inventory.includes("healthPotion")) {
       player.inventory.push("healthPotion");
       setPlayer(player);
       addLog(`Зелье получено!`, "system-log");
+        setLastWarningMessage(null);
     } else {
+      if (lastWarningMessage !== warningMessageNpc) {
+        setLastWarningMessage(warningMessageNpc);
       addLog(
-        `${npc}: Твоя жадность обескураживает, Путник. Сначала используй свои зелья, а потом оббирай старика!`,
+        warningMessageNpc,
         "npc-log",
       );
+      return;
     }
   };
+}
 
   const handleLeave = (): void => {
     setInDialog(false);

@@ -37,6 +37,8 @@ interface GameContextValue {
         defeatedQuestMobs: string[];
         setDefeatedQuestMobs: (value: string[] | ((prev: string[]) => string[])) => void;
         setVictory: (value: boolean) => void;
+        lastWarningMessage: string | null;
+        setLastWarningMessage: (value: string | null) => void;
 }
 
 export const GameProvider = ({ children }: {children: ReactNode}) => {
@@ -53,6 +55,7 @@ export const GameProvider = ({ children }: {children: ReactNode}) => {
   const [dialogCompleted, setDialogCompleted] = useState(false);
   const [hasSaidGoodbye, setHasSaidGoodbye] = useState(false);
   const [defeatedQuestMobs, setDefeatedQuestMobs] = useState<string[]>([]);
+  const [lastWarningMessage, setLastWarningMessage] = useState<string | null>(null)
 
   const addLog = (text: string, type: string): void => {
     setLogs((prev: LogEntry[]) => [...prev, { text, type, id: crypto.randomUUID() }]);
@@ -105,6 +108,8 @@ export const GameProvider = ({ children }: {children: ReactNode}) => {
         defeatedQuestMobs,
         setDefeatedQuestMobs,
         setVictory,
+        lastWarningMessage, 
+        setLastWarningMessage
       }}
     >
       {children}
