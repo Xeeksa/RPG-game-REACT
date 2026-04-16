@@ -1,13 +1,4 @@
-// @ts-ignore
-import { items } from "../data/items";
-
-interface Item {
-  name: string;
-  type: string;
-  maxInInventory?: number;
-  effect?: (player: Character) => void;
-  canUse?: (player: Character) => boolean;
-}
+import { items, Item } from "../data/items";
 
 const BASE_DAMAGE_PER_LEVEL = 80;
 
