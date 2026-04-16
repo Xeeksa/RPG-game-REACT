@@ -1,6 +1,6 @@
 import { useGame } from "../contexts/GameContext";
 import { createEnemy } from "../data/enemies";
-import { lostBossDialog } from "../data/dialogs";
+import { lostBossDialog, winBossDialog } from "../data/dialogs";
 import { Enemy } from "../classes/Enemy";
 
 export const useBoss = () => {
@@ -13,7 +13,7 @@ export const useBoss = () => {
     addLog,
   } = useGame();
 
-  // Битва с боссом доступна только при наличии черных щита и посоха. Нет в инвентаре одного И второго, то при входе к боссу - смерть.
+  // Битва с боссом доступна только при наличии черных щита и посоха.
   function checkBossAccess(): boolean {
     if (
       player.inventory.includes("blackMagickStaff") &&
@@ -25,8 +25,9 @@ export const useBoss = () => {
     return false;
   }
 
-  // Запускбоя с боссом
+  // Запуск боя с боссом
   function startBossFight(): void {
+    addLog(winBossDialog, "boss-log");
     if (checkBossAccess()) {
       let boss: Enemy = createEnemy("ancientDragon");
       setCurrentEnemy(boss);

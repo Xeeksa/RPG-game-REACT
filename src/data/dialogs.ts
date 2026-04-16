@@ -44,4 +44,4 @@ export const lostBossDialog = [
 ];
 
 // Диалог при наличии квестовых предметов
-export const winBossDialog = ["Снова ты? О... Что это? Что ты принес?"];
+export const winBossDialog = "Ах ты отродье человеческое!";
