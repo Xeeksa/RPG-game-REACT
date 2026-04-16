@@ -92,16 +92,23 @@ export const useCombat = () => {
         setDefeatedQuestMobs((prev) => [...prev, currentEnemy.key]);
       }
 
-      if (maxCount === undefined || currentCountItemsInInventory < maxCount) {
+      if (maxCount === undefined) {
+                player.inventory.push(currentEnemy.itemDrop);
+        setPlayer(player);
+        addLog(
+          `Ты подбираешь ${items[currentEnemy.itemDrop as keyof Items].name}.`,
+          "system-log",
+        );
+      } else if (typeof maxCount === 'number' && currentCountItemsInInventory < maxCount) {
         player.inventory.push(currentEnemy.itemDrop);
         setPlayer(player);
         addLog(
-          `Ты подбираешь ${items[currentEnemy.itemDrop].name}.`,
+          `Ты подбираешь ${items[currentEnemy.itemDrop as keyof Items].name}.`,
           "system-log",
         );
       } else {
         addLog(
-          `${items[currentEnemy.itemDrop].name} остается лежать на земле. Ты не можешь унести так много.`,
+          `${items[currentEnemy.itemDrop as keyof Items].name} остается лежать на земле. Ты не можешь унести так много.`,
           "system-log",
         );
       }
@@ -136,18 +143,19 @@ export const useCombat = () => {
   }
 
   // Использование предмета игроком
-  function handleUseItem(itemKey) {
-    let item = items[itemKey];
+  function handleUseItem(itemKey: string) {
+    let item = items[itemKey as keyof Items];
     if (!player.inventory.includes(itemKey)) {
       addLog("Такого предмета нет в твоем инвентаре!", "system-log");
+      return
     }
-    if (item.canUse && item.canUse(player)) {
+    if ('canUse' in item && item.canUse && item.canUse(player)) {
       player.useItem(itemKey);
       setPlayer(player);
       // ПРОПИСАТЬ ЭФФЕКТ ИСПОЛЬЗОВАНИЯ ИТЕМА
-      addLog(`Вы использовали ${items[itemKey].name}`, "system-log");
+      addLog(`Вы использовали ${items[itemKey as keyof Items].name}`, "system-log");
     } else {
-      addLog(`Ты не можешь использовать ${items[itemKey].name}`, "system-log");
+      addLog(`Ты не можешь использовать ${items[itemKey as keyof Items].name}`, "system-log");
     }
   }
 
