@@ -1,13 +1,22 @@
 import { Enemy } from "../classes/Enemy";
 
-export const enemyTemplates = {
+export interface EnemyTemplate {
+    name: string;
+    status: string;
+    health: number;
+    defense: number;
+    level: number;
+    expReward: number;
+    isQuestMob?: boolean;
+    itemDrop?: string;
+}
+
+export const enemyTemplates: Record<string, EnemyTemplate> = {
   orc: {
     name: "Орк",
     status: "mob",
     health: 110,
     defense: 8,
-    // mana: 5,
-    stamina: 65,
     level: 2,
     expReward: 15,
   },
@@ -16,8 +25,6 @@ export const enemyTemplates = {
     status: "mob",
     health: 130,
     defense: 12,
-    // mana: 0,
-    stamina: 70,
     level: 3,
     expReward: 20,
   },
@@ -26,8 +33,6 @@ export const enemyTemplates = {
     status: "mob",
     health: 45,
     defense: 2,
-    // mana: 20,
-    stamina: 75,
     level: 1,
     expReward: 15,
   },
@@ -36,8 +41,6 @@ export const enemyTemplates = {
     status: "mob",
     health: 95,
     defense: 7,
-    // mana: 40,
-    stamina: 50,
     level: 3,
     expReward: 25,
     isQuestMob: true,
@@ -48,8 +51,6 @@ export const enemyTemplates = {
     status: "mob",
     health: 120,
     defense: 10,
-    // mana: 60,
-    stamina: 55,
     level: 4,
     expReward: 30,
     isQuestMob: true,
@@ -60,8 +61,6 @@ export const enemyTemplates = {
     status: "mob",
     health: 65,
     defense: 3,
-    // mana: 0,
-    stamina: 60,
     level: 2,
     expReward: 20,
   },
@@ -70,8 +69,6 @@ export const enemyTemplates = {
     status: "mob",
     health: 70,
     defense: 4,
-    // mana: 55,
-    stamina: 45,
     level: 3,
     expReward: 25,
   },
@@ -80,8 +77,6 @@ export const enemyTemplates = {
     status: "mob",
     health: 50,
     defense: 1,
-    // mana: 70,
-    stamina: 35,
     level: 3,
     expReward: 25,
     itemDrop: "healthPotion",
@@ -91,8 +86,6 @@ export const enemyTemplates = {
     status: "mob",
     health: 85,
     defense: 5,
-    // mana: 65,
-    stamina: 40,
     level: 4,
     expReward: 30,
   },
@@ -101,8 +94,6 @@ export const enemyTemplates = {
     status: "mob",
     health: 55,
     defense: 2,
-    // mana: 0,
-    stamina: 80,
     level: 1,
     expReward: 15,
   },
@@ -111,8 +102,6 @@ export const enemyTemplates = {
     status: "mob",
     health: 40,
     defense: 3,
-    // mana: 25,
-    stamina: 85,
     level: 2,
     expReward: 20,
   },
@@ -121,25 +110,22 @@ export const enemyTemplates = {
     status: "boss",
     health: 250,
     defense: 18,
-    // mana: 120,
-    stamina: 80,
     level: 10,
     expReward: 999,
   },
 };
 
-export function createEnemy(enemyKey, currentLocation) {
+export function createEnemy(enemyKey: string): Enemy {
   let template = enemyTemplates[enemyKey];
   let enemy = new Enemy(
     template.name,
     template.status,
     template.health,
     template.defense,
-    // template.mana,
-    template.stamina,
     template.level,
     template.expReward,
-    template.itemDrop,
+    enemyKey,
+    template.itemDrop || null,
     template.isQuestMob,
   );
 

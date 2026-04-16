@@ -30,7 +30,7 @@ export const useCombat = () => {
     let randomMob = getRandomPositiveInteger(0, enemiesArr.length - 1);
     let enemyKey = enemiesArr[randomMob];
     if (randomNum > 0.5) {
-      let enemy = createEnemy(enemyKey, currentLocation);
+      let enemy = createEnemy(enemyKey);
 
       if (!defeatedQuestMobs.includes(enemyKey)) {
         const cries = mobCries[enemy.key];
