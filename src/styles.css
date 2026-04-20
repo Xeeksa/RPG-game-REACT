@@ -18,8 +18,6 @@ button {
 
 /* Иконки в инвентаре*/
 .button-item-icon {
-  /* margin-bottom: 0;
-  padding-bottom: 0; */
   border: none;
   background-color: transparent;
 }
@@ -102,6 +100,14 @@ button {
 }
 
 /* Основная игра экран */
+.restart-button {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #FDD9B5;
+  font-weight: 500;
+}
+
 .container {
   max-width: 1000px;
   margin: 0 auto;
@@ -324,5 +330,14 @@ li {
     padding: 8px 20px;
     font-size: 15px;
   }
+
+  .restart-button {
+    font-size: 0;
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+    background: transparent url('/public/images/restart-arrow.png') no-repeat center / contain;
+    border: none;
+}
 
 }

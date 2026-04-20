@@ -81,6 +81,7 @@ export const GameContainer = () => {
         {inDialog ? null : <LocationInfo />}
 
         <GameLog />
+        <button onClick={restartGame} className='restart-button'>Новая игра</button>
       </section>
     );
   }
