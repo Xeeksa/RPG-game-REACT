@@ -75,11 +75,11 @@ export const GameProvider = ({ children }: {children: ReactNode}) => {
     if(savedData) {
       const data = JSON.parse(savedData);
       setPlayer(new Character(data.player.name, data.player.health, data.player.defense, data.player.level, data.player.experience, data.player.inventory));
-      console.log('Player установлен', data.player)
       setCurrentLocation(data.currentLocation);
       setDefeatedQuestMobs(data.defeatedQuestMobs);
       setDialogCompleted(data.dialogCompleted);
       setHasSaidGoodbye(data.hasSaidGoodbye);
+      setScreen("game");
     }
   }
 

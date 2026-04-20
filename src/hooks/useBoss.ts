@@ -47,7 +47,6 @@ export const useBoss = () => {
 
   // Монолог босса перед поражением
   function showPhrase(index: number): void {
-    console.log("вызов showPhrase с индексом", index);
     if (index < lostBossDialog.length) {
       addLog(lostBossDialog[index], "boss-log");
       setTimeout(() => showPhrase(index + 1), 2000);
