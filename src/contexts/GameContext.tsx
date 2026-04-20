@@ -1,4 +1,4 @@
-import { useState, createContext, useContext, ReactNode } from 'react';
+import { useState, createContext, useContext, ReactNode, useEffect } from 'react';
 import { Character } from "../classes/Character";
 import { Enemy } from '../classes/Enemy';
 
@@ -39,6 +39,8 @@ interface GameContextValue {
         setVictory: (value: boolean) => void;
         lastWarningMessage: string | null;
         setLastWarningMessage: (value: string | null) => void;
+        saveGame: () => void;
+        loadGame: () => void;
 }
 
 export const GameProvider = ({ children }: {children: ReactNode}) => {
@@ -55,7 +57,35 @@ export const GameProvider = ({ children }: {children: ReactNode}) => {
   const [dialogCompleted, setDialogCompleted] = useState(false);
   const [hasSaidGoodbye, setHasSaidGoodbye] = useState(false);
   const [defeatedQuestMobs, setDefeatedQuestMobs] = useState<string[]>([]);
-  const [lastWarningMessage, setLastWarningMessage] = useState<string | null>(null)
+  const [lastWarningMessage, setLastWarningMessage] = useState<string | null>(null);
+
+  function saveGame() {
+    const data = {
+      player: {name: player.name, health: player.health, defense: player.defense, level: player.level, experience: player.experience, inventory: player.inventory},
+      currentLocation, 
+      defeatedQuestMobs, 
+      dialogCompleted, 
+      hasSaidGoodbye,
+    }
+    localStorage.setItem('rpgSave', JSON.stringify(data))
+  }
+  
+  function loadGame() {
+    const savedData = localStorage.getItem('rpgSave');
+    if(savedData) {
+      const data = JSON.parse(savedData);
+      setPlayer(new Character(data.player.name, data.player.health, data.player.defense, data.player.level, data.player.experience, data.player.inventory));
+      console.log('Player установлен', data.player)
+      setCurrentLocation(data.currentLocation);
+      setDefeatedQuestMobs(data.defeatedQuestMobs);
+      setDialogCompleted(data.dialogCompleted);
+      setHasSaidGoodbye(data.hasSaidGoodbye);
+    }
+  }
+
+    useEffect(() => {
+       loadGame();
+  }, [])
 
   const addLog = (text: string, type: string): void => {
     setLogs((prev: LogEntry[]) => [...prev, { text, type, id: crypto.randomUUID() }]);
@@ -77,6 +107,7 @@ export const GameProvider = ({ children }: {children: ReactNode}) => {
     setDialogIndex(0);
     setVictory(false);
     setScreen("start");
+    localStorage.removeItem('rpgSave');
   };
 
   return (
@@ -109,7 +140,9 @@ export const GameProvider = ({ children }: {children: ReactNode}) => {
         setDefeatedQuestMobs,
         setVictory,
         lastWarningMessage, 
-        setLastWarningMessage
+        setLastWarningMessage,
+        saveGame,
+        loadGame
       }}
     >
       {children}

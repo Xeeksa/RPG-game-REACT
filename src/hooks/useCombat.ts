@@ -20,6 +20,7 @@ export const useCombat = () => {
     addLog,
     defeatedQuestMobs,
     setDefeatedQuestMobs,
+    saveGame
   } = useGame();
 
   const checkForEnemy = (currentLocation: string) => {
@@ -115,6 +116,8 @@ export const useCombat = () => {
     } else {
       setPlayer(player);
     }
+
+          saveGame();
   }
 
   // Ход врага
@@ -132,6 +135,8 @@ export const useCombat = () => {
     if (newPlayerHealth == 0) {
       setScreen("gameOver");
       setInCombat(false);
+    } else {
+      saveGame();
     }
   }
 
@@ -152,11 +157,12 @@ export const useCombat = () => {
     if ('canUse' in item && item.canUse && item.canUse(player)) {
       player.useItem(itemKey);
       setPlayer(player);
-      // ПРОПИСАТЬ ЭФФЕКТ ИСПОЛЬЗОВАНИЯ ИТЕМА
       addLog(`Вы использовали ${items[itemKey as keyof Items].name}`, "system-log");
     } else {
       addLog(`Ты не можешь использовать ${items[itemKey as keyof Items].name}`, "system-log");
     }
+
+    saveGame();
   }
 
   return {

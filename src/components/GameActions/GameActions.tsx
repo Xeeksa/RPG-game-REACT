@@ -18,8 +18,9 @@ export const GameActions = () => {
     hasSaidGoodbye,
     setHasSaidGoodbye,
     setDialogCompleted,
-            lastWarningMessage, 
-        setLastWarningMessage
+    lastWarningMessage, 
+    setLastWarningMessage, 
+    saveGame
   } = useGame();
 
   const { playerAttack, handlePlayerDefend, checkForEnemy } = useCombat();
@@ -68,6 +69,8 @@ export const GameActions = () => {
       return;
     }
   };
+
+        saveGame()
 }
 
   const handleLeave = (): void => {
