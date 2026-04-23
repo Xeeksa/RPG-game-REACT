@@ -83,6 +83,7 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
       defeatedQuestMobs,
       dialogCompleted,
       hasSaidGoodbye,
+      logs,
     };
     localStorage.setItem('rpgSave', JSON.stringify(data));
   }
@@ -91,6 +92,7 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
     const savedData = localStorage.getItem('rpgSave');
     if (savedData) {
       const data = JSON.parse(savedData);
+      if (data.logs) setLogs(data.logs);
       setPlayer(
         new Character(
           data.player.name,
@@ -136,6 +138,7 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
     setDialogIndex(0);
     setVictory(false);
     setScreen('start');
+    setDefeatedQuestMobs([]);
     localStorage.removeItem('rpgSave');
   };
 

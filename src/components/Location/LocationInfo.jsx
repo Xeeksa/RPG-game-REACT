@@ -16,6 +16,7 @@ export const LocationInfo = () => {
     setDialogIndex,
     addLog,
     setLastWarningMessage,
+    saveGame,
   } = useGame();
   const { checkForEnemy } = useCombat();
   const { startBossFight } = useBoss();
@@ -43,6 +44,7 @@ export const LocationInfo = () => {
     } else {
       setCurrentLocation(newLocation);
       if (!inCombat) checkForEnemy(newLocation);
+      saveGame();
     }
   };
 
