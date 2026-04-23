@@ -67,7 +67,7 @@ export const useCombat = () => {
       player.addExp(currentEnemy.expReward);
       setPlayer(player);
       addLog(
-        `Ты наносишь ${currentEnemy.health} урона! Темный дух ${currentEnemy.name} повержен. Твоя награда: ${currentEnemy.expReward} опыта.`,
+        `Темный дух ${currentEnemy.name} повержен. Твоя награда: ${currentEnemy.expReward} опыта.`,
         "system-log",
       );
       processLoot();
