@@ -27,9 +27,14 @@ export const useBoss = () => {
 
   // Запуск боя с боссом
   function startBossFight(): void {
-    addLog('Ах ты отродье человеческое!', "boss-log");
     if (checkBossAccess()) {
       let boss: Enemy = createEnemy("ancientDragon");
+    addLog(`${boss.name}: Ах ты отродье человеческое! Сегодня ты умрешь!`, "boss-log");
+
+        addLog(
+          `Тебя атакует ${boss.name} (здоровье: ${boss.health})`,
+          "mob-log",
+        );
       setCurrentEnemy(boss);
       setInCombat(true);
     } else {
