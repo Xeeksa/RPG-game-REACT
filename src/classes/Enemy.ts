@@ -1,4 +1,4 @@
-import { Character } from "./Character";
+import { Character } from './Character';
 
 export const ENEMY_DAMAGE_PER_LEVEL = 2;
 
@@ -40,7 +40,6 @@ export class Enemy extends Character {
     }
     target.takeDamage(totalDamage);
     return totalDamage;
-
   }
 
   takeDamage(damage: number): number {

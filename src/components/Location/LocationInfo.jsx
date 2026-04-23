@@ -1,8 +1,8 @@
-import { useGame } from "../../contexts/GameContext";
-import { locations } from "../../data/locations";
-import { useCombat } from "../../hooks/useCombat";
-import { useBoss } from "../../hooks/useBoss";
-import { npcDialog } from "../../data/dialogs";
+import { useGame } from '../../contexts/GameContext';
+import { locations } from '../../data/locations';
+import { useCombat } from '../../hooks/useCombat';
+import { useBoss } from '../../hooks/useBoss';
+import { npcDialog } from '../../data/dialogs';
 
 export const LocationInfo = () => {
   const {
@@ -15,7 +15,7 @@ export const LocationInfo = () => {
     inDialog,
     setDialogIndex,
     addLog,
-    setLastWarningMessage
+    setLastWarningMessage,
   } = useGame();
   const { checkForEnemy } = useCombat();
   const { startBossFight } = useBoss();
@@ -26,18 +26,18 @@ export const LocationInfo = () => {
     setInDialog(false);
     setLastWarningMessage(null);
 
-    if (newLocation === "echoingCave") {
+    if (newLocation === 'echoingCave') {
       if (
         window.confirm(
-          "Животный страх окутывает тебя при виде будто бы из ниоткуда взявщегося входа впещеру. Ты уверен, что хочешь войти?",
+          'Животный страх окутывает тебя при виде будто бы из ниоткуда взявщегося входа впещеру. Ты уверен, что хочешь войти?',
         )
       ) {
         setCurrentLocation(newLocation);
         startBossFight();
       } else {
         addLog(
-          "Ты отшатываешься от зияющего черного провала входа в пещеру. Возможно, это решение спасет тебе жизнь...",
-          "system-log",
+          'Ты отшатываешься от зияющего черного провала входа в пещеру. Возможно, это решение спасет тебе жизнь...',
+          'system-log',
         );
       }
     } else {

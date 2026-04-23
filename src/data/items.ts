@@ -1,4 +1,4 @@
-import { Character } from "../classes/Character";
+import { Character } from '../classes/Character';
 
 export interface Item {
   name: string;
@@ -8,10 +8,10 @@ export interface Item {
   canUse?: (player: Character) => boolean;
 }
 
-export const items: Record<string, Item> = { 
+export const items: Record<string, Item> = {
   healthPotion: {
-    name: "Отвар целебных трав",
-    type: "consumable",
+    name: 'Отвар целебных трав',
+    type: 'consumable',
     maxInInventory: 2,
     effect: (player: Character) => {
       player.health = player.maxHealth;
@@ -20,12 +20,12 @@ export const items: Record<string, Item> = {
   },
 
   blackMagickStaff: {
-    name: "Посох черной магии",
-    type: "weapon",
+    name: 'Посох черной магии',
+    type: 'weapon',
   },
 
   blackMagickShield: {
-    name: "Щит черной магии",
-    type: "shield",
+    name: 'Щит черной магии',
+    type: 'shield',
   },
 };

@@ -57,7 +57,7 @@ button {
 .start-screen button:hover {
   background-color: #fff;
   color: #333;
-  border: 1px solid #FEE7F0;
+  border: 1px solid #fee7f0;
 }
 
 /* Интро экран */
@@ -96,7 +96,7 @@ button {
 }
 
 #intro-button:hover {
-  background-color: #3b3333
+  background-color: #3b3333;
 }
 
 /* Основная игра экран */
@@ -104,7 +104,7 @@ button {
   position: fixed;
   top: 20px;
   right: 20px;
-  background-color: #FDD9B5;
+  background-color: #fdd9b5;
   font-weight: 500;
 }
 
@@ -125,7 +125,7 @@ h1 {
   display: flex;
   gap: 20px;
   margin-bottom: 20px;
-  margin-top: 10%
+  margin-top: 10%;
 }
 
 .game-area-title {
@@ -155,7 +155,8 @@ h1 {
   min-height: 250px;
 }
 
-.action-buttons, .dialog-buttons {
+.action-buttons,
+.dialog-buttons {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -276,9 +277,9 @@ li {
 /* Адаптив */
 
 @media (max-width: 768px) {
-    .game-area-title {
-  position: absolute;
-  top: 1rem;
+  .game-area-title {
+    position: absolute;
+    top: 1rem;
   }
 
   .introduction {
@@ -309,10 +310,10 @@ li {
 /* Очень маленькие экраны (до 480px) */
 @media (max-width: 480px) {
   .game-area-title {
-  position: absolute;
-  top: 1rem;
+    position: absolute;
+    top: 1rem;
   }
-  
+
   .introduction {
     padding: 20px 15px;
   }
@@ -336,8 +337,8 @@ li {
     height: 30px;
     width: 30px;
     border-radius: 50%;
-    background: transparent url('/public/images/restart-arrow.png') no-repeat center / contain;
+    background: transparent url('/public/images/restart-arrow.png') no-repeat
+      center / contain;
     border: none;
-}
-
+  }
 }

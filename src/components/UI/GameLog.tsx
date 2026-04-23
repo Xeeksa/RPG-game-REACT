@@ -1,9 +1,9 @@
-import { useRef, useEffect } from "react";
-import { useGame } from "../../contexts/GameContext";
+import { useRef, useEffect } from 'react';
+import { useGame } from '../../contexts/GameContext';
 
 export const GameLog = () => {
   const { logs } = useGame();
-  const logRef = useRef<HTMLDivElement | null>(null); 
+  const logRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     if (logRef.current) logRef.current.scrollTop = logRef.current.scrollHeight;
   }, [logs]);

@@ -1,9 +1,8 @@
-import { items, Item } from "../data/items";
+import { items, Item } from '../data/items';
 
 const BASE_DAMAGE_PER_LEVEL = 80;
 
 export class Character {
-  
   isAlive: boolean;
   name: string;
   health: number;
@@ -16,12 +15,12 @@ export class Character {
   expTable: number[];
 
   constructor(
-    name: string = "Странник",
+    name: string = 'Странник',
     health: number = 20,
     defense: number = 0,
     level: number = 1,
     experience: number = 0,
-    inventory: string[] = ["healthPotion"],
+    inventory: string[] = ['healthPotion'],
   ) {
     this.isAlive = true;
     this.name = name;
@@ -38,13 +37,14 @@ export class Character {
   useItem(itemKey: string) {
     const index = this.inventory.indexOf(itemKey);
     let item = items[itemKey] as Item;
-    if(item.effect) {    
+    if (item.effect) {
       item.effect(this);
-}
+    }
     this.inventory.splice(index, 1);
   }
 
-  attack(target: any) { // ИСПРАВИТЬ ТИП ПОСЛЕ КОРРЕКТИРОВКИ КОНСТРУКТОРА ЕНЕМИ
+  attack(target: any) {
+    // ИСПРАВИТЬ ТИП ПОСЛЕ КОРРЕКТИРОВКИ КОНСТРУКТОРА ЕНЕМИ
     let damage = this.level * BASE_DAMAGE_PER_LEVEL;
     let totalDamage = Math.max(1, damage - target.defense);
     return totalDamage;

@@ -1,8 +1,8 @@
-import { useGame } from "../../contexts/GameContext";
-import { PlayerStats } from "../Player/PlayerStats";
-import { GameActions } from "../GameActions/GameActions";
-import { LocationInfo } from "../Location/LocationInfo";
-import { GameLog } from "../UI/GameLog";
+import { useGame } from '../../contexts/GameContext';
+import { PlayerStats } from '../Player/PlayerStats';
+import { GameActions } from '../GameActions/GameActions';
+import { LocationInfo } from '../Location/LocationInfo';
+import { GameLog } from '../UI/GameLog';
 
 export const GameContainer = () => {
   const {
@@ -19,19 +19,19 @@ export const GameContainer = () => {
     setScreen(newScreen);
   };
 
-  if (screen === "start") {
+  if (screen === 'start') {
     return (
       <section className="start-screen">
         <h2>Текстовая RPG Игра</h2>
         <p>Добро пожаловать в игру!</p>
-        <button onClick={() => changeScreen("intro")}>
+        <button onClick={() => changeScreen('intro')}>
           Начать приключение!
         </button>
       </section>
     );
   }
 
-  if (screen === "intro") {
+  if (screen === 'intro') {
     return (
       <section className="introduction">
         <h2 className="intro-title">Пробуждение</h2>
@@ -49,16 +49,16 @@ export const GameContainer = () => {
           от юноши до странного вида лесного эльфа. Вы встаете, чтобы начать
           диалог.
         </p>
-        <button onClick={() => changeScreen("game")}>Встать на ноги</button>
+        <button onClick={() => changeScreen('game')}>Встать на ноги</button>
       </section>
     );
   }
 
-  if (screen === "gameOver") {
+  if (screen === 'gameOver') {
     return (
       <section className="game-over-screen">
         <h2 className="game-over-title">
-          {victory ? "Поздравляю. Ты одолел тьму." : "Игра окончена. Ты погиб"}
+          {victory ? 'Поздравляю. Ты одолел тьму.' : 'Игра окончена. Ты погиб'}
         </h2>
         <button onClick={() => restartGame()}>
           Начать новое путешествие...
@@ -67,7 +67,7 @@ export const GameContainer = () => {
     );
   }
 
-  if (screen === "game") {
+  if (screen === 'game') {
     return (
       <section className="container">
         <section className="game-area">
@@ -81,7 +81,9 @@ export const GameContainer = () => {
         {inDialog ? null : <LocationInfo />}
 
         <GameLog />
-        <button onClick={restartGame} className='restart-button'>Новая игра</button>
+        <button onClick={restartGame} className="restart-button">
+          Новая игра
+        </button>
       </section>
     );
   }

@@ -1,7 +1,7 @@
-import React from "react";
-import { Character } from "../../classes/Character";
-import { useCombat } from "../../hooks/useCombat";
-import { items } from "../../data/items";
+import React from 'react';
+import { Character } from '../../classes/Character';
+import { useCombat } from '../../hooks/useCombat';
+import { items } from '../../data/items';
 
 export const PlayerStats = ({ player }) => {
   const { handleUseItem } = useCombat();

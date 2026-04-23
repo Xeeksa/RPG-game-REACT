@@ -1,11 +1,11 @@
-import { useGame } from "../contexts/GameContext.jsx";
-import { locations } from "../data/locations.js";
-import { createEnemy } from "../data/enemies.js";
-import { getRandomPositiveInteger } from "../utils/helpers.js";
-import { ENEMY_DAMAGE_PER_LEVEL } from "../classes/Enemy.js";
-import { mobCries } from "../data/dialogs.js";
-import { useBoss } from "./useBoss.js";
-import { Items, items } from "../data/items.js";
+import { useGame } from '../contexts/GameContext.jsx';
+import { locations } from '../data/locations.js';
+import { createEnemy } from '../data/enemies.js';
+import { getRandomPositiveInteger } from '../utils/helpers.js';
+import { ENEMY_DAMAGE_PER_LEVEL } from '../classes/Enemy.js';
+import { mobCries } from '../data/dialogs.js';
+import { useBoss } from './useBoss.js';
+import { Item, items } from '../data/items.js';
 
 // Проверка наличия врага на локации
 export const useCombat = () => {
@@ -20,7 +20,7 @@ export const useCombat = () => {
     addLog,
     defeatedQuestMobs,
     setDefeatedQuestMobs,
-    saveGame
+    saveGame,
   } = useGame();
 
   const checkForEnemy = (currentLocation: string) => {
@@ -40,9 +40,9 @@ export const useCombat = () => {
         setInCombat(true);
         addLog(
           `Тебя атакует ${enemy.name.toLowerCase()} (здоровье: ${enemy.health})`,
-          "mob-log",
+          'mob-log',
         );
-        addLog(`${enemy.name}: ${cry}`, "mob-log");
+        addLog(`${enemy.name}: ${cry}`, 'mob-log');
       }
     } else {
       return;
@@ -60,7 +60,7 @@ export const useCombat = () => {
     if (newEnemyHealth > 0) {
       addLog(
         `Ты наносишь ${damage} урона! У врага осталось ${newEnemyHealth} здоровья`,
-        "system-log",
+        'system-log',
       );
       enemyTurn();
     } else {
@@ -68,10 +68,10 @@ export const useCombat = () => {
       setPlayer(player);
       addLog(
         `Темный дух ${currentEnemy.name} повержен. Твоя награда: ${currentEnemy.expReward} опыта.`,
-        "system-log",
+        'system-log',
       );
       processLoot();
-      if (currentEnemy.status === "boss") {
+      if (currentEnemy.status === 'boss') {
         handleBossDefeat();
       }
       setCurrentEnemy(null);
@@ -83,8 +83,11 @@ export const useCombat = () => {
   function processLoot() {
     if (!currentEnemy) return;
     if (currentEnemy.itemDrop) {
-      let itemKey = currentEnemy.itemDrop as keyof Items;
-      let maxCount = 'maxInInventory' in items[itemKey] ? items[itemKey].maxInInventory : undefined;
+      let itemKey = currentEnemy.itemDrop as keyof Item;
+      let maxCount =
+        'maxInInventory' in items[itemKey]
+          ? items[itemKey].maxInInventory
+          : undefined;
       let currentCountItemsInInventory = player.inventory.filter(
         (i) => i === itemKey,
       ).length;
@@ -94,30 +97,33 @@ export const useCombat = () => {
       }
 
       if (maxCount === undefined) {
-                player.inventory.push(currentEnemy.itemDrop);
-        setPlayer(player);
-        addLog(
-          `Ты подбираешь ${items[currentEnemy.itemDrop as keyof Items].name}.`,
-          "system-log",
-        );
-      } else if (typeof maxCount === 'number' && currentCountItemsInInventory < maxCount) {
         player.inventory.push(currentEnemy.itemDrop);
         setPlayer(player);
         addLog(
-          `Ты подбираешь ${items[currentEnemy.itemDrop as keyof Items].name}.`,
-          "system-log",
+          `Ты подбираешь ${items[currentEnemy.itemDrop as keyof Item].name}.`,
+          'system-log',
+        );
+      } else if (
+        typeof maxCount === 'number' &&
+        currentCountItemsInInventory < maxCount
+      ) {
+        player.inventory.push(currentEnemy.itemDrop);
+        setPlayer(player);
+        addLog(
+          `Ты подбираешь ${items[currentEnemy.itemDrop as keyof Item].name}.`,
+          'system-log',
         );
       } else {
         addLog(
-          `${items[currentEnemy.itemDrop as keyof Items].name} остается лежать на земле. Ты не можешь унести так много.`,
-          "system-log",
+          `${items[currentEnemy.itemDrop as keyof Item].name} остается лежать на земле. Ты не можешь унести так много.`,
+          'system-log',
         );
       }
     } else {
       setPlayer(player);
     }
 
-          saveGame();
+    saveGame();
   }
 
   // Ход врага
@@ -129,11 +135,11 @@ export const useCombat = () => {
     setPlayer(player);
     addLog(
       `Ты получил ${damage} урона! У тебя осталось ${newPlayerHealth} здоровья.`,
-      "system-log",
+      'system-log',
     );
 
     if (newPlayerHealth == 0) {
-      setScreen("gameOver");
+      setScreen('gameOver');
       setInCombat(false);
     } else {
       saveGame();
@@ -144,22 +150,28 @@ export const useCombat = () => {
   function handlePlayerDefend() {
     player.defend();
     enemyTurn();
-    addLog("Ты сдержал атаку!", "system-log");
+    addLog('Ты сдержал атаку!', 'system-log');
   }
 
   // Использование предмета игроком
   function handleUseItem(itemKey: string) {
-    let item = items[itemKey as keyof Items];
+    let item = items[itemKey as keyof Item];
     if (!player.inventory.includes(itemKey)) {
-      addLog("Такого предмета нет в твоем инвентаре!", "system-log");
-      return
+      addLog('Такого предмета нет в твоем инвентаре!', 'system-log');
+      return;
     }
     if ('canUse' in item && item.canUse && item.canUse(player)) {
       player.useItem(itemKey);
       setPlayer(player);
-      addLog(`Вы использовали ${items[itemKey as keyof Items].name}`, "system-log");
+      addLog(
+        `Вы использовали ${items[itemKey as keyof Item].name}`,
+        'system-log',
+      );
     } else {
-      addLog(`Ты не можешь использовать ${items[itemKey as keyof Items].name}`, "system-log");
+      addLog(
+        `Ты не можешь использовать ${items[itemKey as keyof Item].name}`,
+        'system-log',
+      );
     }
 
     saveGame();

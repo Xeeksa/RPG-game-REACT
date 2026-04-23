@@ -1,8 +1,8 @@
-import { useGame } from "../../contexts/GameContext";
-import { useCombat } from "../../hooks/useCombat";
-import { locations, LocationGame } from "../../data/locations";
-import { npcDialog } from "../../data/dialogs";
-import { useEffect } from "react";
+import { useGame } from '../../contexts/GameContext';
+import { useCombat } from '../../hooks/useCombat';
+import { locations, LocationGame } from '../../data/locations';
+import { npcDialog } from '../../data/dialogs';
+import { useEffect } from 'react';
 
 export const GameActions = () => {
   const {
@@ -18,9 +18,9 @@ export const GameActions = () => {
     hasSaidGoodbye,
     setHasSaidGoodbye,
     setDialogCompleted,
-    lastWarningMessage, 
-    setLastWarningMessage, 
-    saveGame
+    lastWarningMessage,
+    setLastWarningMessage,
+    saveGame,
   } = useGame();
 
   const { playerAttack, handlePlayerDefend, checkForEnemy } = useCombat();
@@ -38,12 +38,12 @@ export const GameActions = () => {
   useEffect(() => {
     if (!inDialog) return;
     if (dialogIndex < npcDialog.length) {
-      addLog(`${npc}: ${npcDialog[dialogIndex]}`, "npc-log");
+      addLog(`${npc}: ${npcDialog[dialogIndex]}`, 'npc-log');
     } else {
       if (!hasSaidGoodbye) {
         addLog(
           `${npc}: Ступай прочь. Я устал. Мне больше нечего сказать...`,
-          "npc-log",
+          'npc-log',
         );
         setHasSaidGoodbye(true);
         setDialogCompleted(true);
@@ -54,24 +54,21 @@ export const GameActions = () => {
   const handleTakePotion = (): void => {
     const warningMessageNpc = `${npc}: Твоя жадность обескураживает, Путник. Сначала используй свои зелья, а потом оббирай старика!`;
 
-    if (!player.inventory.includes("healthPotion")) {
-      player.inventory.push("healthPotion");
+    if (!player.inventory.includes('healthPotion')) {
+      player.inventory.push('healthPotion');
       setPlayer(player);
-      addLog(`Зелье получено!`, "system-log");
-        setLastWarningMessage(null);
+      addLog(`Зелье получено!`, 'system-log');
+      setLastWarningMessage(null);
     } else {
       if (lastWarningMessage !== warningMessageNpc) {
         setLastWarningMessage(warningMessageNpc);
-      addLog(
-        warningMessageNpc,
-        "npc-log",
-      );
-      return;
+        addLog(warningMessageNpc, 'npc-log');
+        return;
+      }
     }
-  };
 
-        saveGame()
-}
+    saveGame();
+  };
 
   const handleLeave = (): void => {
     setInDialog(false);

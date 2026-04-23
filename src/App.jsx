@@ -1,4 +1,4 @@
-import { GameContainer } from "./components/Layout/GameContainer";
+import { GameContainer } from './components/Layout/GameContainer';
 
 const App = () => {
   return <GameContainer />;
