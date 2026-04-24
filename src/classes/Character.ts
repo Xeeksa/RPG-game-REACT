@@ -43,12 +43,12 @@ export class Character {
     this.inventory.splice(index, 1);
   }
 
-  attack(target: any) {
+  attack(target: Character) {
     // ИСПРАВИТЬ ТИП ПОСЛЕ КОРРЕКТИРОВКИ КОНСТРУКТОРА ЕНЕМИ
     let damage = this.level * BASE_DAMAGE_PER_LEVEL;
     let totalDamage = Math.max(1, damage - target.defense);
     return totalDamage;
-  }
+  }git 
 
   defend() {
     this.isDefending = true;
