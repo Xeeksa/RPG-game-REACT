@@ -18,5 +18,5 @@
     "allowJs": true // УБРАТЬ посе полноймиграции
   },
   "include": ["src"],
-  
+  "types": ["vitest/globals"]
 }
