@@ -260,18 +260,35 @@ li {
   height: 100vh;
   padding-top: 25%;
   text-align: center;
-  background-color: black;
 }
 
 .game-over-screen button {
   padding: 15px;
   border-radius: 5px;
-  background-color: #cf9b8f;
 }
 
 .game-over-title {
-  color: #a9a9a9;
   margin-bottom: 80px;
+}
+
+.game-over-screen.win {
+  background: #FFF3E0;
+  color: #8B5A2B;
+}
+
+.game-over-screen.win button {
+  background-color: #FFB74D;
+  color: #4E2E1E;
+}
+
+.game-over-screen.lose {
+  background: #2C2C2C;
+  color: #B0B0B0;
+}
+
+.game-over-screen.lose button {
+  background-color: #6E2C2C;
+  color: #E0E0E0;
 }
 
 /* Адаптив */

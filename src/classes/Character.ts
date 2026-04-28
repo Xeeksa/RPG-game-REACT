@@ -31,7 +31,7 @@ export class Character {
     this.level = level;
     this.experience = experience;
     this.inventory = inventory;
-    this.expTable = [49, 79, 139, 239, 349, 499, 539, 689, 849, 999];
+    this.expTable = [49, 129, 239, 349, 499, 539, 689, 849, 999];
   }
 
   useItem(itemKey: string) {
@@ -43,8 +43,7 @@ export class Character {
     this.inventory.splice(index, 1);
   }
 
-  attack(target: any) {
-    // ИСПРАВИТЬ ТИП ПОСЛЕ КОРРЕКТИРОВКИ КОНСТРУКТОРА ЕНЕМИ
+  attack(target: Character): number {
     let damage = this.level * BASE_DAMAGE_PER_LEVEL;
     let totalDamage = Math.max(1, damage - target.defense);
     return totalDamage;
@@ -70,6 +69,7 @@ export class Character {
   }
 
   addExp(points: number) {
+    if(this.level === 10) return;
     this.experience += points;
     while (this.experience >= this.expTable[this.level - 1]) this.levelUp();
   }

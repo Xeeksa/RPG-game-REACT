@@ -63,12 +63,18 @@ export const useCombat = () => {
       );
       enemyTurn();
     } else {
-      player.addExp(currentEnemy.expReward);
+      if (player.level < 10) {
+player.addExp(currentEnemy.expReward);
       setPlayer(player);
       addLog(
         `Темный дух ${currentEnemy.name} повержен. Твоя награда: ${currentEnemy.expReward} опыта.`,
+        'system-log')
+      } else {
+        addLog(
+        `Темный дух ${currentEnemy.name} повержен.`,
         'system-log',
       );
+      }
       processLoot();
       if (currentEnemy.status === 'boss') {
         handleBossDefeat();

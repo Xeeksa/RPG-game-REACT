@@ -56,7 +56,7 @@ export const GameContainer = () => {
 
   if (screen === 'gameOver') {
     return (
-      <section className="game-over-screen">
+      <section className={`game-over-screen ${victory ? 'win' : 'lose'}`}>
         <h2 className="game-over-title">
           {victory ? 'Поздравляю. Ты одолел тьму.' : 'Игра окончена. Ты погиб'}
         </h2>
