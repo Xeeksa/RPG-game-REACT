@@ -1,10 +1,4 @@
-import {
-  useState,
-  createContext,
-  useContext,
-  ReactNode,
-  useEffect,
-} from 'react';
+import { useState, createContext, useContext, ReactNode } from 'react';
 import { Character } from '../classes/Character';
 import { Enemy } from '../classes/Enemy';
 
@@ -47,8 +41,6 @@ interface GameContextValue {
   setVictory: (value: boolean) => void;
   lastWarningMessage: string | null;
   setLastWarningMessage: (value: string | null) => void;
-  saveGame: () => void;
-  loadGame: () => void;
 }
 
 export const GameProvider = ({ children }: { children: ReactNode }) => {
@@ -68,52 +60,6 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
   const [lastWarningMessage, setLastWarningMessage] = useState<string | null>(
     null,
   );
-
-  function saveGame() {
-    const data = {
-      player: {
-        name: player.name,
-        health: player.health,
-        defense: player.defense,
-        level: player.level,
-        experience: player.experience,
-        inventory: player.inventory,
-      },
-      currentLocation,
-      defeatedQuestMobs,
-      dialogCompleted,
-      hasSaidGoodbye,
-      logs,
-    };
-    localStorage.setItem('rpgSave', JSON.stringify(data));
-  }
-
-  function loadGame() {
-    const savedData = localStorage.getItem('rpgSave');
-    if (savedData) {
-      const data = JSON.parse(savedData);
-      if (data.logs) setLogs(data.logs);
-      setPlayer(
-        new Character(
-          data.player.name,
-          data.player.health,
-          data.player.defense,
-          data.player.level,
-          data.player.experience,
-          data.player.inventory,
-        ),
-      );
-      setCurrentLocation(data.currentLocation);
-      setDefeatedQuestMobs(data.defeatedQuestMobs);
-      setDialogCompleted(data.dialogCompleted);
-      setHasSaidGoodbye(data.hasSaidGoodbye);
-      setScreen('game');
-    }
-  }
-
-  useEffect(() => {
-    loadGame();
-  }, []);
 
   const addLog = (text: string, type: string): void => {
     setLogs((prev: LogEntry[]) => [
@@ -173,8 +119,6 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
         setVictory,
         lastWarningMessage,
         setLastWarningMessage,
-        saveGame,
-        loadGame,
       }}
     >
       {children}

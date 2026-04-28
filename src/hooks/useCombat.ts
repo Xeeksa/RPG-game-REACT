@@ -20,7 +20,6 @@ export const useCombat = () => {
     addLog,
     defeatedQuestMobs,
     setDefeatedQuestMobs,
-    saveGame,
   } = useGame();
 
   const checkForEnemy = (currentLocation: string) => {
@@ -122,8 +121,6 @@ export const useCombat = () => {
     } else {
       setPlayer(player);
     }
-
-    saveGame();
   }
 
   // Ход врага
@@ -141,8 +138,6 @@ export const useCombat = () => {
     if (newPlayerHealth == 0) {
       setScreen('gameOver');
       setInCombat(false);
-    } else {
-      saveGame();
     }
   }
 
@@ -173,8 +168,6 @@ export const useCombat = () => {
         'system-log',
       );
     }
-
-    saveGame();
   }
 
   return {
