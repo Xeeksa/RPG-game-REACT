@@ -3,11 +3,10 @@ import { useCombat } from '../../hooks/useCombat';
 import { locations, LocationGame } from '../../data/locations';
 import { npcDialog } from '../../data/dialogs';
 import { useEffect } from 'react';
+import { useInventoryStore } from '../../stores/useInventoryStore';
 
 export const GameActions = () => {
   const {
-    player,
-    setPlayer,
     inCombat,
     inDialog,
     setInDialog,
@@ -25,6 +24,8 @@ export const GameActions = () => {
   const { playerAttack, handlePlayerDefend, checkForEnemy } = useCombat();
   const location: LocationGame = locations[currentLocation];
   const npc = location.npc?.name;
+  const items = useInventoryStore((state) => state.items);
+  const addItem = useInventoryStore((state) => state.addItem);
 
   const handleExplore = (): void => {
     checkForEnemy(currentLocation);
@@ -53,9 +54,8 @@ export const GameActions = () => {
   const handleTakePotion = (): void => {
     const warningMessageNpc = `${npc}: Твоя жадность обескураживает, Путник. Сначала используй свои зелья, а потом оббирай старика!`;
 
-    if (!player.inventory.includes('healthPotion')) {
-      player.inventory.push('healthPotion');
-      setPlayer(player);
+    if (!items.includes('healthPotion')) {
+      addItem('healthPotion');
       addLog(`Зелье получено!`, 'system-log');
       setLastWarningMessage(null);
     } else {

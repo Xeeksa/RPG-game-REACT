@@ -13,7 +13,8 @@
     "test": "vitest"
   },
   "dependencies": {
-    "serve": "^14.0.0"
+    "serve": "^14.0.0",
+    "zustand": "^5.0.15"
   },
   "keywords": [],
   "author": "",

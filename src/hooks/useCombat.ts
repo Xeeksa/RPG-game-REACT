@@ -6,10 +6,16 @@ import { ENEMY_DAMAGE_PER_LEVEL } from '../classes/Enemy.js';
 import { mobCries } from '../data/dialogs.js';
 import { useBoss } from './useBoss.js';
 import { Item, items } from '../data/items.js';
+import { useInventoryStore } from '../stores/useInventoryStore.js';
 
 // Проверка наличия врага на локации
 export const useCombat = () => {
   const { handleBossDefeat } = useBoss();
+
+  const inventoryItems  = useInventoryStore((state) => state.items);
+  const addItem = useInventoryStore((state) => state.addItem);
+  const removeItem = useInventoryStore((state) => state.removeItem);
+
   const {
     player,
     setPlayer,
@@ -20,9 +26,10 @@ export const useCombat = () => {
     addLog,
     defeatedQuestMobs,
     setDefeatedQuestMobs,
-  } = useGame();
+  } = useGame(); 
 
   const checkForEnemy = (currentLocation: string) => {
+    
     const enemiesArr = locations[currentLocation].enemies;
 
     if (!enemiesArr || enemiesArr.length == 0) return;
@@ -64,7 +71,7 @@ export const useCombat = () => {
       enemyTurn();
     } else {
       if (player.level < 10) {
-player.addExp(currentEnemy.expReward);
+      player.addExp(currentEnemy.expReward);
       setPlayer(player);
       addLog(
         `Темный дух ${currentEnemy.name} повержен. Твоя награда: ${currentEnemy.expReward} опыта.`,
@@ -93,7 +100,7 @@ player.addExp(currentEnemy.expReward);
         'maxInInventory' in items[itemKey]
           ? items[itemKey].maxInInventory
           : undefined;
-      let currentCountItemsInInventory = player.inventory.filter(
+      let currentCountItemsInInventory = inventoryItems.filter(
         (i) => i === itemKey,
       ).length;
 
@@ -102,8 +109,7 @@ player.addExp(currentEnemy.expReward);
       }
 
       if (maxCount === undefined) {
-        player.inventory.push(currentEnemy.itemDrop);
-        setPlayer(player);
+        addItem(currentEnemy.itemDrop)
         addLog(
           `Ты подбираешь ${items[currentEnemy.itemDrop as keyof Item].name}.`,
           'system-log',
@@ -112,8 +118,7 @@ player.addExp(currentEnemy.expReward);
         typeof maxCount === 'number' &&
         currentCountItemsInInventory < maxCount
       ) {
-        player.inventory.push(currentEnemy.itemDrop);
-        setPlayer(player);
+        addItem(currentEnemy.itemDrop);
         addLog(
           `Ты подбираешь ${items[currentEnemy.itemDrop as keyof Item].name}.`,
           'system-log',
@@ -124,8 +129,6 @@ player.addExp(currentEnemy.expReward);
           'system-log',
         );
       }
-    } else {
-      setPlayer(player);
     }
   }
 
@@ -157,13 +160,12 @@ player.addExp(currentEnemy.expReward);
   // Использование предмета игроком
   function handleUseItem(itemKey: string) {
     let item = items[itemKey as keyof Item];
-    if (!player.inventory.includes(itemKey)) {
+    if (!inventoryItems.includes(itemKey)) {
       addLog('Такого предмета нет в твоем инвентаре!', 'system-log');
       return;
     }
     if ('canUse' in item && item.canUse && item.canUse(player)) {
-      player.useItem(itemKey);
-      setPlayer(player);
+      removeItem(itemKey);
       addLog(
         `Вы использовали ${items[itemKey as keyof Item].name}`,
         'system-log',

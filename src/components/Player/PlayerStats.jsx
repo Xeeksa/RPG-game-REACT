@@ -2,9 +2,13 @@ import React from 'react';
 import { Character } from '../../classes/Character';
 import { useCombat } from '../../hooks/useCombat';
 import { items } from '../../data/items';
+import { useInventoryStore } from '../../stores/useInventoryStore';
 
 export const PlayerStats = ({ player }) => {
   const { handleUseItem } = useCombat();
+
+  const items = useInventoryStore((state) => state.items)
+
   function handleItemClick(itemKey) {
     handleUseItem(itemKey);
   }
@@ -19,9 +23,10 @@ export const PlayerStats = ({ player }) => {
       <div className="inventory-section">
         <p>Инвентарь:</p>
         <ul className="inventory-list">
-          {player.inventory.map((itemKey) => (
+          {items.map((itemKey) => (
             <li key={crypto.randomUUID()}>
               <button
+              // handleItem позднее заменить на removeItem из стора!
                 onClick={() => handleItemClick(itemKey)}
                 className="button-item-icon"
               >
