@@ -7,7 +7,7 @@ import { useInventoryStore } from '../../stores/useInventoryStore';
 export const PlayerStats = ({ player }) => {
   const { handleUseItem } = useCombat();
 
-  const items = useInventoryStore((state) => state.items)
+  const inventoryItems = useInventoryStore((state) => state.items)
 
   function handleItemClick(itemKey) {
     handleUseItem(itemKey);
@@ -23,7 +23,7 @@ export const PlayerStats = ({ player }) => {
       <div className="inventory-section">
         <p>Инвентарь:</p>
         <ul className="inventory-list">
-          {items.map((itemKey) => (
+          {inventoryItems.map((itemKey) => (
             <li key={crypto.randomUUID()}>
               <button
               // handleItem позднее заменить на removeItem из стора!
