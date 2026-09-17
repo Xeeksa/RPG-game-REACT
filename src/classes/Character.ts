@@ -35,12 +35,10 @@ export class Character {
   }
 
   useItem(itemKey: string) {
-    const index = this.inventory.indexOf(itemKey);
     let item = items[itemKey] as Item;
     if (item.effect) {
       item.effect(this);
     }
-    this.inventory.splice(index, 1);
   }
 
   attack(target: Character): number {
