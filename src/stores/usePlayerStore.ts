@@ -1,4 +1,7 @@
 import { create } from "zustand";
+import { items, Item } from '../data/items';
+import { useInventoryStore } from "./useInventoryStore";
+import { PlayerSnapshot } from "../data/items";
 
 // const BASE_DAMAGE_PER_LEVEL = 80;
 
@@ -19,7 +22,7 @@ interface PlayerState {
 
 const expTable = [49, 129, 239, 349, 499, 539, 689, 849, 999];
 
-export const usePlayerStore = create<PlayerState>((set) => ({
+export const usePlayerStore = create<PlayerState>((set, get) => ({
   name: 'Кто я?',
   health: 20,
   maxHealth: 20,
@@ -57,7 +60,21 @@ export const usePlayerStore = create<PlayerState>((set) => ({
 
   levelUp: () => {},
 
-  useItem: (itemKey: string) => {},
+  useItem(itemKey: string) {
+    let item = items[itemKey] as Item;
+  
+    if (item.effect) {
+        const current = get();
+        const snapshot: PlayerSnapshot = {
+          health: current.health,
+          maxHealth: current.maxHealth,
+        };
+        const changes = item.effect(snapshot);
+        set(changes);
+    }
+  
+      useInventoryStore.getState().removeItem(itemKey)
+  },
 
   attak: () => {},
 

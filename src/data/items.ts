@@ -1,4 +1,4 @@
-interface PlayerSnapshot {
+export interface PlayerSnapshot {
   health: number;
   maxHealth: number;
 }

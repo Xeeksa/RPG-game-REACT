@@ -1,8 +1,7 @@
-import { items, Item } from '../data/items';
 
 const BASE_DAMAGE_PER_LEVEL = 80;
 
-export class Character {
+class Character {
   isAlive: boolean;
   name: string;
   health: number;
@@ -36,9 +35,17 @@ export class Character {
 
   useItem(itemKey: string) {
     let item = items[itemKey] as Item;
+
     if (item.effect) {
-      item.effect(this);
+      const current = get();
+      const changes = item.effect({
+        health: current.health,
+        maxHealth: current.maxHealth,
+      });
+      set(changes);
     }
+
+    useInventoryStore.getState().removeItem(itemKey)
   }
 
   attack(target: Character): number {
