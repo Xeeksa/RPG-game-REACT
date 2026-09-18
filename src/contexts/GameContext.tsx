@@ -1,6 +1,4 @@
 import { useState, createContext, useContext, ReactNode } from 'react';
-import { Character } from '../classes/Character';
-import { Enemy } from '../classes/Enemy';
 
 const GameContext = createContext<GameContextValue | null>(null);
 

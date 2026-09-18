@@ -3,6 +3,10 @@ export interface PlayerSnapshot {
   maxHealth: number;
 }
 
+export interface EnemySnapshot {
+  defense: number;
+}
+
 export interface Item {
   name: string;
   type: string;
@@ -17,7 +21,7 @@ export const items: Record<string, Item> = {
     type: 'consumable',
     maxInInventory: 2,
     effect: (player) => ({
-      health: player.maxHealth
+      health: player.maxHealth,
     }),
     canUse: (player) => player.health < player.maxHealth,
   },
