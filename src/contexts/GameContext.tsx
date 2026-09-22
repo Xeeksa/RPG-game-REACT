@@ -1,4 +1,5 @@
 import { useState, createContext, useContext, ReactNode } from 'react';
+import { Enemy } from '../data/enemies';
 
 const GameContext = createContext<GameContextValue | null>(null);
 
@@ -9,8 +10,6 @@ interface LogEntry {
 }
 
 interface GameContextValue {
-  player: Character;
-  setPlayer: (player: Character) => void;
   currentLocation: string;
   setCurrentLocation: (location: string) => void;
   inCombat: boolean;
@@ -43,7 +42,6 @@ interface GameContextValue {
 
 export const GameProvider = ({ children }: { children: ReactNode }) => {
   // Состояния
-  const [player, setPlayer] = useState(new Character('Кто я?'));
   const [currentLocation, setCurrentLocation] = useState('paradiseGlade');
   const [inCombat, setInCombat] = useState(false);
   const [inDialog, setInDialog] = useState(false);
@@ -73,7 +71,6 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const restartGame = (): void => {
-    setPlayer(new Character('Кто я?'));
     setCurrentLocation('paradiseGlade');
     setInCombat(false);
     setCurrentEnemy(null);
@@ -91,8 +88,6 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
   return (
     <GameContext.Provider
       value={{
-        player,
-        setPlayer,
         currentLocation,
         setCurrentLocation,
         inCombat,

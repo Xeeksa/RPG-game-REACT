@@ -18,8 +18,6 @@ export const useCombat = () => {
   const removeItem = useInventoryStore((state) => state.removeItem);
 
   const {
-    player,
-    setPlayer,
     currentEnemy,
     setCurrentEnemy,
     setScreen,
