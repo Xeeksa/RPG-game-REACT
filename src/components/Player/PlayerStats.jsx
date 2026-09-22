@@ -2,9 +2,15 @@ import React from 'react';
 import { useCombat } from '../../hooks/useCombat';
 import { items } from '../../data/items';
 import { useInventoryStore } from '../../stores/useInventoryStore';
+import { usePlayerStore } from '../../stores/usePlayerStore';
 
-export const PlayerStats = ({ player }) => {
+export const PlayerStats = () => {
   const { handleUseItem } = useCombat();
+  const name = usePlayerStore((state) => state.name);
+  const health = usePlayerStore((state) => state.health);
+  const defense = usePlayerStore((state) => state.defense);
+  const level = usePlayerStore((state) => state.level);
+  const experience = usePlayerStore((state) => state.experience);
 
   const inventoryItems = useInventoryStore((state) => state.items)
 
@@ -14,11 +20,11 @@ export const PlayerStats = ({ player }) => {
 
   return (
     <section className="player-stats">
-      <h2>{player.name}</h2>
-      <div>Здоровье: {player.health}</div>
-      <div>Защита: {player.defense}</div>
-      <div>Уровень: {player.level}</div>
-      <div>Опыт: {player.experience}</div>
+      <h2>{name}</h2>
+      <div>Здоровье: {health}</div>
+      <div>Защита: {defense}</div>
+      <div>Уровень: {level}</div>
+      <div>Опыт: {experience}</div>
       <div className="inventory-section">
         <p>Инвентарь:</p>
         <ul className="inventory-list">

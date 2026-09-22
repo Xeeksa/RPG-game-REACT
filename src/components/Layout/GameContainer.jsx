@@ -73,7 +73,7 @@ export const GameContainer = () => {
         <section className="game-area">
           <h2 className="game-area-title">Хроники Запустения</h2>
           <div className="stats">
-            <PlayerStats player={player} />
+            <PlayerStats />
           </div>
           <GameActions />
         </section>
