@@ -1,5 +1,3 @@
-import { Enemy } from '../classes/Enemy';
-
 export interface EnemyTemplate {
   name: string;
   status: string;
@@ -9,6 +7,10 @@ export interface EnemyTemplate {
   expReward: number;
   isQuestMob?: boolean;
   itemDrop?: string;
+}
+
+export interface Enemy extends EnemyTemplate {
+  key: string;
 }
 
 export const enemyTemplates: Record<string, EnemyTemplate> = {
@@ -115,21 +117,9 @@ export const enemyTemplates: Record<string, EnemyTemplate> = {
   },
 };
 
-export function createEnemy(enemyKey: string): Enemy {
+export function createEnemy(enemyKey: string): Enemy{
   let template = enemyTemplates[enemyKey];
-  let enemy = new Enemy(
-    template.name,
-    template.status,
-    template.health,
-    template.defense,
-    template.level,
-    template.expReward,
-    enemyKey,
-    template.itemDrop || null,
-    template.isQuestMob,
-  );
-
-  enemy.key = enemyKey;
+  let enemy = {... template, key: enemyKey}
 
   return enemy;
 }

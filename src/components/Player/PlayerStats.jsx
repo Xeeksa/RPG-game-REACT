@@ -1,5 +1,4 @@
 import React from 'react';
-import { Character } from '../../classes/Character';
 import { useCombat } from '../../hooks/useCombat';
 import { items } from '../../data/items';
 import { useInventoryStore } from '../../stores/useInventoryStore';

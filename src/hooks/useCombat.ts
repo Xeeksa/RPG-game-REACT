@@ -2,11 +2,12 @@ import { useGame } from '../contexts/GameContext.jsx';
 import { locations } from '../data/locations.js';
 import { createEnemy } from '../data/enemies.js';
 import { getRandomPositiveInteger } from '../utils/helpers.js';
-import { ENEMY_DAMAGE_PER_LEVEL } from '../classes/Enemy.js';
 import { mobCries } from '../data/dialogs.js';
 import { useBoss } from './useBoss.js';
 import { Item, items } from '../data/items.js';
 import { useInventoryStore } from '../stores/useInventoryStore.js';
+
+export const ENEMY_DAMAGE_PER_LEVEL = 2;
 
 // Проверка наличия врага на локации
 export const useCombat = () => {
