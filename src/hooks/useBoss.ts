@@ -1,11 +1,9 @@
 import { useGame } from '../contexts/GameContext';
 import { createEnemy } from '../data/enemies';
 import { lostBossDialog } from '../data/dialogs';
-import { Enemy } from '../classes/Enemy';
 
 export const useBoss = () => {
   const {
-    player,
     setCurrentEnemy,
     setInCombat,
     setVictory,

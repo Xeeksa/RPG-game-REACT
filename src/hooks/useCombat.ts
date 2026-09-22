@@ -9,13 +9,12 @@ import { useInventoryStore } from '../stores/useInventoryStore.js';
 import { usePlayerStore } from '../stores/usePlayerStore.js';
 
 export const ENEMY_DAMAGE_PER_LEVEL = 2;
-const player = usePlayerStore.getState();
 
 // Проверка наличия врага на локации
 export const useCombat = () => {
   const { handleBossDefeat } = useBoss();
 
-  const inventoryItems  = useInventoryStore((state) => state.items);
+  const inventoryItems = useInventoryStore((state) => state.items);
   const addItem = useInventoryStore((state) => state.addItem);
   const removeItem = useInventoryStore((state) => state.removeItem);
 
@@ -58,6 +57,8 @@ export const useCombat = () => {
 
   // Атака игрока
   function playerAttack() {
+    const player = usePlayerStore.getState();
+
     if (!currentEnemy) return;
     let damage = player.attack(currentEnemy);
     let newEnemyHealth = currentEnemy.health - damage;
@@ -134,16 +135,18 @@ export const useCombat = () => {
 
   // Ход врага
   function enemyTurn() {
+      const player = usePlayerStore.getState();
+
     if (!currentEnemy) return;
     let damage = currentEnemy.level * ENEMY_DAMAGE_PER_LEVEL;
-    let newPlayerHealth = Math.max(0, player.health - damage);
-    player.health = newPlayerHealth;
+    usePlayerStore.getState().takeDamage(damage);
+    const newHealth = usePlayerStore.getState().health;
     addLog(
-      `Ты получил ${damage} урона! У тебя осталось ${newPlayerHealth} здоровья.`,
+      `Ты получил ${damage} урона! У тебя осталось ${newHealth} здоровья.`,
       'system-log',
     );
 
-    if (newPlayerHealth == 0) {
+    if (newHealth == 0) {
       setScreen('gameOver');
       setInCombat(false);
     }
@@ -151,6 +154,8 @@ export const useCombat = () => {
 
   // Защита игрока (пока) 100%
   function handlePlayerDefend() {
+      const player = usePlayerStore.getState();
+
     player.defend();
     enemyTurn();
     addLog('Ты сдержал атаку!', 'system-log');
@@ -158,13 +163,15 @@ export const useCombat = () => {
 
   // Использование предмета игроком
   function handleUseItem(itemKey: string) {
+    const player = usePlayerStore.getState();
+
     let item = items[itemKey as keyof Item];
     if (!inventoryItems.includes(itemKey)) {
       addLog('Такого предмета нет в твоем инвентаре!', 'system-log');
       return;
     }
     if ('canUse' in item && item.canUse && item.canUse(player)) {
-      removeItem(itemKey);
+      usePlayerStore.getState().useItem(itemKey);
       addLog(
         `Вы использовали ${items[itemKey as keyof Item].name}`,
         'system-log',
