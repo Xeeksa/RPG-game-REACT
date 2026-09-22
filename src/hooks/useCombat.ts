@@ -6,8 +6,10 @@ import { mobCries } from '../data/dialogs.js';
 import { useBoss } from './useBoss.js';
 import { Item, items } from '../data/items.js';
 import { useInventoryStore } from '../stores/useInventoryStore.js';
+import { usePlayerStore } from '../stores/usePlayerStore.js';
 
 export const ENEMY_DAMAGE_PER_LEVEL = 2;
+const player = usePlayerStore.getState();
 
 // Проверка наличия врага на локации
 export const useCombat = () => {
@@ -71,7 +73,6 @@ export const useCombat = () => {
     } else {
       if (player.level < 10) {
       player.addExp(currentEnemy.expReward);
-      setPlayer(player);
       addLog(
         `Темный дух ${currentEnemy.name} повержен. Твоя награда: ${currentEnemy.expReward} опыта.`,
         'system-log')
@@ -137,7 +138,6 @@ export const useCombat = () => {
     let damage = currentEnemy.level * ENEMY_DAMAGE_PER_LEVEL;
     let newPlayerHealth = Math.max(0, player.health - damage);
     player.health = newPlayerHealth;
-    setPlayer(player);
     addLog(
       `Ты получил ${damage} урона! У тебя осталось ${newPlayerHealth} здоровья.`,
       'system-log',
