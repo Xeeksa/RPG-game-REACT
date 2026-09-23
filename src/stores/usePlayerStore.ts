@@ -24,6 +24,7 @@ interface PlayerState {
   attack: (target: EnemySnapshot) => number;
   heal: () => void;
   useItem: (itemKey: string) => void;
+  reset: () => void;
 }
 
 const expTable = [49, 129, 239, 349, 499, 539, 689, 849, 999];
@@ -111,4 +112,15 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
 
     useInventoryStore.getState().removeItem(itemKey);
   },
+
+  reset: () =>
+    set({
+      name: 'Кто я?',
+      health: 20,
+      maxHealth: 20,
+      defense: 0,
+      isDefending: false,
+      level: 1,
+      experience: 0,
+    }),
 }));

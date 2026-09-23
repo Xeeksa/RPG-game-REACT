@@ -1,5 +1,7 @@
 import { useState, createContext, useContext, ReactNode } from 'react';
 import { Enemy } from '../data/enemies';
+import { usePlayerStore } from '../stores/usePlayerStore';
+import { useInventoryStore } from '../stores/useInventoryStore';
 
 const GameContext = createContext<GameContextValue | null>(null);
 
@@ -83,6 +85,8 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
     localStorage.removeItem('rpgSave');
     setHasSaidGoodbye(false);
     setDialogCompleted(false);
+    usePlayerStore.getState().reset();
+    useInventoryStore.getState().reset();
   };
 
   return (
