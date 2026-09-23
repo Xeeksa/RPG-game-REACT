@@ -1,21 +1,17 @@
 import { useGame } from '../contexts/GameContext';
 import { createEnemy } from '../data/enemies';
 import { lostBossDialog } from '../data/dialogs';
+import { useInventoryStore } from '../stores/useInventoryStore';
 
 export const useBoss = () => {
-  const {
-    setCurrentEnemy,
-    setInCombat,
-    setVictory,
-    setScreen,
-    addLog,
-  } = useGame();
+  const { setCurrentEnemy, setInCombat, setVictory, setScreen, addLog } =
+    useGame();
 
   // Битва с боссом доступна только при наличии черных щита и посоха.
   function checkBossAccess(): boolean {
     if (
-      player.inventory.includes('blackMagickStaff') &&
-      player.inventory.includes('blackMagickShield')
+      useInventoryStore.getState().items.includes('blackMagickStaff') &&
+      useInventoryStore.getState().items.includes('blackMagickShield')
     ) {
       return true;
     }
@@ -26,7 +22,7 @@ export const useBoss = () => {
   // Запуск боя с боссом
   function startBossFight(): void {
     if (checkBossAccess()) {
-      let boss: Enemy = createEnemy('ancientDragon');
+      let boss = createEnemy('ancientDragon');
       addLog(
         `${boss.name}: Ах ты отродье человеческое! Сегодня ты умрешь!`,
         'boss-log',
