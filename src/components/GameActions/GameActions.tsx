@@ -49,7 +49,7 @@ export const GameActions = () => {
         setDialogCompleted(true);
       }
     }
-  }, [dialogIndex, inDialog]);
+  }, [dialogIndex]);
 
   const handleTakePotion = (): void => {
     const warningMessageNpc = `${npc}: Твоя жадность обескураживает, Путник. Сначала используй свои зелья, а потом оббирай старика!`;
