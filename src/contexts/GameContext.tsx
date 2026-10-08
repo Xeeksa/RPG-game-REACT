@@ -60,10 +60,13 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
   );
 
   const addLog = (text: string, type: string): void => {
-    setLogs((prev: LogEntry[]) => [
-      ...prev,
-      { text, type, id: crypto.randomUUID() },
-    ]);
+    setLogs((prev: LogEntry[]) => {
+      const lastLog = prev[prev.length - 1];
+
+      if (lastLog && lastLog.text === text) return prev;
+
+      return [...prev, { text, type, id: crypto.randomUUID() }];
+    });
   };
 
   const clearSystemLog = (): void => {
