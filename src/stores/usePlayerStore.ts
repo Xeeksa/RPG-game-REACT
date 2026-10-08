@@ -7,6 +7,7 @@ const BASE_DAMAGE_PER_LEVEL = 80;
 const LEVEL_UP_HEALTH_BONUS = 5;
 const LEVEL_UP_DEFENSE_BONUS = 1;
 const MAX_LEVEL = 10;
+const MAX_EXP_POINTS = 1000;
 
 interface PlayerState {
   name: string;
@@ -31,7 +32,7 @@ const expTable = [49, 129, 239, 349, 499, 539, 689, 849, 999];
 
 const applyExpAndLevel = (state: PlayerState, points: number) => {
   let newExp = state.experience + points;
-  newExp = Math.min(newExp, 1000);
+  newExp = Math.min(newExp, MAX_EXP_POINTS);
   let newLevel = state.level;
   let leveledUp = false;
 
