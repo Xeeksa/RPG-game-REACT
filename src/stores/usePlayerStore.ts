@@ -2,6 +2,7 @@ import { create } from 'zustand';
 import { items, Item } from '../data/items';
 import { useInventoryStore } from './useInventoryStore';
 import { PlayerSnapshot, EnemySnapshot } from '../data/items';
+import { persist } from 'zustand/middleware';
 
 const BASE_DAMAGE_PER_LEVEL = 80;
 const LEVEL_UP_HEALTH_BONUS = 5;
@@ -54,69 +55,9 @@ const applyExpAndLevel = (state: PlayerState, points: number) => {
   };
 };
 
-export const usePlayerStore = create<PlayerState>((set, get) => ({
-  name: 'Кто я?',
-  health: 20,
-  maxHealth: 20,
-  defense: 0,
-  isDefending: false,
-  level: 1,
-  experience: 0,
-  expTable,
-
-  addExp: (points) => {
-    set((state) => applyExpAndLevel(state, points));
-  },
-
-  takeDamage: (damage) => {
-    const state = get();
-    let isDefending = state.isDefending;
-
-    if (isDefending) {
-      set({ isDefending: false });
-      return 0;
-    } else {
-      const actualDamage = Math.max(0, damage - state.defense);
-      const newHealth = Math.max(0, state.health - actualDamage);
-      set({ health: newHealth });
-      return actualDamage;
-    }
-  },
-
-  defend: () => {
-    const isDefending = get().isDefending;
-    if (!isDefending) set({ isDefending: true });
-  },
-
-  attack: (target: EnemySnapshot) => {
-    const current = get();
-    const damage = current.level * BASE_DAMAGE_PER_LEVEL;
-    const totalDamage = Math.max(1, damage - target.defense);
-    return totalDamage;
-  },
-
-  heal: () => {
-    set((state) => ({ health: state.maxHealth }));
-  },
-
-  useItem: (itemKey: string) => {
-    let item = items[itemKey] as Item;
-
-    if (item.effect) {
-      const current = get();
-      const snapshot: PlayerSnapshot = {
-        health: current.health,
-        maxHealth: current.maxHealth,
-      };
-      const changes = item.effect(snapshot);
-      set(changes);
-    }
-
-    useInventoryStore.getState().removeItem(itemKey);
-  },
-
-  reset: () =>
-    set({
+export const usePlayerStore = create<PlayerState>()(
+  persist(
+    (set, get) => ({
       name: 'Кто я?',
       health: 20,
       maxHealth: 20,
@@ -124,5 +65,80 @@ export const usePlayerStore = create<PlayerState>((set, get) => ({
       isDefending: false,
       level: 1,
       experience: 0,
+      expTable,
+
+      addExp: (points) => {
+        set((state) => applyExpAndLevel(state, points));
+      },
+
+      takeDamage: (damage) => {
+        const state = get();
+        let isDefending = state.isDefending;
+
+        if (isDefending) {
+          set({ isDefending: false });
+          return 0;
+        } else {
+          const actualDamage = Math.max(0, damage - state.defense);
+          const newHealth = Math.max(0, state.health - actualDamage);
+          set({ health: newHealth });
+          return actualDamage;
+        }
+      },
+
+      defend: () => {
+        const isDefending = get().isDefending;
+        if (!isDefending) set({ isDefending: true });
+      },
+
+      attack: (target: EnemySnapshot) => {
+        const current = get();
+        const damage = current.level * BASE_DAMAGE_PER_LEVEL;
+        const totalDamage = Math.max(1, damage - target.defense);
+        return totalDamage;
+      },
+
+      heal: () => {
+        set((state) => ({ health: state.maxHealth }));
+      },
+
+      useItem: (itemKey: string) => {
+        let item = items[itemKey] as Item;
+
+        if (item.effect) {
+          const current = get();
+          const snapshot: PlayerSnapshot = {
+            health: current.health,
+            maxHealth: current.maxHealth,
+          };
+          const changes = item.effect(snapshot);
+          set(changes);
+        }
+
+        useInventoryStore.getState().removeItem(itemKey);
+      },
+
+      reset: () =>
+        set({
+          name: 'Кто я?',
+          health: 20,
+          maxHealth: 20,
+          defense: 0,
+          isDefending: false,
+          level: 1,
+          experience: 0,
+        }),
     }),
-}));
+    {
+      name: 'playerSave',
+      partialize: (state) => ({
+        name: state.name,
+        health: state.health,
+        maxHealth: state.maxHealth,
+        defense: state.defense,
+        level: state.level,
+        experience: state.experience,
+      }),
+    },
+  ),
+);
