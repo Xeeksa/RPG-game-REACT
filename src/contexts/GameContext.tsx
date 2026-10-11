@@ -85,7 +85,6 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
     setVictory(false);
     setScreen('start');
     setDefeatedQuestMobs([]);
-    localStorage.removeItem('rpgSave');
     setHasSaidGoodbye(false);
     setDialogCompleted(false);
     usePlayerStore.getState().reset();
