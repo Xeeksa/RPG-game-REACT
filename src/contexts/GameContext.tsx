@@ -1,4 +1,4 @@
-import { useState, createContext, useContext, ReactNode } from 'react';
+import { useState, createContext, useContext, ReactNode, useEffect } from 'react';
 import { Enemy } from '../data/enemies';
 import { usePlayerStore } from '../stores/usePlayerStore';
 import { useInventoryStore } from '../stores/useInventoryStore';
@@ -58,6 +58,46 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
   const [lastWarningMessage, setLastWarningMessage] = useState<string | null>(
     null,
   );
+
+  useEffect(() => {});
+
+  const saveGame = () => {
+    
+    const data = {
+      currentLocation,
+      defeatedQuestMobs,
+      logs,
+      screen,
+      victory,
+      dialogCompleted,
+      hasSaidGoodbye,
+      dialogIndex,
+    };
+
+    localStorage.setItem('rpgSave', JSON.stringify(data));
+  };
+
+  useEffect(() => {
+    loadGame()
+  }, []);
+
+  const loadGame = () => {
+    const raw = localStorage.getItem('rpgSave');
+    if (!raw) return;
+    const data = JSON.parse(raw);
+    setCurrentLocation(data.currentLocation);
+    setDefeatedQuestMobs(data.defeatedQuestMobs);
+    setLogs(data.logs);
+    setScreen(data.screen);
+    setVictory(data.victory);
+    setDialogCompleted(data.dialogCompleted);
+    setHasSaidGoodbye(data.hasSaidGoodbye);
+    setDialogIndex(data.dialogIndex);
+  };
+
+  useEffect(() => {
+    saveGame();
+  }, [currentLocation, defeatedQuestMobs, logs, screen, victory, dialogCompleted, hasSaidGoodbye, dialogIndex])
 
   const addLog = (text: string, type: string): void => {
     setLogs((prev: LogEntry[]) => {
